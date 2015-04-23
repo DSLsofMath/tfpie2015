@@ -5,7 +5,7 @@ default: $(NAME).pdf
 $(NAME).pdf:  $(NAME).tex
 	latexmk -pdf $(NAME).tex
 
-$(NAME).tex: $(NAME).lagda
+$(NAME).tex: $(NAME).lagda $(NAME).format
 	lhs2TeX --agda $(NAME).lagda > $(NAME).tex
 
 clean:
