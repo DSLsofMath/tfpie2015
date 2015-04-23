@@ -156,6 +156,8 @@ Patrik Jansson
 \def\titlerunning{DSLM}
 \def\authorrunning{C. Ionescu, P. Jansson}
 
+\DeclareMathOperator{\Drop}{Drop}
+
 \begin{document}
 $if(title)$
 \maketitle

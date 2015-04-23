@@ -1,8 +1,33 @@
----
-title: 'Domain-Specific Languages of Mathematics'
-documentclass: eptcsstyle/eptcs
-classoption: adraft
----
+%-*-Latex-*-
+\documentclass[adraft]{../eptcsstyle/eptcs}
+
+% current annoyance: this will be fixed
+% by the next update of agda.fmt
+\def\textmu{}
+
+\usepackage{amsmath}
+
+\title{Domain-Specific Languages of Mathematics}
+
+\author{Cezar Ionescu
+\institute{Chalmers}
+\email{cezar@@chalmers.se}
+\and
+Patrik Jansson
+\institute{Chalmers}
+\email{\quad patrikj@@chalmers.se}
+}
+\def\titlerunning{DSLM}
+\def\authorrunning{C. Ionescu, P. Jansson}
+
+\DeclareMathOperator{\Drop}{Drop}
+
+
+%include agda.fmt
+
+\begin{document}
+
+\maketitle
 
 \begin{abstract}
 
@@ -16,8 +41,7 @@ classoption: adraft
 \newcommand{\Rpos}{\mathbb{R}_{\ge 0}}
 \newcommand{\PS}{\mathcal{P}}
 
-Introduction
-============
+\section{Introduction}
 
 - Context
 
@@ -25,32 +49,27 @@ Introduction
 
 - Modeling a problem with functions and types
 
-First-class functions
-=====================
+\section {First-class functions}
 
-Sequences
----------
+
+\subsection{Sequences}
 
 > f : Nat -> X
 
-Series
-------
+\subsection{Series}
 
-Power series
-------------
+\subsection{Power series}
 
-Operators and transformations
------------------------------
+\subsection{Operators and transformations}
 
-Types
-=====
+
+\section{Types}
 
 - strange remark on independent variables
-- lack of types probably at the origin of ```f(x)```
+- lack of types probably at the origin of |f(x)|
 - types for syntax
 
-DSLs
-====
+\section{DSLs}
 
 - helps to distinguish syntax and semantics
 - same syntax can be given many interpretations
@@ -62,13 +81,14 @@ DSLs
 
   many important theorems are "translations"
 
-Equational proofs
-=================
+\section{Equational proofs}
 
 Consider the following statement of the completeness property for
 $\RR$ (Adams and Edwards, page 4):
 
-  > The *completeness* property of the real number system is more
+\begin{quote}
+  
+    The *completeness* property of the real number system is more
     subtle and difficult to understand. One way to state it is as
     follows: if $A$ is any set of real numbers having at least one
     number in it, and if there exists a real number $y$ with the
@@ -78,6 +98,8 @@ $\RR$ (Adams and Edwards, page 4):
     $A$, and denoted $\sup(A)$. Roughly speaking, this says that there
     can be no holes or gaps on the real line-every point corresponds
     to a real number.
+
+\end{quote}
 
 The functional programmer trying to make sense of this "subtle and
 difficult to understand" property will start by making explicit the
@@ -105,11 +127,14 @@ involved in the completeness property.  For example, $\sup A$ is
 As another example of work on the text, consider the following
 definition (Adams and Edwards, page A-23):
 
-  > **Limit of a sequence**
 
-  > We say that $\lim a_n = x$ if for every positive number $\epsilon$
-  > there exists a positive number $N = N (\epsilon)$ such that
-  > $|a_n - x| < \epsilon$ holds whenever $n \geq N$.
+\begin{quote}
+  \textbf{Limit of a sequence}
+
+  We say that $\lim a_n = x$ if for every positive number $\epsilon$
+  there exists a positive number $N = N (\epsilon)$ such that
+  $|a_n - x| < \epsilon$ holds whenever $n \geq N$.
+\end{quote}
 
 There are many opportunities for functional programmers to apply their
 craft here:
@@ -143,3 +168,6 @@ after the standard Haskell ```drop```:
 
 
 
+
+
+\end{document}
