@@ -1,6 +1,7 @@
 %format Real                    =  "\mathbb{R}"
 %format Nat                     =  "\mathbb{N}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
+%format RPosz                   =  "\mathbb{R}_{\ge 0}"
 %format PS                      =  "\mathcal{P}"
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
@@ -18,4 +19,11 @@
 %format (div (x) (y))           =  "\frac{" x "}{" y "}"
 %format (Exists(x)(y))          =  "\exists\ " x "\ .\ " y
 %format (Forall(x)(y))          =  "\forall\ " x "\ .\ " y
+%format (modulus (x) (y))       =  "\sqrt{" x "^2 + " y "^2}"
+%format Theta                   =  "\theta"
+%format (Opclosed(x))           =  "(" x "]"
+%format newtype                 =  "\textbf{\textsf{newtype}}"
+
+
+
 
