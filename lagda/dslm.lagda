@@ -103,7 +103,7 @@ list.  It is easy enough to define set versions of these functions,
 for example:
 
 > min    :  PS X -> X
-> min A  =  x ifandonlyif x elemOf A && Forall a elemOf A   a <= x
+> min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (a <= x)))
 
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is
@@ -142,28 +142,32 @@ For example, if |s = sup A|:
 \def\commentbegin{\quad\{\ }
 \def\commentend{\}}
 
+
+
+
+
 \begin{spec}
-  eps > 0
+   eps > 0
 
 => {- arithmetic -}
 
-  s - eps < s
+   s - eps < s
 
 => {- |s = min (ups A)|, property of |min| -}
 
-  s - eps notElemOf ups A
+   s - eps notElemOf ups A
 
 => {- converse of upper bound definition -}
 
-  Exists a elemOf A   s - eps < a
+   (Exists (a elemOf A) (s - eps < a))
 
 => {- definition of upper bound -}
 
-  Exists a elemOf A   s - eps < a <= s
+   (Exists (a elemOf A) (s - eps < a <= s))
 
 => {- absolute value -}
 
-  Exists a elemOf A (abs(a - s)) < eps
+   (Exists (a elemOf A) ((abs(a - s)) < eps))
 \end{spec}
 
 This simple proof shows that we can always find an element of |A| as
@@ -240,9 +244,7 @@ Using |Drop|, we have that
 \begin{spec}
   lim a = x
 ifandonlyif
-  Exists N : RPos -> Nat such that Forall eps elemOf RPos
-
-    Drop (N eps) a included V x eps
+  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
 \end{spec}
 
 We can show that bounded increasing sequences are convergent.  Let |a|
@@ -308,17 +310,90 @@ ultimately represented as sets of ordered pairs).  Currently, however,
 even the most ``formalist'' mathematical texts offer to the computer
 scientist many opportunities for active reading.
 
+%% - different syntaxes can have the same  semantics
+%%   + Cartesian versus polar
+%%   + matrices versus linear applications
+%%   + holomorphic versus analytic function
 
-- different syntaxes can have the same  semantics
-  + Cartesian versus polar
-  + matrices versus linear applications
-  + holomorphic versus analytic function
+%%   many important theorems are ``translations''
 
-  many important theorems are ``translations''
+\begin{quote}
+  We begin by defining the symbol |i|, called \textbf{the imaginary unit}, to
+  have the property
 
+      $i^2 = -1$
 
+  Thus, we could also call |i| the square root of |-1| and denote it
+  $\sqrt -1$ . Of course, |i| is not a real number; no real number has
+  a negative square.
+\end{quote}
 
+> data I = I
 
+\begin{quote}
+  A \textbf{complex number} is an expression of the form
+
+  |a + bi| or |a + ib|,
+
+  where |a| and |b| are real numbers, and |i| is the imaginary unit.
+\end{quote}
+
+> data ComplexNumber  =  Plus1 Real Real I
+>                     |  Plus2 Real I Real
+
+The translation from the abstract syntax to the concrete syntax is
+done by the function |show|:
+
+> show (Plus1 x y I) = show x ++ " + " ++ show y ++ "i"
+> show (Plus1 x y I) = show x ++ " + " ++ show y ++ "i"
+
+\begin{quote}
+  For example, |3 + 2i|, |div 7 2 - (div 2 3)i| , |i(pi) = 0 + i(pi)| , and |-3 =
+  -3 + 0i| are all complex numbers.  The last of these examples shows
+  that every real number can be regarded as a complex number. 
+\end{quote}
+
+> embed : Real -> ComplexNumber
+> embed x = Plus1 x 0 I
+
+\begin{quote}
+  (We will normally use |a + bi| unless |b| is a complicated
+  expression, in which case we will write |a + ib| instead. Either
+  form is acceptable.)
+\end{quote}
+
+> data ComplexNumber = PlusI Real Real
+
+(a newtype)
+
+\begin{quote}
+  It is often convenient to represent a complex number by a single
+  letter; |w| and |z| are frequently used for this purpose. If |a|,
+  |b|, |x|, and |y| are real numbers, and |w = a + bi| and |z = x +
+  yi|, then we can refer to the complex numbers |w| and |z|. Note that
+  |w = z| if and only if |a = x| and |b = y|.
+\end{quote}
+
+equality is the standard equality on pairs (|deriving Eq|)
+
+The point of the somewhat confusing discussion of using ``letters'' to
+stand for complex numbers is to legitimize the use of \emph{pattern
+  matching}, as in the following definition:
+
+\begin{quote}
+  If |z = x + yi| is a complex number (where |x| and |y| are real), we
+  call |x| the real part of |z| and denote it |Re (z)|. We call |y|
+  the imaginary part of |z| and denote it |Im (z)|: 
+
+> Re(z) = Re (x+yi) = x, Im(z) = Im (x + yi) = y
+
+\end{quote}
+
+> Re : ComplexNumber -> Real
+> Re (PlusI x y)  =  x
+
+> Im : ComplexNumber -> Real
+> Im (PlusI x y)  =  y
 
 
 

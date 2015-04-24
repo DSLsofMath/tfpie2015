@@ -4,10 +4,8 @@
 %format PS                      =  "\mathcal{P}"
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
-%format Forall                  =  "\forall"
 %format an                      =  "a_n"
 %format notElemOf               =  "\notin"
-%format Exists                  =  "\exists"
 %format noteq                   =  "\neq"
 %format empty                   =  "\emptyset"
 %format eps                     =  "\epsilon"
@@ -16,4 +14,8 @@
 %format (abs (x))               =  "\lvert{}" x "\rvert{}"
 %format (Clopen(x))             =  "[" x ")"
 %format infinity                =  "\infty"
+%format (pi)                    =  "\pi"
+%format (div (x) (y))           =  "\frac{" x "}{" y "}"
+%format (Exists(x)(y))          =  "\exists\ " x "\ .\ " y
+%format (Forall(x)(y))          =  "\forall\ " x "\ .\ " y
 
