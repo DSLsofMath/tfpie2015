@@ -23,7 +23,7 @@ Patrik Jansson
 \DeclareMathOperator{\Drop}{Drop}
 
 
-%include agda.fmt
+%include dslmagda.fmt
 
 %include dslm.format
 
@@ -66,18 +66,6 @@ Patrik Jansson
 - strange remark on independent variables
 - lack of types probably at the origin of |f(x)|
 - types for syntax
-
-\section{DSLs}
-
-- helps to distinguish syntax and semantics
-- same syntax can be given many interpretations
-  + power series: formal, real, complex, intervals
-- different syntaxes can have the same  semantics
-  + Cartesian versus polar
-  + matrices versus linear applications
-  + holomorphic versus analytic function
-
-  many important theorems are ``translations''
 
 \section{Equational proofs}
 
@@ -175,7 +163,7 @@ For example, if |s = sup A|:
 
 => {- absolute value -}
 
-  Exists a elemOf A |a - s| < eps
+  Exists a elemOf A (abs(a - s)) < eps
 \end{spec}
 
 This simple proof shows that we can always find an element of |A| as
@@ -193,7 +181,7 @@ definition (Adams and Edwards, page A-23):
 
   We say that |lim an = x| if for every positive number |eps|
   there exists a positive number |N = N (eps)| such that
-  |||an - x|| < eps| holds whenever |n <= N|.
+  |(abs(an - x)) < eps| holds whenever |n <= N|.
 \end{quote}
 
 There are many opportunities for functional programmers to apply their
@@ -205,7 +193,7 @@ craft here, such as
   some value |a n|;
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a function |V : X  -> RPos -> PS X| with
->  V x eps = { x' | x' elemOf X, |x' - x| < eps }
+>  V x eps = { x' | x' elemOf X, (abs(x' - x)) < eps }
 \end{itemize}
 
 
@@ -243,7 +231,7 @@ and therefore, if |Drop 0 a| is bounded
 
 \item if |a| is increasing, then
 
-> Drop n a included [a n, infinity)
+> Drop n a included (Clopen(an, infinity))
 
 \end{itemize}
 
@@ -282,6 +270,51 @@ As before, the introduction of a new function has helped in relating
 familiar elements (the standard Haskell function |drop|) to new ones
 (the concept of limit) and to formulate proofs in a calculational
 style.
+
+\section{DSLs}
+
+There is no clear-cut dividing line between libraries and DSLs, and
+intuitions differ.  For example, in Chapter 8 of \emph{Thinking
+  Functionally with Haskell}, Richard Bird presents a language for
+pretty-printing documents based on Wadler's TODO, but refers to it as
+a library, only mentioning DSLs in the chapter notes.
+
+Both libraries and DSLs are collections of types and functions meant
+to represent concepts from a domain at a high-level of abstraction.
+What separates a DSL from a library is, in our opinion, the deliberate
+separation of syntax from semantics, which is a feature of all
+programming languages (and, arguably, of languages in general).
+
+As we have seen above, in mathematics the syntactical elements are
+sometimes conflated with the semantical ones (|f(t)| versus |f(s)|,
+for example), and disentangling the two aspects can be an important
+aid to coming to terms with a mathematical text.  Hence, our emphasis
+on DSLs rather than libraries.
+
+The distinction between syntax and semantics is, in fact, quite common
+in mathematics, often hiding behind the keyword ``formal''.  For
+example, \emph{formal power series} are an attempt to present the
+theory of power series restricted to their syntactic aspects,
+independent of their semantic interpretations in terms of convergence
+(in the various domains of real numbers, complex numbers, intervals of
+reals, etc.).  The ``formalist'' texts of Bourbaki present various
+domains of mathematics by emphasizing their formal properties
+(\emph{axiomatic structure}), then relating those in terms of ``lower
+levels'', with the lowest levels in terms of set theory (so, for
+example, groups are initially introduced axiomatically, then various
+interpretations are discussed, such as ``groups of transformations'',
+which in turn are intepreted in terms of endo-functions, which are
+ultimately represented as sets of ordered pairs).  Currently, however,
+even the most ``formalist'' mathematical texts offer to the computer
+scientist many opportunities for active reading.
+
+
+- different syntaxes can have the same  semantics
+  + Cartesian versus polar
+  + matrices versus linear applications
+  + holomorphic versus analytic function
+
+  many important theorems are ``translations''
 
 
 
