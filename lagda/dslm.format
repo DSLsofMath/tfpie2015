@@ -24,8 +24,7 @@
 %format (Opclosed(x))           =  "(" x "]"
 %format newtype                 =  "\textbf{\textsf{newtype}}"
 %format ,                       =  ",\ "
-
-
-
-
-
+%format square x                =  x "^2"
+%format (sqrt (x))              =  "\sqrt{" x "}"
+%format Plus1                   =  Plus "_1"
+%format Plus2                   =  Plus "_2"

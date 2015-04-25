@@ -181,7 +181,7 @@ Consider the following statement of the completeness property for
 |Real| (\cite{adams2010calculus}, page 4):
 
 \begin{quote}
-  
+
     The \emph{completeness} property of the real number system is more
     subtle and difficult to understand. One way to state it is as
     follows: if |A| is any set of real numbers having at least one
@@ -216,7 +216,7 @@ for example:
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is
 simpler (no duplicates, no sequentialization of elements).  For
-example, we have 
+example, we have
 
 \begin{quote}
   If |x elemOf X| and |x < min A|, then |x notElemOf A|.
@@ -321,16 +321,16 @@ dropped.  This recalls the familiar Haskell function |drop : Int ->
 The function |Drop| has many properties, for example:
 
 \begin{itemize}
-\item anti-monotonous in the first argument 
+\item anti-monotonous in the first argument
 
 > m <= n => Drop n a included Drop m a
 
 in particular |Drop n a included Drop 0 a| for
   all |n|;
 
-\item if |a| is increasing, then 
+\item if |a| is increasing, then
 
-> ubs (Drop m a) = ubs (Drop n a) 
+> ubs (Drop m a) = ubs (Drop n a)
 
 and therefore, if |Drop 0 a| is bounded
 
@@ -432,10 +432,10 @@ section \emph{Definition of Complex Numbers} begins with:
   We begin by defining the symbol |i|, called \textbf{the imaginary unit}, to
   have the property
 
-      $i^2 = -1$
+>      square i = -1
 
   Thus, we could also call |i| the square root of |-1| and denote it
-  $\sqrt -1$ . Of course, |i| is not a real number; no real number has
+  |sqrt (-1)|. Of course, |i| is not a real number; no real number has
   a negative square.
 \end{quote}
 
@@ -462,7 +462,7 @@ Next, we have the following definition:
   \textbf{Definition:} A \textbf{complex number} is an expression of
   the form
 
-  |a + bi| or |a + ib|,
+>  a + bi {-"\qquad \mathrm{or} \qquad"-} a + ib,
 
   where |a| and |b| are real numbers, and |i| is the imaginary unit.
 \end{quote}
@@ -482,15 +482,15 @@ form of a datatype:
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |show|:
 
-> show (Plus1 x y I) = show x ++ " + " ++ show y ++ "i"
-> show (Plus2 x y I) = show x ++ " + " ++ "i" ++ show y
+> show (Plus1 x y i) = show x ++ " + " ++ show y ++ "i"
+> show (Plus2 x i y) = show x ++ " + " ++ "i" ++ show y
 
 The text continues with examples:
 
 \begin{quote}
   For example, |3 + 2i|, |div 7 2 - (div 2 3)i| , |i(pi) = 0 + i(pi)| , and |-3 =
   -3 + 0i| are all complex numbers.  The last of these examples shows
-  that every real number can be regarded as a complex number. 
+  that every real number can be regarded as a complex number.
 \end{quote}
 
 The second example is somewhat problematic: it does not seem to be of
@@ -500,8 +500,8 @@ this one does as well, and that |a - bi| can be understood as an
 abbreviation of |a + (-b)i|.
 
 With this provision, in our notation the examples are written as
-|Plus1 3 2 i|, |Plus1 (div 7 2) (-(div 2 3))|, |Plus2 0 pi|, |Plus1
-(-3) 0|.  We interpret the sentence ``The last of these examples
+|Plus1 3 2 i|, |Plus1 (div 7 2) (-(div 2 3)) i|, |Plus2 0 i pi|, |Plus1
+(-3) 0 i|.  We interpret the sentence ``The last of these examples
 \ldots'' to mean that there is an embedding of the real numbers in
 |Complex|, which we introduce explicitly:
 
@@ -621,8 +621,8 @@ or we can extend the datatype of Complex numbers with additional
 constructors associated to the algebraic operations:
 
 > data Complex  =  C (Real, Real)
->               |  Plus Complex Complex
->               |  Times Complex Complex
+>               |  Plus   Complex  Complex
+>               |  Times  Complex  Complex
 >               |  ...
 
 The type |Complex| can then be turned into an abstract datatype, by
@@ -645,7 +645,7 @@ representation of complex numbers, in terms of modulus and argument:
 \begin{quote}
   The distance from the origin to the point |(a, b)| corresponding to
   the complex number |w = a + bi| is called the \textbf{modulus} of |w| and is
-  denoted by |abs w| or |abs (a + bi)|: 
+  denoted by |abs w| or |abs (a + bi)|:
 
 > abs w = (abs (a + bi)) = (modulus a b)
 
@@ -684,7 +684,7 @@ representation) results in a counterclockwise rotation of the plane by
 90°.  This interpretation of |i| seems independent of the originally
 proposed arithmetical one (``the square root of -1''), and the polar
 representation of complex numbers leads to a different, geometrical
-language.  
+language.
 
 It can be an interesting exercise to develop this language (of
 scalings, rotations, etc.) ``from scratch'', without reference to
