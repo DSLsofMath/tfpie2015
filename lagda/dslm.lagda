@@ -115,11 +115,11 @@ example, we have
 \end{quote}
 
 Exploring the relationship between the ``new'' function |sup| and the
-familiar |min| and |max| can dispel some of the difficulties
-involved in the completeness property.  For example, |sup A| is
-similar to |max A|: if the latter is defined, then so is the former;
-but it also is the smallest element of a set, which suggests a
-connection to |min|.  To see this, introduce the function
+familiar |min| and |max| can dispel some of the difficulties involved
+in the completeness property.  For example, |sup A| is similar to |max
+A|: if the latter is defined, then so is the former, and they are
+equal.  But |sup A| is also the smallest element of a set, which
+suggests a connection to |min|.  To see this, introduce the function
 
 > ubs    :  PS X -> PS X
 > ubs A  =  { x | x elemOf X, x upper bound of A }
@@ -242,12 +242,13 @@ ifandonlyif
   (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
 \end{spec}
 
-We can show that bounded increasing sequences are convergent.  Let |a|
-be a bounded sequence (i.e., |Drop 0 a| is bounded) and let |s = sup
-(Drop 0 a)|.  Then, we know from our previous example that |Drop 0 a
-intersect V s eps noteq empty| for any |eps|.  Assuming a function
-|choice : PS X -> X| which selects an element from every non-empty set
-(and is undefined otherwise), we define
+We can show that increasing sequences which are bounded from above are
+convergent.  Let |a| be a sequence bounded from above (i.e., |ubs
+(Drop 0 a) noteq empty|) and let |s = sup (Drop 0 a)|.  Then, we know
+from our previous example that |Drop 0 a intersect V s eps noteq
+empty| for any |eps|.  Assuming a function |choice : PS X -> X| which
+selects an element from every non-empty set (and is undefined
+otherwise), we define
 
 > N eps = choice (Drop 0 a intersect V s eps)
 
@@ -270,11 +271,11 @@ style.
 
 \section{DSLs}
 
-There is no clear-cut dividing line between libraries and DSLs, and
-intuitions differ.  For example, in Chapter 8 of \emph{Thinking
-  Functionally with Haskell}, Richard Bird presents a language for
-pretty-printing documents based on Wadler's TODO, but refers to it as
-a library, only mentioning DSLs in the chapter notes.
+There is no clear-cut line between libraries and DSLs, and intuitions
+differ.  For example, in Chapter 8 of \emph{Thinking Functionally with
+  Haskell}, Richard Bird presents a language for pretty-printing
+documents based on Wadler's TODO, but refers to it as a library, only
+mentioning DSLs in the chapter notes.
 
 Both libraries and DSLs are collections of types and functions meant
 to represent concepts from a domain at a high level of abstraction.
@@ -285,7 +286,7 @@ programming languages (and, arguably, of languages in general).
 As we have seen above, in mathematics the syntactical elements are
 sometimes conflated with the semantical ones ($f(t)$ versus $f(s)$,
 for example), and disentangling the two aspects can be an important
-aid to coming to terms with a mathematical text.  Hence, our emphasis
+aid in coming to terms with a mathematical text.  Hence, our emphasis
 on DSLs rather than libraries.
 
 The distinction between syntax and semantics is, in fact, quite common
@@ -300,7 +301,7 @@ domains of mathematics by emphasizing their formal properties
 levels'', with the lowest levels in terms of set theory (so, for
 example, groups are initially introduced axiomatically, then various
 interpretations are discussed, such as ``groups of transformations'',
-which in turn are intepreted in terms of endo-functions, which are
+which in turn are interpreted in terms of endo-functions, which are
 ultimately represented as sets of ordered pairs).  Currently, however,
 even the most ``formalist'' mathematical texts offer to the computer
 scientist many opportunities for active reading.
@@ -385,7 +386,7 @@ The text continues with examples:
 
 The second example is somewhat problematic: it does not seem to be of
 the form |a + bi|.  Given that the rest of the examples seem to
-introduce shorthands for various complex numbers, let us assume that
+introduce shorthand for various complex numbers, let us assume that
 this one does as well, and that |a - bi| can be understood as an
 abbreviation of |a + (-b)i|.
 
@@ -393,7 +394,7 @@ With this provision, in our notation the examples are written as
 |Plus1 3 2 i|, |Plus1 (div 7 2) (-(div 2 3))|, |Plus2 0 pi|, |Plus1
 (-3) 0|.  We interpret the sentence ``The last of these examples
 \ldots'' to mean that there is an embedding of the real numbers in
-|Complex|, which we introduce explicitely:
+|Complex|, which we introduce explicitly:
 
 > toComplex : Real -> Complex
 > toComplex x = Plus1 x 0 i
@@ -402,7 +403,7 @@ Again, at this stage there are many open questions.  For example, we
 can assume  that |i1| stands for the complex number |Plus2 0 i 1|, but
 what about |i|?  If juxtaposition is meant to denote some sort of
 multiplication, then perhaps |1| can be considered as a unit, in which
-case we would have that |i| abreviates |i1| and therefore |Plus2 0 i
+case we would have that |i| abbreviates |i1| and therefore |Plus2 0 i
 1|.  But what about, say, |2i|?  Abbreviations with |i| have only been
 introduced for the |ib| form, and not for the |bi| one!
 
@@ -473,10 +474,10 @@ stand for complex numbers is to introduce a substitute for \emph{pattern
 
 This is rather similar to Haskell's \emph{as-patterns}:
 
-> Re : ComplexNumber -> Real
+> Re : Complex -> Real
 > Re (z@C (x, y))  =  x
 
-> Im : ComplexNumber -> Real
+> Im : Complex -> Real
 > Im (z@C (x, y))  =  y
 
 \noindent
@@ -484,7 +485,7 @@ the problem being that the symbol introduced by the as-pattern is not
 actually used on the right-hand side of the equations.
 
 The use of as-patterns such ``|z = x + yi|'' is repeated throughout
-the text, for example in the definition of the arithmetical operations
+the text, for example in the definition of the algebraic operations
 on complex numbers:
 
 \begin{quote}
@@ -498,12 +499,39 @@ on complex numbers:
 > w  -  z  =  (a - x)  +  (b - y)i
 \end{quote}
 
+With the introduction of algebraic operations, the language of complex
+numbers becomes much richer.  We can describe these operations in a
+``shallow embedding'' in terms of the concrete datatype |Complex|, for
+example:
+
+> (+)  :  Complex -> Complex -> Complex
+> (C (a, b)) + (C (x, y))  =  C ((a + x), (b + y))
+
+\noindent
+or we can extend the datatype of Complex numbers with additional
+constructors associated to the algebraic operations:
+
+> data Complex  =  C (Real, Real)
+>               |  Plus Complex Complex
+>               |  Times Complex Complex
+>               |  ...
+
+The type |Complex| can then be turned into an abstract datatype, by
+hiding the representation and providing corresponding operations.
+This ``deep embedding'' approach offers a cleaner separation between
+syntax and semantics, making it possible to compare and factor out the
+common parts of various languages.  For the computer science students,
+this is a way of approaching structural algebra; for the mathematics
+students, this is a way to learn the ideas of abstract datatypes, type
+classes, folds, by relating them to the familiar notions of
+mathematical structures and homomorphisms.
+
 Adams and Edwards then proceed to introduce the geometric
 interpretation of complex numbers, i.e., the isomorphism between
 complex numbers and points in the Euclidian plane as pairs of
 coordinates.  The isomorphism is not given a name, but we can use the
 constructor |C| defined above.  They then define the polar
-representaion of complex numbers, in terms of modulus and argument:
+representation of complex numbers, in terms of modulus and argument:
 
 \begin{quote}
   The distance from the origin to the point |(a, b)| corresponding to
@@ -535,7 +563,7 @@ interpretation of complex numbers (usually called the \emph{polar
 
 |C'| constructs a ``geometric'' complex number from a non-negative
 modulus and a principal argument; the (non-implementable) constraints
-on the types ensure unicity of representation.
+on the types ensure uniqueness of representation.
 
 The importance of this alternative representation is that the
 operations on its elements have a different natural interpretation,
@@ -551,16 +579,18 @@ language.
 
 It can be an interesting exercise to develop this language (of
 scalings, rotations, etc.) ``from scratch'', without reference to
-complex numbers.  The fact that the language can also be given
-semantics in terms of complex numbers could then be seen as somewhat
-surprising, and certainly in need of proof.  This would introduce in a
-simple setting the fact that many fundamental theorems in mathematics
-establish that two languages with different syntaxes have, in fact,
-the same semantics.  A more elaborate example is that of the identity
-of the language of matrix manipulations as implemented in Matlab and
-that of linear applications.  At the undergraduate level, the most
-striking example is perhaps that of the identity of holomorphic (the
-language of complex derivatives) and (regular) analytic functions (the
-language of complex power series).
+complex numbers.  In a deep embedding, the result is a datatype
+representing a syntax that is quite different from the one suggested
+by the algebraic operations.  The fact that this language can also be
+given semantics in terms of complex numbers could then be seen as
+somewhat surprising, and certainly in need of proof.  This would
+introduce in a simple setting the fact that many fundamental theorems
+in mathematics establish that two languages with different syntaxes
+have, in fact, the same semantics.  A more elaborate example is that
+of the identity of the language of matrix manipulations as implemented
+in Matlab and that of linear applications.  At the undergraduate
+level, the most striking example is perhaps that of the identity of
+holomorphic (the language of complex derivatives) and (regular)
+analytic functions (the language of complex power series).
 
 \end{document}

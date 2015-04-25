@@ -23,6 +23,8 @@
 %format Theta                   =  "\theta"
 %format (Opclosed(x))           =  "(" x "]"
 %format newtype                 =  "\textbf{\textsf{newtype}}"
+%format ,                       =  ",\ "
+
 
 
 
