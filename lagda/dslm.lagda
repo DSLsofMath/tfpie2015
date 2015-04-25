@@ -90,7 +90,7 @@ phrases it as follows (page 69):
 
 \begin{quote}
   It's been said before and often, but it cannot be overemphasized:
-  study actively. Don't just read it; fight it!  
+  study actively. Don't just read it; fight it!
 \end{quote}
 
 \noindent
@@ -153,7 +153,7 @@ relation, instead of |::|, and we will assume the existence of the
 set-theoretical datatypes and operations used in classical analysis,
 even though they are not implementable.  For example, we assume we
 have at our disposal a powerset operation |PS|, real numbers |Real|,
-choice operations, and so on.  
+choice operations, and so on.
 
 \section {First-class functions}
 
@@ -207,7 +207,7 @@ for these it returns the least upper bound.
 Functional programmers are acquainted with a large number of standard
 function.  Among these are |minimum| and |maximum|, which
 return the smallest and the largest element of a given (non-empty)
-list.  It is easy enough to define set versions of these functions,
+list.  It is easy enough to specify set versions of these functions,
 for example:
 
 > min    :  PS X -> X
@@ -581,13 +581,14 @@ stand for complex numbers is to introduce a substitute for \emph{pattern
 
 \end{quote}
 
+% (z@C (x, y)) is not correct Haskell syntax: it should be z@(C (x, t)) to parse.
 This is rather similar to Haskell's \emph{as-patterns}:
 
 > Re : Complex -> Real
-> Re (z@C (x, y))  =  x
+> Re z @ (C (x, y))  =  x
 
 > Im : Complex -> Real
-> Im (z@C (x, y))  =  y
+> Im z @ (C (x, y))  =  y
 
 \noindent
 the problem being that the symbol introduced by the as-pattern is not
