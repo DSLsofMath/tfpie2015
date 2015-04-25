@@ -41,11 +41,119 @@ Patrik Jansson
 
 \section{Introduction}
 
-- Context
+In an article published in 2000 (\cite{demoor2000pointwise}), de Moor
+and Gibbons start by presenting an exam question for a first-year
+course on algorithm design.  The question was not easy, but it also
+did not seem particularly difficult.  Still:
 
-- Active learning
+\begin{quote}
+  In the exam itself, however, no one got the answer right, so
+  apparently this kind of question is too hard. That is discouraging,
+  especially in view of the highly sophisticated problems that the
+  same students can solve in mathematics exams.  Why is programming so
+  much harder?
+\end{quote}
 
-- Modeling a problem with functions and types
+Fifteen year later, we are confronted at Chalmers with the opposite
+problem: many third-year students are having unusual difficulties in
+courses involving classical mathematics (especially analysis, real and
+complex) and its applications, while they seem quite capable of
+dealing with ``highly sophisticated problems'' in computer science and
+software engineering.
+
+Why is mathematics so much harder?
+
+One of the reasons for that is, we suspect, that by the third year
+these students have grown very familiar to what could be called ``the
+computer science perspective''.  For example, computer science places
+strong emphasis on syntax, and introduces conceptual tools for
+describing it and resolving potential ambiguities.  In contrast to
+this, mathematical notation is often ambiguous and context-dependent,
+and there is no attempt to even make this ambiguity explicit (Sussman
+and Wisdom talk about ``variables whose meaning depends upon and
+changes with context, as well as the sort of impressionistic
+mathematics that goes along with the use of such variables'', see
+\cite{sussman2002role}).
+
+Further, proofs in computer science tend to be more formal, often
+using an equational logic format with explicit mention of the rules
+that justify a given step, whereas mathematical proofs are presented
+in natural language, with many steps being justified by an appeal to
+intuition and to the semantical content, leaving a more precise
+justification to the reader.  Unfortunately, the task of providing
+such a justification requires a certain amount of expertise, and can
+be discouraging to the beginner.
+
+Mathematics requires (and rewards) active study.  Halmos, in a book
+that cannot be strongly enough recommended (\cite{halmos1985want}),
+phrases it as follows (page 69):
+
+\begin{quote}
+  It's been said before and often, but it cannot be overemphasized:
+  study actively. Don't just read it; fight it!  
+\end{quote}
+
+\noindent
+but, as in the case of proofs, following this advice requires some
+expertise, otherwise it risks being taken in too physical a sense.
+
+In this paper, we present a course on \emph{Domain-Specific Languages
+  of Mathematics} (\cite{dslmcourseplan}) being developed at Chalmers
+to alleviate these problems.  The main idea is to show the students
+that they are, in fact, well-equipped to take an active approach to
+mathematics: they need only apply the software engineering and
+computer science tools they have aquired in the rest of their studies.
+The students should approach a mathematical domain in the same way
+they would any other domain they are supposed to model as a software
+system.
+
+In particular, we are referring to the approach that a functional
+programmer would take.  Functional programming deals with modeling in
+terms of types and pure functions, and this seems to be ideal for a
+domain where functions are natural objects of study, and which is
+possibly the only one where we can be certain that data is immutable.
+Explicitely introducing functions and their types, often left explicit
+in mathematical texts, is an easy way to begin an active approach to
+study.  Moreover, it serves as a way of relating new concepts to
+familiar ones: even in continuous mathematics, many functions turn out
+to be variants of the standard Haskell ones (not surprising,
+considering that the former were often the inspiration for the
+latter).  Finally, the explicit elements we introduce can be reasoned
+about, and lead to proofs in a more calculational style.  In the next
+three sections (TODO: check) we present these aspects in detail; in
+particular, the third section contains two simple examples combining
+all these features.
+
+At a higher-level, when it comes to the organization of our types and
+functions, we emphasize \emph{domain-specific languages} (DSLs).  As
+we explain in Section \ref{sec:dsls}, this is a good fit for the
+mathematical domain, which can itself be seen as a collection
+specialized languages.  Here, we would like to single out a different
+aspect: namely that building DSLs is increasingly becoming a standard
+industry practice.  Empirical studies show that DSLs can lead to
+fundamental increases in productivity, above alternative modelling
+approaches such as UML \cite{tolvanen2011industrial}.  The course we
+are developing will exercise and develop new skills in designing and
+implementing DSLs.  The students will not simply use previously
+aquired software engineering expertise, but also extend it, which can
+be an important motivating aspect.
+
+We have been referring to the computer science students at Chalmers,
+who are our main target audience, but we hope we can also attract some
+of the mathematics students.  Indeed, for the latter the course can
+serve as an introduction to functional programming and to DSLs by
+means of examples with which they are familiar.  Thus, ideally, the
+course would improve the mathematical education of computer scientists
+and the computer science education of mathematicians.
+
+A word of warning.  We assume familiarity with Haskell (though not
+with calculus), and we will take certain notational and semantic
+liberties with it.  For example, we will use |:| for the typing
+relation, instead of |::|, and we will assume the existence of the
+set-theoretical datatypes and operations used in classical analysis,
+even though they are not implementable.  For example, we assume we
+have at our disposal a powerset operation |PS|, real numbers |Real|,
+choice operations, and so on.  
 
 \section {First-class functions}
 
@@ -70,7 +178,7 @@ Patrik Jansson
 \section{Equational proofs}
 
 Consider the following statement of the completeness property for
-|Real| (Adams and Edwards, page 4):
+|Real| (\cite{adams2010calculus}, page 4):
 
 \begin{quote}
   
@@ -174,7 +282,7 @@ number.''  It is also easy to see that, if |min A| is not defined,
 then |A| must be infinite.
 
 As another example of work on the text, consider the following
-definition (Adams and Edwards, page A-23):
+definition (\cite{adams2010calculus}, page A-23):
 
 \begin{quote}
   \textbf{Limit of a sequence}
@@ -247,8 +355,8 @@ convergent.  Let |a| be a sequence bounded from above (i.e., |ubs
 (Drop 0 a) noteq empty|) and let |s = sup (Drop 0 a)|.  Then, we know
 from our previous example that |Drop 0 a intersect V s eps noteq
 empty| for any |eps|.  Assuming a function |choice : PS X -> X| which
-selects an element from every non-empty set (and is undefined
-otherwise), we define
+selects an element from every non-empty set (and is undefined for the
+empty set), we define
 
 > N eps = choice (Drop 0 a intersect V s eps)
 
@@ -270,6 +378,7 @@ familiar elements (the standard Haskell function |drop|) to new ones
 style.
 
 \section{DSLs}
+\label{sec:dsls}
 
 There is no clear-cut line between libraries and DSLs, and intuitions
 differ.  For example, in Chapter 8 of \emph{Thinking Functionally with
@@ -309,14 +418,14 @@ scientist many opportunities for active reading.
 \subsection{A case study: complex numbers}
 
 To illustrate the above, we present an analytic reading of the
-introduction of complex numbers in \cite{adams7th}.  This is not meant
-to be a realistic case study; the attention paid to the letter of the
-text is exaggerated when dealing with such a familiar domain.  It is a
-sketch, even a caricature of our approach: we hope that, like any good
-caricature, it preserves the spirit of the enterprise at the expense
-of (almost) all details.
+introduction of complex numbers in \cite{adams2010calculus}.  This is
+not meant to be a realistic case study; the attention paid to the
+letter of the text is exaggerated when dealing with such a familiar
+domain.  It is a sketch, even a caricature of our approach: we hope
+that, like any good caricature, it preserves the spirit of the
+enterprise at the expense of (almost) all details.
 
-Adams and Edwards introduce complex numbers in Appendix 1.  The
+Adams and Essex introduce complex numbers in Appendix 1.  The
 section \emph{Definition of Complex Numbers} begins with:
 
 \begin{quote}
@@ -526,7 +635,7 @@ students, this is a way to learn the ideas of abstract datatypes, type
 classes, folds, by relating them to the familiar notions of
 mathematical structures and homomorphisms.
 
-Adams and Edwards then proceed to introduce the geometric
+Adams and Essex then proceed to introduce the geometric
 interpretation of complex numbers, i.e., the isomorphism between
 complex numbers and points in the Euclidian plane as pairs of
 coordinates.  The isomorphism is not given a name, but we can use the
@@ -592,5 +701,8 @@ in Matlab and that of linear applications.  At the undergraduate
 level, the most striking example is perhaps that of the identity of
 holomorphic (the language of complex derivatives) and (regular)
 analytic functions (the language of complex power series).
+
+\bibliographystyle{../eptcsstyle/eptcs}
+\bibliography{dslm}
 
 \end{document}
