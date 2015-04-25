@@ -28,3 +28,6 @@
 %format (sqrt (x))              =  "\sqrt{" x "}"
 %format Plus1                   =  Plus "_1"
 %format Plus2                   =  Plus "_2"
+%format Lap                     =  "\mathcal{L}"
+%format CC                      =  "\mathbb{C}"
+%format Sigma                   =  "\Sigma"

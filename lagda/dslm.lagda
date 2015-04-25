@@ -102,7 +102,7 @@ In this paper, we present a course on \emph{Domain-Specific Languages
 to alleviate these problems.  The main idea is to show the students
 that they are, in fact, well-equipped to take an active approach to
 mathematics: they need only apply the software engineering and
-computer science tools they have aquired in the rest of their studies.
+computer science tools they have acquired in the rest of their studies.
 The students should approach a mathematical domain in the same way
 they would any other domain they are supposed to model as a software
 system.
@@ -112,31 +112,33 @@ programmer would take.  Functional programming deals with modeling in
 terms of types and pure functions, and this seems to be ideal for a
 domain where functions are natural objects of study, and which is
 possibly the only one where we can be certain that data is immutable.
-Explicitely introducing functions and their types, often left explicit
+Explicitly introducing functions and their types, often left explicit
 in mathematical texts, is an easy way to begin an active approach to
 study.  Moreover, it serves as a way of relating new concepts to
 familiar ones: even in continuous mathematics, many functions turn out
 to be variants of the standard Haskell ones (not surprising,
 considering that the former were often the inspiration for the
 latter).  Finally, the explicit elements we introduce can be reasoned
-about, and lead to proofs in a more calculational style.  In the next
-three sections (TODO: check) we present these aspects in detail; in
-particular, the third section contains two simple examples combining
-all these features.
+about, and lead to proofs in a more calculational style.  In Section
+\ref{sec:fandt} we present these aspects in detail; in particular,
+subsection \ref{subsec:twoexamples} contains two simple examples
+combining all these features.
 
 At a higher-level, when it comes to the organization of our types and
 functions, we emphasize \emph{domain-specific languages} (DSLs).  As
 we explain in Section \ref{sec:dsls}, this is a good fit for the
 mathematical domain, which can itself be seen as a collection
-specialized languages.  Here, we would like to single out a different
-aspect: namely that building DSLs is increasingly becoming a standard
-industry practice.  Empirical studies show that DSLs can lead to
-fundamental increases in productivity, above alternative modelling
-approaches such as UML \cite{tolvanen2011industrial}.  The course we
-are developing will exercise and develop new skills in designing and
-implementing DSLs.  The students will not simply use previously
-aquired software engineering expertise, but also extend it, which can
-be an important motivating aspect.
+specialized languages.  Like the previous one, that section also
+contains a subsection in which an extended example is presented.
+Here, we would like to single out a different aspect: namely that
+building DSLs is increasingly becoming a standard industry practice.
+Empirical studies show that DSLs can lead to fundamental increases in
+productivity, above alternative modeling approaches such as UML
+\cite{tolvanen2011industrial}.  The course we are developing will
+exercise and develop new skills in designing and implementing DSLs.
+The students will not simply use previously acquired software
+engineering expertise, but also extend it, which can be an important
+motivating aspect.
 
 We have been referring to the computer science students at Chalmers,
 who are our main target audience, but we hope we can also attract some
@@ -155,27 +157,102 @@ even though they are not implementable.  For example, we assume we
 have at our disposal a powerset operation |PS|, real numbers |Real|,
 choice operations, and so on.  
 
-\section {First-class functions}
+\section {Functions and types}
+\label{sec:fandt}
 
+One of the most useful actions of the student of a mathematical text
+is to identify and type the functions involved.  If the notation he
+uses is inadequate for this purpose, then his ability will be severely
+impaired.  This is one of the main reasons for using functional
+programming as the basis of our ``requirements engineering'' in a
+mathematical domain.
 
-\subsection{Sequences}
+Many important mathematical objects are functions.  Arguably, the
+basic objects of study in undergraduate analysis are sequences of
+one type or another.  Sequences are usually defined as functions of
+positive integers (for example in Rudin \cite{rudin1976principles});
+for the functional programmer it is perhaps more natural to model them
+as functions of natural numbers, using |a : Nat -> X| where a
+mathematician would write |{an}| or similar.
 
-> f : Nat -> X
+The notion of \emph{limit} is first defined for sequences.  The
+operation of taking the limit is an example of a higher-order
+function:
 
-\subsection{Series}
+> lim : (Nat -> X) -> X
 
-\subsection{Power series}
+where |X| is a metric space, usually |Real| or |CC|.  Again, a
+notation which makes it difficult to deal with higher-order functions
+is an obstacle in understanding.
 
-\subsection{Operators and transformations}
+Convergent sequences can be used to represent real numbers, but the
+use of sequences is much more diverse.  We can think of the sequence
+of coefficients as a syntax that can be given multiple
+interpretations:
 
+\begin{itemize}
+\item the sequence represents the coefficients of a series.  In this
+  case, the semantics is usually given in terms of the limit (if it
+  exists) of the sequence of partial sums:
 
-\section{Types}
+>  Sigma   :   (Nat -> X) -> X
+>  Sigma a  =  lim s where s n = sum (map a [0 .. n])
 
-- strange remark on independent variables
-- lack of types probably at the origin of |f(x)|
-- types for syntax
+For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
+in undergraduate analysis, but in a classroom setting this could also
+be an opportunity to explain type classes.
 
-\section{Equational proofs}
+\item the sequence represents the coefficients of a power series.  In
+  this case, the semantics is that of a function, whose values are
+  defined in terms of the evaluation of a series:
+
+>  Powers      :  (Nat -> X) -> X -> X
+>  Powers a x  =  Sigma f where f n = (a n) * (x ^ n)
+
+Power series are perhaps \emph{the} fundamental concept of
+undergraduate analysis and its applications: they lead to elementary
+and analytic functions, they are the starting point for the Fourier
+and Laplace transformations, interval analysis, etc.  Therefore, the
+student might find it puzzling that in most textbooks they do not have
+a symbolic representation of their own, outside the somewhat unwieldy
+$\sum\limits_{n=0}^\infty a_n X^n$.
+\end{itemize}
+
+The absence of explicit types in mathematical texts can sometimes lead
+to confusing formulations.  For example, a standard text on
+differential equations by Edwards, Penney and Calvis
+(\cite{edwards2008elementary}) contains at page 266 the following
+remark:
+
+\begin{quote}
+  The differentiation operator |D| can be viewed as a transformation
+  which, when applied to the function |f(t)|, yields the new function
+  |D{f(t)) = f'(t)|. The Laplace transformation |Lap| involves the
+  operation of integration and yields the new function |Lap{f(t)) =
+  F(s)| of a new independent variable |s|.
+\end{quote}
+
+To the logician or the computer scientist, this sounds quite strange:
+surely the \emph{name} of the independent variable does not matter:
+the Laplace transformation could very well return a function of the
+``old'' variable |t|.  We can understand that the name of the variable
+is used to carry semantic meaning about its type (this is also common
+in functional programming, for example with the conventional use of
+|as| to denote a list of |a|s), but we prefer to use type synonyms and
+give an explicit typing to |Lap| which makes the transformation clear,
+for example:
+
+> type T  =  Real
+> type S  =  Real
+> Lap  :  (T -> X) -> S -> X
+
+In the following subsection, we present two simple examples of
+``close reading'' a mathematical text, trying to identify and type the
+functions involved, and to relate them to the familiar elements of
+functional programming.
+
+\subsection{Two examples}
+\label{subsec:twoexamples}
 
 Consider the following statement of the completeness property for
 |Real| (\cite{adams2010calculus}, page 4):
@@ -701,6 +778,13 @@ in Matlab and that of linear applications.  At the undergraduate
 level, the most striking example is perhaps that of the identity of
 holomorphic (the language of complex derivatives) and (regular)
 analytic functions (the language of complex power series).
+
+\section{Conclusions and future work}
+
+- functional programming and elementary category theory
+
+- implementation, visualization
+
 
 \bibliographystyle{../eptcsstyle/eptcs}
 \bibliography{dslm}
