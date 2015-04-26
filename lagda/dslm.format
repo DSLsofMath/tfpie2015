@@ -31,6 +31,5 @@
 %format Lap                     =  "\mathcal{L}"
 %format CC                      =  "\mathbb{C}"
 %format Sigma                   =  "\Sigma"
-=======
 %format @                       =  "\!@\!"
->>>>>>> 0aa060cabef41d48a65338e62912a123c2b49613
+
