@@ -7,17 +7,17 @@
 
 \usepackage{amsmath}
 
-\title{Domain-Specific Languages of Mathematics}
+\title{Functional Programming in Undergraduate Mathematical Education}
 
 \author{Cezar Ionescu
-\institute{Chalmers}
+\institute{Chalmers Univ. of Technology}
 \email{cezar@@chalmers.se}
 \and
 Patrik Jansson
-\institute{Chalmers}
+\institute{Chalmers Univ. of Technology}
 \email{\quad patrikj@@chalmers.se}
 }
-\def\titlerunning{DSLM}
+\def\titlerunning{Functional Programming in Undergraduate Mathematical Education}
 \def\authorrunning{C. Ionescu, P. Jansson}
 
 \DeclareMathOperator{\Drop}{Drop}
@@ -33,8 +33,18 @@ Patrik Jansson
 
 \begin{abstract}
 
-  We present some interesting things in a clear and
-  entertaining style.
+In this paper, we present the approach underlying a course on
+\emph{Domain-Specific Languages of Mathematics}
+(\cite{dslmcourseplan}), which is currently being developed at
+Chalmers in response to difficulties faced by third-year students in
+learning and applying classical mathematics (mainly real and complex
+analysis).  The main idea is to encourage the students to approach
+mathematical domains from a functional programming perspective: to
+identify the main functions and types involved and, when necessary, to
+introduce new abstractions; to give calculational proofs; to pay
+attention to the syntax of the mathematical expressions; and, finally,
+to organize the resulting functions and types in domain-specific
+languages.
 
 \end{abstract}
 
@@ -97,15 +107,16 @@ phrases it as follows (page 69):
 but, as in the case of proofs, following this advice requires some
 expertise, otherwise it risks being taken in too physical a sense.
 
-In this paper, we present a course on \emph{Domain-Specific Languages
-  of Mathematics} (\cite{dslmcourseplan}) being developed at Chalmers
-to alleviate these problems.  The main idea is to show the students
-that they are, in fact, well-equipped to take an active approach to
-mathematics: they need only apply the software engineering and
-computer science tools they have acquired in the rest of their studies.
-The students should approach a mathematical domain in the same way
-they would any other domain they are supposed to model as a software
-system.
+In this paper, we present the approach underlying a course on
+\emph{Domain-Specific Languages of Mathematics}
+(\cite{dslmcourseplan}), which is currently being developed at
+Chalmers to alleviate these problems.  The main idea is to show the
+students that they are, in fact, well-equipped to take an active
+approach to mathematics: they need only apply the software engineering
+and computer science tools they have acquired in the rest of their
+studies.  The students should approach a mathematical domain in the
+same way they would any other domain they are supposed to model as a
+software system.
 
 In particular, we are referring to the approach that a functional
 programmer would take.  Functional programming deals with modeling in
@@ -119,31 +130,54 @@ familiar ones: even in continuous mathematics, many functions turn out
 to be variants of the standard Haskell ones (not surprising,
 considering that the former were often the inspiration for the
 latter).  Finally, the explicit elements we introduce can be reasoned
-about and lead to proofs in a more calculational style.  In Section
-\ref{sec:fandt} we present these aspects in detail; in particular,
-subsection \ref{subsec:twoexamples} contains two simple examples
-combining all these features.  The text we are reading is the standard
-textbook used at Chalmers in the analysis course for first year
-students (Adams and Essex, \cite{adams2010calculus}), though we shall
-occasionally cite a few other texts as well.
+about and lead to proofs in a more calculational style.  Section
+\ref{sec:fandt} presents these elements in detail.
 
-At a higher-level, when it comes to the organization of our types and
-functions, we emphasize \emph{domain-specific languages} (DSLs).  As
-we explain in Section \ref{sec:dsls}, this is a good fit for the
-mathematical domain, which can itself be seen as a collection
-specialized languages.  Like the previous one, that section also
-contains a subsection in which an extended example is presented.
-Here, we would like to single out a different aspect: namely that
-building DSLs is increasingly becoming a standard industry practice.
-Empirical studies show that DSLs can lead to fundamental increases in
-productivity, above alternative modeling approaches such as UML
-\cite{tolvanen2011industrial}.  The course we are developing will
-exercise and develop new skills in designing and implementing DSLs.
-The students will not simply use previously acquired software
-engineering expertise, but also extend it, which can be an important
-motivating aspect.
+Section \ref{sec:dsls} deals with the higher-level question of the
+organization of our types and functions.  We emphasize
+\emph{domain-specific languages} (DSLs, \cite{gibbons2013functional}),
+since they are a good fit for the mathematical domain, which can
+itself be seen as a collection specialized languages.  Moreover,
+building DSLs is increasingly becoming a standard industry practice
+(\cite{fowler2010domain}).  Empirical studies show that DSLs can lead
+to fundamental increases in productivity, above alternative modeling
+approaches such as UML \cite{tolvanen2011industrial}.  The course we
+are developing will exercise and develop new skills in designing and
+implementing DSLs.  The students will not simply use previously
+acquired software engineering expertise, but also extend it, which can
+be an important motivating aspect.
 
-We have been referring to the computer science students at Chalmers,
+Both sections contain simple examples to illustrate our approach to an
+active reading of mathematical texts.  The text we are reading is the
+standard textbook used at Chalmers in the analysis course for first
+year students (Adams and Essex, \cite{adams2010calculus}), though we
+shall occasionally cite a few other texts as well.  At this stage, it
+is important that we prevent a potentially grave misunderstanding of
+our intentions.  We do not present the results of the active reading
+as an ideal presentation of the mathematical concepts involved!  That
+a presentation which is too explicit and complete can rob the readers
+of a precious opportunity to exercise themselves is known to
+mathematicians at least since Descartes' \emph{Geometry}
+(\cite{descartes1954geometry}):
+
+\begin{quote}
+  But I shall not stop to explain this in more detail, because I
+  should deprive you of the pleasure of mastering it yourself, as well
+  as of the advantage of training your mind by working over it, which
+  is in my opinion the principal benefit to be derived from this
+  science.
+\end{quote}
+
+On the other hand, the \emph{Geometry} was considered too obscure to
+be read and didn't gain in popularity until van Schooten's explanatory
+edition, so perhaps there is room for compromise.  In any case, both
+mathematicians (\cite{wells1995communicating, kraft2004functions}) and
+computer scientists (\cite{gries1995teaching, boute2009decibel}) have
+argued that the computer science perspective could bring a valuable
+contribution to mathematical education: we see our work as a step in
+this direction.
+
+We have been referring to the computer science students at Chalmers
 since they are our main target audience, but we hope we can also
 attract some of the mathematics students.  Indeed, for the latter the
 course can serve as an introduction to functional programming and to
@@ -231,8 +265,8 @@ remark:
 \begin{quote}
   The differentiation operator |D| can be viewed as a transformation
   which, when applied to the function |f(t)|, yields the new function
-  |D{f(t)) = f'(t)|. The Laplace transformation |Lap| involves the
-  operation of integration and yields the new function |Lap{f(t)) =
+  |D{f(t)} = f'(t)|. The Laplace transformation |Lap| involves the
+  operation of integration and yields the new function |Lap{f(t)} =
   F(s)| of a new independent variable |s|.
 \end{quote}
 
@@ -292,7 +326,7 @@ list.  It is easy enough to specify set versions of these functions,
 for example:
 
 > min    :  PS X -> X
-> min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (a <= x)))
+> min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is
@@ -397,7 +431,7 @@ dropped.  This recalls the familiar Haskell function |drop : Int ->
 [a] -> [a]|, which can be recast to suit the new context:
 
 > Drop : Nat -> (Nat -> X) -> PS X
-> Drop n a = { a i | i elemOf Nat, i <= n }
+> Drop n a = { a i | i elemOf Nat, n <= i }
 
 The function |Drop| has many properties, for example:
 
@@ -430,6 +464,26 @@ Using |Drop|, we have that
 ifandonlyif
   (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
 \end{spec}
+
+This formulation has the advantage of eliminating one of the three
+quantifiers in the definition of limit.  In general, introducing
+functions and operations on functions leads to fewer quantifiers.  For
+example, we could lift inclusion of sets at the function level: for
+|f, g : A -> PS B| define
+
+> f included g    ifandonlyif  Forall (a elemOf A)  (f a  included  g a)
+
+and we could eliminate the quantification of |eps| above:
+
+\begin{spec}
+    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
+iff
+    (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x)
+\end{spec}
+
+The application of |flip| is necessary to bring the arguments in the
+correct order.  As this example shows, sometimes the price of
+eliminating quantifiers can be too high.
 
 We can show that increasing sequences which are bounded from above are
 convergent.  Let |a| be a sequence bounded from above (i.e., |ubs
@@ -464,7 +518,8 @@ style.
 There is no clear-cut line between libraries and DSLs, and intuitions
 differ.  For example, in Chapter 8 of \emph{Thinking Functionally with
   Haskell}, Richard Bird presents a language for pretty-printing
-documents based on Wadler's TODO, but refers to it as a library, only
+documents based on Wadler's chapter in \emph{The Fun of Programming}
+(\cite{wadler2003prettier}), but refers to it as a library, only
 mentioning DSLs in the chapter notes.
 
 Both libraries and DSLs are collections of types and functions meant
@@ -717,7 +772,9 @@ common parts of various languages.  For the computer science students,
 this is a way of approaching structural algebra; for the mathematics
 students, this is a way to learn the ideas of abstract datatypes, type
 classes, folds, by relating them to the familiar notions of
-mathematical structures and homomorphisms.
+mathematical structures and homomorphisms (see
+\cite{gibbons2014folding} for a discussion of the relationships
+between deep and shallow embeddings and folds).
 
 Adams and Essex then proceed to introduce the geometric
 interpretation of complex numbers, i.e., the isomorphism between
@@ -781,19 +838,97 @@ introduce in a simple setting the fact that many fundamental theorems
 in mathematics establish that two languages with different syntaxes
 have, in fact, the same semantics.  A more elaborate example is that
 of the identity of the language of matrix manipulations as implemented
-in Matlab and that of linear applications.  At the undergraduate
+in Matlab and that of linear transformations.  At the undergraduate
 level, the most striking example is perhaps that of the identity of
 holomorphic (the language of complex derivatives) and (regular)
 analytic functions (the language of complex power series).
 
 \section{Conclusions and future work}
 
-- functional programming and elementary category theory
+We have presented the basic ingredients of an approach that uses
+functional programming as a way of helping students deal with
+classical mathematics and its applications:
 
-- implementation, visualization
+\begin{itemize}
+\item make functions and the types explicit
 
+\item use types as carriers of semantic information, not variable
+  names
+
+\item introduce functions and types for implicit operations such as
+  the power series interpretation of a sequence
+
+\item use a calculational style for proofs
+
+\item organize the types and functions in DSLs
+\end{itemize}
+
+The lessons in this course will be organized around the active reading
+of mathematical texts (suitably prepared in advance).  In the opening
+lessons, we will deal with domains of mathematics which are relatively
+close to functional programming, such as elementary category theory,
+in order to have the chance to introduce newcomers to functional
+programming, and the students in general to our approach.
+
+After that, the selection of the subjects will mostly be dictated by
+the requirements of the third-year courses in signals and systems, and
+control engineering.  They will contain:
+
+\begin{itemize}
+\item basic properties of complex numbers
+
+\item the exponential function
+
+\item elementary functions
+
+\item holomorphic functions
+
+\item the Laplace transform
+
+\end{itemize}
+
+One of the important elements we have left out of this description is
+that of using the modeling effort performed in the course for the
+production of actual mathematical software.  One of the reasons for
+this omission is that we wanted to concentrate on the more conceptual
+part that corresponds to the specification of that software, and as
+such is a prerequisite for it.  The development of implementations on
+the basis of these specifications will be the topic of most of the
+exercises sessions we will organize.  That the computational
+representation of mathematical concepts can greatly help with their
+understanding was conclusively shown by Sussman and Wisdom in their
+recent book on differential geometry (\cite{sussman2013functional}).
+
+We believe that this approach can offer an introduction to computer
+science for the mathematics students.  We plan to actively involve the
+mathematics faculty at Chalmers, via guest lectures and regular
+meetings, in order to find the suitable middle ground we alluded to in
+the introduction: between a presentation that is too explicit, turning
+the student into a spectator of endless details, and one that is too
+implicit and leaves so much for the students to do that they are
+overwhelmed.  Ideally, some of the features of our approach would be
+worked into the earlier mathematical courses.
+
+The computer science perspective has been quite successful in
+influencing the presentation of discrete mathematics.  For example,
+the classical textbook of Gries and Schneider, \emph{A Logical
+  Approach to Discrete Math} (\cite{gries1993logical}), has been
+well-received by both computer scientists and mathematicians.  When it
+comes to continuous mathematics, however, there is no such influence
+to be felt.  The work presented here represents the starting point of
+an attempt to change this state of affairs.
 
 \bibliographystyle{../eptcsstyle/eptcs}
 \bibliography{dslm}
 
 \end{document}
+
+
+In part, we feel that this is because the logic-based
+approach that works in discrete mathematics is too low-level for the
+kind of abstractions needed in real and complex analysis.  In
+particular, the treatment of functions and datatypes is somewhat
+shallow: there are no higher-order functions, recursion is only
+treated in the context of recurrence relations for sequences, there is
+no discussion of fixed points, and no inductive (let alone
+co-inductive) datatypes.
