@@ -64,9 +64,9 @@ software engineering.
 Why is mathematics so much harder?
 
 One of the reasons for that is, we suspect, that by the third year
-these students have grown very familiar to what could be called ``the
+these students have grown very familiar with what could be called ``the
 computer science perspective''.  For example, computer science places
-strong emphasis on syntax, and introduces conceptual tools for
+strong emphasis on syntax and introduces conceptual tools for
 describing it and resolving potential ambiguities.  In contrast to
 this, mathematical notation is often ambiguous and context-dependent,
 and there is no attempt to even make this ambiguity explicit (Sussman
@@ -112,17 +112,20 @@ programmer would take.  Functional programming deals with modeling in
 terms of types and pure functions, and this seems to be ideal for a
 domain where functions are natural objects of study, and which is
 possibly the only one where we can be certain that data is immutable.
-Explicitly introducing functions and their types, often left explicit
+Explicitly introducing functions and their types, often left implicit
 in mathematical texts, is an easy way to begin an active approach to
 study.  Moreover, it serves as a way of relating new concepts to
 familiar ones: even in continuous mathematics, many functions turn out
 to be variants of the standard Haskell ones (not surprising,
 considering that the former were often the inspiration for the
 latter).  Finally, the explicit elements we introduce can be reasoned
-about, and lead to proofs in a more calculational style.  In Section
+about and lead to proofs in a more calculational style.  In Section
 \ref{sec:fandt} we present these aspects in detail; in particular,
 subsection \ref{subsec:twoexamples} contains two simple examples
-combining all these features.
+combining all these features.  The text we are reading is the standard
+textbook used at Chalmers in the analysis course for first year
+students (Adams and Essex, \cite{adams2010calculus}), though we shall
+occasionally cite a few other texts as well.
 
 At a higher-level, when it comes to the organization of our types and
 functions, we emphasize \emph{domain-specific languages} (DSLs).  As
@@ -141,12 +144,13 @@ engineering expertise, but also extend it, which can be an important
 motivating aspect.
 
 We have been referring to the computer science students at Chalmers,
-who are our main target audience, but we hope we can also attract some
-of the mathematics students.  Indeed, for the latter the course can
-serve as an introduction to functional programming and to DSLs by
-means of examples with which they are familiar.  Thus, ideally, the
-course would improve the mathematical education of computer scientists
-and the computer science education of mathematicians.
+since they are our main target audience, but we hope we can also
+attract some of the mathematics students.  Indeed, for the latter the
+course can serve as an introduction to functional programming and to
+DSLs by means of examples with which they are familiar.  Thus,
+ideally, the course would improve the mathematical education of
+computer scientists and the computer science education of
+mathematicians.
 
 A word of warning.  We assume familiarity with Haskell (though not
 with calculus), and we will take certain notational and semantic
@@ -278,8 +282,8 @@ functions involved:
 
 > sup : PS Real -> Real
 
-|sup| is defined only for those subsets of |Real| which are bounded;
-for these it returns the least upper bound.
+|sup| is defined only for those subsets of |Real| which are bounded
+from above; for these it returns the least upper bound.
 
 Functional programmers are acquainted with a large number of standard
 function.  Among these are |minimum| and |maximum|, which
@@ -386,8 +390,8 @@ in the text (the \emph{neighborhood} function |V| is introduced in
 Adams, but first on page 567, long after the chapter on sequences and
 convergence, page 495).  Many real analysis textbooks adopt, in fact,
 the one or the other of these changes.  However, functional
-programmers will probably observe that the expression |an...|
-\emph{whenever} |n <= N| refers to the |N|th tail of the sequence,
+programmers will probably observe that the expression |an|\ldots\ 
+\emph{whenever} |n >= N| refers to the |N|th tail of the sequence,
 i.e., to the elements remaining after the first |N| elements have been
 dropped.  This recalls the familiar Haskell function |drop : Int ->
 [a] -> [a]|, which can be recast to suit the new context:
@@ -454,7 +458,7 @@ familiar elements (the standard Haskell function |drop|) to new ones
 (the concept of limit) and to formulate proofs in a calculational
 style.
 
-\section{DSLs}
+\section{Domain-specific languages}
 \label{sec:dsls}
 
 There is no clear-cut line between libraries and DSLs, and intuitions
@@ -484,23 +488,25 @@ independent of their semantic interpretations in terms of convergence
 reals, etc.).  The ``formalist'' texts of Bourbaki present various
 domains of mathematics by emphasizing their formal properties
 (\emph{axiomatic structure}), then relating those in terms of ``lower
-levels'', with the lowest levels in terms of set theory (so, for
-example, groups are initially introduced axiomatically, then various
-interpretations are discussed, such as ``groups of transformations'',
-which in turn are interpreted in terms of endo-functions, which are
-ultimately represented as sets of ordered pairs).  Currently, however,
-even the most ``formalist'' mathematical texts offer to the computer
-scientist many opportunities for active reading.
+levels'', with the lowest levels expressed in terms of set theory (so,
+for example, groups are initially introduced axiomatically, then
+various interpretations are discussed, such as ``groups of
+transformations'', which in turn are interpreted in terms of
+endo-functions, which are ultimately represented as sets of ordered
+pairs).  Currently, however, even the most ``formalist'' mathematical
+texts offer to the computer scientist many opportunities for active
+reading.
 
 \subsection{A case study: complex numbers}
 
 To illustrate the above, we present an analytic reading of the
-introduction of complex numbers in \cite{adams2010calculus}.  This is
-not meant to be a realistic case study; the attention paid to the
-letter of the text is exaggerated when dealing with such a familiar
-domain.  It is a sketch, even a caricature of our approach: we hope
-that, like any good caricature, it preserves the spirit of the
-enterprise at the expense of (almost) all details.
+introduction of complex numbers in \cite{adams2010calculus}.  The
+simplicity of the domain is meant to allow the reader to concentrate
+on the essential elements of our approach without the distraction of
+potentially unfamiliar mathematical concepts.  Because of the
+exemplary character of this section, we bracket our previous knowledge
+and approach the text as we would a completely new domain, even if
+that leads to a somewhat exaggerated attention to detail.
 
 Adams and Essex introduce complex numbers in Appendix 1.  The
 section \emph{Definition of Complex Numbers} begins with:
@@ -517,12 +523,12 @@ section \emph{Definition of Complex Numbers} begins with:
 \end{quote}
 
 At this stage, it is not clear what the type of |i| is meant to be, we
-only know that it is not a real number.  Moreover, we do not know what
-operations are possible on |i|, only that $i^2$ is another name for
-$-1$ (but it is not obvious that, say $i \times i$ is related in any
-way with $i^2$, since the operations of multiplication and squaring
-have only been introduced so far for numerical types such as |Nat| or
-|Real|, and not for symbols).
+only know that |i| is not a real number.  Moreover, we do not know
+what operations are possible on |i|, only that $i^2$ is another name
+for $-1$ (but it is not obvious that, say $i \times i$ is related in
+any way with $i^2$, since the operations of multiplication and
+squaring have only been introduced so far for numerical types such as
+|Nat| or |Real|, and not for symbols).
 
 For the moment, we introduce a type for the value |i|, and, since we
 know nothing about other values, we make |i| the only member of this
