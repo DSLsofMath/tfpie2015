@@ -20,6 +20,7 @@
 %format (Exists(x)(y))          =  "\exists\ " x ".\ \ " y
 %format (Forall(x)(y))          =  "\forall\ " x ".\ \ " y
 %format (modulus (x) (y))       =  "\sqrt{" x "^2 + " y "^2}"
+%format (pow x (y))             =  x "^{" y "}"
 %format Theta                   =  "\theta"
 %format (Opclosed(x))           =  "(" x "]"
 %format newtype                 =  "\Keyword{newtype}"
@@ -33,4 +34,4 @@
 %format Sigma                   =  "\Sigma"
 %format @                       =  "\!@\!"
 %format where                   =  "\ \Keyword{where}\ "
-%%format -1                      =  "-1"
+

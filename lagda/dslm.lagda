@@ -223,9 +223,14 @@ function:
 
 > lim : (Nat -> X) -> X
 
-where |X| is a metric space, usually |Real| or |CC|.  Again, a
-notation which makes it difficult to deal with higher-order functions
-is an obstacle in understanding.
+Higher-order functions are ubiquitous in mathematical analysis, hence
+the importance of using a notation that supports them in a simple way.
+In fact, although we will not use it in this paper, it is often
+necessary to account for \emph{dependent types}.  Intervals can, for
+instance, be represented as dependent types, and all interval
+operations are naturally dependently-typed.  In such cases, we would
+prefer to use the notation of Agda \cite{norell2007towards} or Idris
+\cite{brady2013idris}.
 
 Convergent sequences can be used to represent real numbers, but the
 use of sequences is much more diverse.  We can think of the sequence
@@ -249,7 +254,7 @@ be an opportunity to explain type classes such as |Num|.
   defined in terms of the evaluation of a series:
 
 >  Powers      :  (Nat -> X) -> X -> X
->  Powers a x  =  Sigma f where f n = (a n) * (x ^ n)
+>  Powers a x  =  Sigma f where f n = (a n) * (pow x n)
 
 Power series are perhaps \emph{the} fundamental concept of
 undergraduate analysis and its applications: they lead to elementary
@@ -285,8 +290,8 @@ give an explicit typing to |Lap| which makes the transformation clear,
 for example:
 
 > newtype T  =  T Real
-> newtype S  =  S Real
-> Lap  :  (T -> X) -> (S -> X)
+> newtype S  =  S CC
+> Lap  :  (T -> CC) -> (S -> CC)
 
 In the following subsection, we present two simple examples of
 ``close reading'' a mathematical text, trying to identify and type the
@@ -350,6 +355,7 @@ suggests a connection to |min|.  To see this, introduce the function
 
 > ubs    :  PS X -> PS X
 > ubs A  =  { x | x elemOf X, x upper bound of A }
+>        =  { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
 
 which returns the set of upper bounds of |A|.  The completeness axiom
 can be stated as
@@ -363,8 +369,10 @@ and we have that |sup = min . ubs|.
 
 The explicit introduction of functions such as |ubs| allows us to give
 calculational proofs in the style introduced by Wim Feijen and used in
-many computer science textbooks, especially in functional programming.
-For example, if |s = sup A|:
+many computer science textbooks, especially in functional programming
+(such proofs are more amenable to automatic verification, see for
+example the algebra of programming library implemented in Agda
+\cite{mu2009algebra}).  For example, if |s = sup A|:
 
 \def\commentbegin{\quad\{\ }
 \def\commentend{\}}
@@ -380,7 +388,11 @@ For example, if |s = sup A|:
 
    s - eps notElemOf ubs A
 
-=> {- converse of upper bound definition -}
+=> {- set membership -}
+
+   not (Forall (a elemOf A) (a <= s - eps))
+
+=> {- quantifier negation -}
 
    (Exists (a elemOf A) (s - eps < a))
 
@@ -470,7 +482,7 @@ Using |Drop|, we have that
 \begin{spec}
   lim a = x
 ifandonlyif
-  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
+  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
 \end{spec}
 
 This formulation has the advantage of eliminating one of the three
@@ -484,9 +496,9 @@ example, we could lift inclusion of sets to the function level: for
 and we could eliminate the quantification of |eps| above:
 
 \begin{spec}
-    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
+    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
 ifandonlyif
-    (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x)
+    (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x))
 \end{spec}
 
 The application of |flip| is necessary to bring the arguments in the
