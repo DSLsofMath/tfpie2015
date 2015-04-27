@@ -780,7 +780,7 @@ example:
 
 \noindent
 or we can extend the datatype of Complex numbers with additional
-constructors associated to the algebraic operations to arive at a
+constructors associated to the algebraic operations to arrive at a
 \emph{deep embedding}:
 
 > data ComplexSyntax  =  C (Real, Real)
@@ -802,7 +802,7 @@ between deep and shallow embeddings and folds).
 
 Adams and Essex then proceed to introduce the geometric
 interpretation of complex numbers, i.e., the isomorphism between
-complex numbers and points in the Euclidian plane as pairs of
+complex numbers and points in the Euclidean plane as pairs of
 coordinates.  The isomorphism is not given a name, but we can use the
 constructor |C| defined above.  They then define the polar
 representation of complex numbers, in terms of modulus and argument:
@@ -843,7 +843,7 @@ on the types ensure uniqueness of representation.
 The importance of this alternative representation is that the
 operations on its elements have a different natural interpretation,
 namely as geometrical operations.  For example, multiplication with
-|C' (m, Theta)| represents a re-scaling of the Euclidian plane with a
+|C' (m, Theta)| represents a re-scaling of the Euclidean plane with a
 factor |m|, coupled with a rotation with angle |Theta|.  Thus,
 multiplication with |i| (which is |C' (1, div pi 2)| in polar
 representation) results in a counterclockwise rotation of the plane by
