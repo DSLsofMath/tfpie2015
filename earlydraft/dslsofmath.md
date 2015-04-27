@@ -1,6 +1,6 @@
 ---
 title: 'Domain-Specific Languages of Mathematics'
-documentclass: eptcsstyle/eptcs
+documentclass: ../eptcsstyle/eptcs
 classoption: adraft
 ---
 
@@ -100,7 +100,7 @@ for example:
 
 Exploring the relationship between the "new" function $\sup$ and the
 familiar $\min$ and $\max$ can dispell some of the difficulties
-involved in the completeness property.  For example, $\sup A$ is 
+involved in the completeness property.  For example, $\sup A$ is
 
 As another example of work on the text, consider the following
 definition (Adams and Edwards, page A-23):
@@ -135,11 +135,5 @@ after the standard Haskell ```drop```:
 
 
  > $Drop : \NN \to (\NN \to X) \to \PS X$
- 
+
  > $Drop\ n\ f = \{ f\ i \mid i \in \NN,\ i \ge n\}$
-
-
-
-
-
-
