@@ -22,7 +22,7 @@
 %format (modulus (x) (y))       =  "\sqrt{" x "^2 + " y "^2}"
 %format Theta                   =  "\theta"
 %format (Opclosed(x))           =  "(" x "]"
-%format newtype                 =  "\textbf{\textsf{newtype}}"
+%format newtype                 =  "\Keyword{newtype}"
 %format ,                       =  ",\ "
 %format square x                =  x "^2"
 %format (sqrt (x))              =  "\sqrt{" x "}"
@@ -32,4 +32,5 @@
 %format CC                      =  "\mathbb{C}"
 %format Sigma                   =  "\Sigma"
 %format @                       =  "\!@\!"
-
+%format where                   =  "\ \Keyword{where}\ "
+%%format -1                      =  "-1"

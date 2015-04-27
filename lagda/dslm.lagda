@@ -7,7 +7,9 @@
 
 \usepackage{amsmath}
 
-\title{Functional Programming in Undergraduate Mathematical Education}
+\title{Domain-Specific Languages of Mathematics:
+   Presenting Mathematical Analysis using Functional Programming}
+
 
 \author{Cezar Ionescu
 \institute{Chalmers Univ. of Technology}
@@ -17,7 +19,8 @@ Patrik Jansson
 \institute{Chalmers Univ. of Technology}
 \email{\quad patrikj@@chalmers.se}
 }
-\def\titlerunning{Functional Programming in Undergraduate Mathematical Education}
+
+\def\titlerunning{DSLs of Mathematics}
 \def\authorrunning{C. Ionescu, P. Jansson}
 
 \DeclareMathOperator{\Drop}{Drop}
@@ -35,7 +38,7 @@ Patrik Jansson
 
 In this paper, we present the approach underlying a course on
 \emph{Domain-Specific Languages of Mathematics}
-(\cite{dslmcourseplan}), which is currently being developed at
+\cite{dslmcourseplan}, which is currently being developed at
 Chalmers in response to difficulties faced by third-year students in
 learning and applying classical mathematics (mainly real and complex
 analysis).  The main idea is to encourage the students to approach
@@ -51,7 +54,7 @@ languages.
 
 \section{Introduction}
 
-In an article published in 2000 (\cite{demoor2000pointwise}), de Moor
+In an article published in 2000 \cite{demoor2000pointwise}, de Moor
 and Gibbons start by presenting an exam question for a first-year
 course on algorithm design.  The question was not easy, but it also
 did not seem particularly difficult.  Still:
@@ -69,9 +72,7 @@ problem: many third-year students are having unusual difficulties in
 courses involving classical mathematics (especially analysis, real and
 complex) and its applications, while they seem quite capable of
 dealing with ``highly sophisticated problems'' in computer science and
-software engineering.
-
-Why is mathematics so much harder?
+software engineering.  Why is mathematics so much harder?
 
 One of the reasons for that is, we suspect, that by the third year
 these students have grown very familiar with what could be called ``the
@@ -95,8 +96,8 @@ such a justification requires a certain amount of expertise, and can
 be discouraging to the beginner.
 
 Mathematics requires (and rewards) active study.  Halmos, in a book
-that cannot be strongly enough recommended (\cite{halmos1985want}),
-phrases it as follows (page 69):
+that cannot be strongly enough recommended, phrases it as follows
+(\cite{halmos1985want}, page 69):
 
 \begin{quote}
   It's been said before and often, but it cannot be overemphasized:
@@ -109,7 +110,7 @@ expertise, otherwise it risks being taken in too physical a sense.
 
 In this paper, we present the approach underlying a course on
 \emph{Domain-Specific Languages of Mathematics}
-(\cite{dslmcourseplan}), which is currently being developed at
+\cite{dslmcourseplan}, which is currently being developed at
 Chalmers to alleviate these problems.  The main idea is to show the
 students that they are, in fact, well-equipped to take an active
 approach to mathematics: they need only apply the software engineering
@@ -137,10 +138,10 @@ Section \ref{sec:dsls} deals with the higher-level question of the
 organization of our types and functions.  We emphasize
 \emph{domain-specific languages} (DSLs, \cite{gibbons2013functional}),
 since they are a good fit for the mathematical domain, which can
-itself be seen as a collection specialized languages.  Moreover,
+itself be seen as a collection of specialized languages.  Moreover,
 building DSLs is increasingly becoming a standard industry practice
-(\cite{fowler2010domain}).  Empirical studies show that DSLs can lead
-to fundamental increases in productivity, above alternative modeling
+\cite{fowler2010domain}.  Empirical studies show that DSLs can lead to
+fundamental increases in productivity, above alternative modeling
 approaches such as UML \cite{tolvanen2011industrial}.  The course we
 are developing will exercise and develop new skills in designing and
 implementing DSLs.  The students will not simply use previously
@@ -158,7 +159,7 @@ as an ideal presentation of the mathematical concepts involved!  That
 a presentation which is too explicit and complete can rob the readers
 of a precious opportunity to exercise themselves is known to
 mathematicians at least since Descartes' \emph{Geometry}
-(\cite{descartes1954geometry}):
+\cite{descartes1954geometry}:
 
 \begin{quote}
   But I shall not stop to explain this in more detail, because I
@@ -192,8 +193,11 @@ liberties with it.  For example, we will use |:| for the typing
 relation, instead of |::|, and we will assume the existence of the
 set-theoretical datatypes and operations used in classical analysis,
 even though they are not implementable.  For example, we assume we
-have at our disposal a powerset operation |PS|, real numbers |Real|,
-choice operations, and so on.
+have at our disposal a powerset operation |PS|, (classical) real
+numbers |Real|, choice operations, and so on.  We shall also use the
+standard notation for intervals, which can lead to an overloading of
+the Haskell list notation (|[a, b]| may denote a closed interval or a
+two-element list, depending on the context).
 
 \section {Functions and types}
 \label{sec:fandt}
@@ -233,12 +237,12 @@ interpretations:
   case, the semantics is usually given in terms of the limit (if it
   exists) of the sequence of partial sums:
 
->  Sigma   :   (Nat -> X) -> X
+>  Sigma    :  (Nat -> X) -> X
 >  Sigma a  =  lim s where s n = sum (map a [0 .. n])
 
 For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
 in undergraduate analysis, but in a classroom setting this could also
-be an opportunity to explain type classes.
+be an opportunity to explain type classes such as |Num|.
 
 \item the sequence represents the coefficients of a power series.  In
   this case, the semantics is that of a function, whose values are
@@ -259,7 +263,7 @@ $\sum\limits_{n=0}^\infty a_n X^n$.
 The absence of explicit types in mathematical texts can sometimes lead
 to confusing formulations.  For example, a standard text on
 differential equations by Edwards, Penney and Calvis
-(\cite{edwards2008elementary}) contains at page 266 the following
+\cite{edwards2008elementary} contains at page 266 the following
 remark:
 
 \begin{quote}
@@ -280,9 +284,9 @@ in functional programming, for example with the conventional use of
 give an explicit typing to |Lap| which makes the transformation clear,
 for example:
 
-> type T  =  Real
-> type S  =  Real
-> Lap  :  (T -> X) -> S -> X
+> newtype T  =  T Real
+> newtype S  =  S Real
+> Lap  :  (T -> X) -> (S -> X)
 
 In the following subsection, we present two simple examples of
 ``close reading'' a mathematical text, trying to identify and type the
@@ -306,7 +310,7 @@ Consider the following statement of the completeness property for
     smallest such number, called the \textbf{least upper bound} or
     \textbf{supremum} of |A|, and denoted |sup(A)|. Roughly speaking,
     this says that there can be no holes or gaps on the real
-    line-every point corresponds to a real number.
+    line---every point corresponds to a real number.
 
 \end{quote}
 
@@ -320,7 +324,7 @@ functions involved:
 from above; for these it returns the least upper bound.
 
 Functional programmers are acquainted with a large number of standard
-function.  Among these are |minimum| and |maximum|, which
+functions.  Among these are |minimum| and |maximum|, which
 return the smallest and the largest element of a given (non-empty)
 list.  It is easy enough to specify set versions of these functions,
 for example:
@@ -330,7 +334,7 @@ for example:
 
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is
-simpler (no duplicates, no sequentialization of elements).  For
+simpler (no duplicates, no ordering of elements).  For
 example, we have
 
 \begin{quote}
@@ -372,9 +376,9 @@ For example, if |s = sup A|:
 
    s - eps < s
 
-=> {- |s = min (ups A)|, property of |min| -}
+=> {- |s = min (ubs A)|, property of |min| -}
 
-   s - eps notElemOf ups A
+   s - eps notElemOf ubs A
 
 => {- converse of upper bound definition -}
 
@@ -392,9 +396,11 @@ For example, if |s = sup A|:
 This simple proof shows that we can always find an element of |A| as
 near to |sup A| as we want, which explains perhaps the above statement
 ``Roughly speaking, [the completeness axiom] says that there can be no
-holes or gaps on the real line-every point corresponds to a real
-number.''  It is also easy to see that, if |min A| is not defined,
-then |A| must be infinite.
+holes or gaps on the real line---every point corresponds to a real
+number.''  
+
+%% Using this result, it is also easy to see that, if |min A|
+%% is not defined, then |A| must be infinite.
 
 As another example of work on the text, consider the following
 definition (\cite{adams2010calculus}, page A-23):
@@ -407,15 +413,16 @@ definition (\cite{adams2010calculus}, page A-23):
   |(abs(an - x)) < eps| holds whenever |n <= N|.
 \end{quote}
 
+\noindent
 There are many opportunities for functional programmers to apply their
 craft here, such as
 
 \begin{itemize}
 \item giving an explicit typing |lim : (Nat -> X) -> X| and writing
   |lim a| in order to avoid the impression that the result depends on
-  some value |a n|;
+  some particular value |an|;
 \item introducing explicitly the function |N : RPos -> Nat|;
-\item introducing a function |V : X  -> RPos -> PS X| with
+\item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 >  V x eps = { x' | x' elemOf X, (abs(x' - x)) < eps }
 \end{itemize}
 
@@ -443,7 +450,7 @@ The function |Drop| has many properties, for example:
 in particular |Drop n a included Drop 0 a| for
   all |n|;
 
-\item if |a| is increasing, then
+\item if |a| is increasing, then, for any |m| and |n|
 
 > ubs (Drop m a) = ubs (Drop n a)
 
@@ -453,10 +460,11 @@ and therefore, if |Drop 0 a| is bounded
 
 \item if |a| is increasing, then
 
-> Drop n a included (Clopen(an, infinity))
+> Drop n a included (Clopen(a n, infinity))
 
 \end{itemize}
 
+\noindent
 Using |Drop|, we have that
 
 \begin{spec}
@@ -468,16 +476,16 @@ ifandonlyif
 This formulation has the advantage of eliminating one of the three
 quantifiers in the definition of limit.  In general, introducing
 functions and operations on functions leads to fewer quantifiers.  For
-example, we could lift inclusion of sets at the function level: for
+example, we could lift inclusion of sets to the function level: for
 |f, g : A -> PS B| define
 
-> f included g    ifandonlyif  Forall (a elemOf A)  (f a  included  g a)
+> f included g    ifandonlyif  (Forall (a elemOf A)  (f a  included  g a))
 
 and we could eliminate the quantification of |eps| above:
 
 \begin{spec}
     (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps))
-iff
+ifandonlyif
     (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x)
 \end{spec}
 
@@ -519,7 +527,7 @@ There is no clear-cut line between libraries and DSLs, and intuitions
 differ.  For example, in Chapter 8 of \emph{Thinking Functionally with
   Haskell}, Richard Bird presents a language for pretty-printing
 documents based on Wadler's chapter in \emph{The Fun of Programming}
-(\cite{wadler2003prettier}), but refers to it as a library, only
+\cite{wadler2003prettier}, but refers to it as a library, only
 mentioning DSLs in the chapter notes.
 
 Both libraries and DSLs are collections of types and functions meant
@@ -579,9 +587,9 @@ section \emph{Definition of Complex Numbers} begins with:
 
 At this stage, it is not clear what the type of |i| is meant to be, we
 only know that |i| is not a real number.  Moreover, we do not know
-what operations are possible on |i|, only that $i^2$ is another name
-for $-1$ (but it is not obvious that, say $i \times i$ is related in
-any way with $i^2$, since the operations of multiplication and
+what operations are possible on |i|, only that |square i| is another name
+for |-1| (but it is not obvious that, say |i * i| is related in
+any way with |square i|, since the operations of multiplication and
 squaring have only been introduced so far for numerical types such as
 |Nat| or |Real|, and not for symbols).
 
@@ -620,8 +628,9 @@ form of a datatype:
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |show|:
 
-> show (Plus1 x y i) = show x ++ " + " ++ show y ++ "i"
-> show (Plus2 x i y) = show x ++ " + " ++ "i" ++ show y
+> show                :  Complex -> String
+> show (Plus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
+> show (Plus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
 
 The text continues with examples:
 
@@ -632,10 +641,10 @@ The text continues with examples:
 \end{quote}
 
 The second example is somewhat problematic: it does not seem to be of
-the form |a + bi|.  Given that the rest of the examples seem to
-introduce shorthand for various complex numbers, let us assume that
-this one does as well, and that |a - bi| can be understood as an
-abbreviation of |a + (-b)i|.
+the form |a + bi|.  Given that last two examples seem to introduce
+shorthand for various complex numbers, let us assume that this one
+does as well, and that |a - bi| can be understood as an abbreviation
+of |a + (-b)i|.
 
 With this provision, in our notation the examples are written as
 |Plus1 3 2 i|, |Plus1 (div 7 2) (-(div 2 3)) i|, |Plus2 0 i pi|, |Plus1
@@ -647,12 +656,12 @@ With this provision, in our notation the examples are written as
 > toComplex x = Plus1 x 0 i
 
 Again, at this stage there are many open questions.  For example, we
-can assume  that |i1| stands for the complex number |Plus2 0 i 1|, but
-what about |i|?  If juxtaposition is meant to denote some sort of
-multiplication, then perhaps |1| can be considered as a unit, in which
-case we would have that |i| abbreviates |i1| and therefore |Plus2 0 i
-1|.  But what about, say, |2i|?  Abbreviations with |i| have only been
-introduced for the |ib| form, and not for the |bi| one!
+can assume that |i1| stands for the complex number |Plus2 0 i 1|, but
+what about |i| by itself?  If juxtaposition is meant to denote some
+sort of multiplication, then perhaps |1| can be considered as a unit,
+in which case we would have that |i| abbreviates |i1| and therefore
+|Plus2 0 i 1|.  But what about, say, |2i|?  Abbreviations with |i|
+have only been introduced for the |ib| form, and not for the |bi| one!
 
 The text then continues with a parenthetical remark which helps us
 dispel these doubts:
@@ -715,7 +724,8 @@ stand for complex numbers is to introduce a substitute for \emph{pattern
   |Re (z)|. We call |y| the \textbf{imaginary part} of |z| and denote it |Im
   (z)|:
 
-> Re(z) = Re (x+yi) = x, Im(z) = Im (x + yi) = y
+> Re(z)  =  Re (x+yi)    =  x
+> Im(z)  =  Im (x + yi)  =  y
 
 \end{quote}
 
@@ -729,12 +739,13 @@ This is rather similar to Haskell's \emph{as-patterns}:
 > Im z @ (C (x, y))  =  y
 
 \noindent
-the problem being that the symbol introduced by the as-pattern is not
-actually used on the right-hand side of the equations.
+a potential source of confusion being that the symbol introduced by
+the as-pattern is not actually used on the right-hand side of the
+equations.
 
-The use of as-patterns such ``|z = x + yi|'' is repeated throughout
-the text, for example in the definition of the algebraic operations
-on complex numbers:
+The use of as-patterns such as ``|z = x + yi|'' is repeated throughout
+the text, for example in the definition of the algebraic operations on
+complex numbers:
 
 \begin{quote}
   \textbf{The sum and difference of complex numbers}
@@ -749,7 +760,7 @@ on complex numbers:
 
 With the introduction of algebraic operations, the language of complex
 numbers becomes much richer.  We can describe these operations in a
-``shallow embedding'' in terms of the concrete datatype |Complex|, for
+\emph{shallow embedding} in terms of the concrete datatype |Complex|, for
 example:
 
 > (+)  :  Complex -> Complex -> Complex
@@ -757,19 +768,20 @@ example:
 
 \noindent
 or we can extend the datatype of Complex numbers with additional
-constructors associated to the algebraic operations:
+constructors associated to the algebraic operations to arive at a
+\emph{deep embedding}:
 
-> data Complex  =  C (Real, Real)
->               |  Plus   Complex  Complex
->               |  Times  Complex  Complex
->               |  ...
+> data ComplexSyntax  =  C (Real, Real)
+>                     |  Plus   Complex  Complex
+>                     |  Times  Complex  Complex
+>                     |  ...
 
-The type |Complex| can then be turned into an abstract datatype, by
+The type |ComplexSyntax| can then be turned into an abstract datatype, by
 hiding the representation and providing corresponding operations.
-This ``deep embedding'' approach offers a cleaner separation between
-syntax and semantics, making it possible to compare and factor out the
-common parts of various languages.  For the computer science students,
-this is a way of approaching structural algebra; for the mathematics
+Deep embedding offers a cleaner separation between syntax and
+semantics, making it possible to compare and factor out the common
+parts of various languages.  For the computer science students, this
+is a way of approaching structural algebra; for the mathematics
 students, this is a way to learn the ideas of abstract datatypes, type
 classes, folds, by relating them to the familiar notions of
 mathematical structures and homomorphisms (see
@@ -801,8 +813,9 @@ representation of complex numbers, in terms of modulus and argument:
 Here, the constant repetitions of ``|w = a + bi|'' and ``|f(w)| or |f
 (a + bi)|'' are caused not just by the unavailability of
 pattern-matching, but also by the absence of the explicit isomorphism
-|C|.  We need only use |C (a, b)|, making clear that the modulus and
-arguments are actually defined by pattern matching.
+|C|.  We need only use |abs (C (a, b)) = (modulus a b)|, making clear
+that the modulus and arguments are actually defined by pattern
+matching.
 
 Once the principal argument has been defined as the unique argument in
 the interval |Opclosed(-(pi), pi)|, the way is opened to a different
@@ -840,7 +853,7 @@ have, in fact, the same semantics.  A more elaborate example is that
 of the identity of the language of matrix manipulations as implemented
 in Matlab and that of linear transformations.  At the undergraduate
 level, the most striking example is perhaps that of the identity of
-holomorphic (the language of complex derivatives) and (regular)
+holomorphic functions (the language of complex derivatives) and (regular)
 analytic functions (the language of complex power series).
 
 \section{Conclusions and future work}
@@ -887,7 +900,7 @@ control engineering.  They will contain:
 
 \end{itemize}
 
-One of the important elements we have left out of this description is
+One of the important course elements we have left out of this paper is
 that of using the modeling effort performed in the course for the
 production of actual mathematical software.  One of the reasons for
 this omission is that we wanted to concentrate on the more conceptual
@@ -897,7 +910,7 @@ the basis of these specifications will be the topic of most of the
 exercises sessions we will organize.  That the computational
 representation of mathematical concepts can greatly help with their
 understanding was conclusively shown by Sussman and Wisdom in their
-recent book on differential geometry (\cite{sussman2013functional}).
+recent book on differential geometry \cite{sussman2013functional}.
 
 We believe that this approach can offer an introduction to computer
 science for the mathematics students.  We plan to actively involve the
@@ -912,7 +925,7 @@ worked into the earlier mathematical courses.
 The computer science perspective has been quite successful in
 influencing the presentation of discrete mathematics.  For example,
 the classical textbook of Gries and Schneider, \emph{A Logical
-  Approach to Discrete Math} (\cite{gries1993logical}), has been
+  Approach to Discrete Math} \cite{gries1993logical}, has been
 well-received by both computer scientists and mathematicians.  When it
 comes to continuous mathematics, however, there is no such influence
 to be felt.  The work presented here represents the starting point of
