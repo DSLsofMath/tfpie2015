@@ -409,7 +409,7 @@ This simple proof shows that we can always find an element of |A| as
 near to |sup A| as we want, which explains perhaps the above statement
 ``Roughly speaking, [the completeness axiom] says that there can be no
 holes or gaps on the real line---every point corresponds to a real
-number.''  
+number.''
 
 %% Using this result, it is also easy to see that, if |min A|
 %% is not defined, then |A| must be infinite.
@@ -443,7 +443,7 @@ in the text (the \emph{neighborhood} function |V| is introduced in
 Adams, but first on page 567, long after the chapter on sequences and
 convergence, page 495).  Many real analysis textbooks adopt, in fact,
 the one or the other of these changes.  However, functional
-programmers will probably observe that the expression |an|\ldots\ 
+programmers will probably observe that the expression |an|\ldots\
 \emph{whenever} |n >= N| refers to the |N|th tail of the sequence,
 i.e., to the elements remaining after the first |N| elements have been
 dropped.  This recalls the familiar Haskell function |drop : Int ->
@@ -784,8 +784,8 @@ constructors associated to the algebraic operations to arrive at a
 \emph{deep embedding}:
 
 > data ComplexSyntax  =  C (Real, Real)
->                     |  Plus   Complex  Complex
->                     |  Times  Complex  Complex
+>                     |  Plus   ComplexSyntax  ComplexSyntax
+>                     |  Times  ComplexSyntax  ComplexSyntax
 >                     |  ...
 
 The type |ComplexSyntax| can then be turned into an abstract datatype, by
