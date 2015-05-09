@@ -1,23 +1,74 @@
-> module dslm where
+\begin{code}
+module dslm where
+import Data.Nat
+open Data.Nat using (zero; suc) renaming (ℕ to Nat)
+open import Data.List hiding (sum; product)
+open import Data.Product hiding (map)
+open import Function
+open import Data.String using (String)
 
-> record NumDict (X : Set) where
->   field
->     _+_ : X -> X -> X
+postulate
+  Real : Set
+  RPos : Set -- perhaps define as synonym for Real
+  CC   : Set
+  PS   : Set -> Set
+  _elemOf_ : {A : Set} -> A -> PS A -> Set
+  mkSet : {A : Set} -> (A -> Set) -> PS A
+
+_&&_ : Set -> Set -> Set
+_&&_ = _×_
+
+record NumDict (X : Set) : Set1 where
+  field
+    zer  : X
+    one  : X
+    _+_  : X -> X -> X
+    _-_  : X -> X -> X
+    _*_  : X -> X -> X
+    _<=_ : X -> X -> Set
+    _<_  : X -> X -> Set
+    abs  : X -> X
+
+    showR : X -> String
+
+  sum : List X → X
+  sum = foldr _+_ zer
+
+  product : List X → X
+  product = foldr _*_ one
+
+  pow : X -> Nat -> X
+  pow x zero = one
+  pow x (suc n) = x * pow x n
+
+  minSpec : X -> PS X -> Set
+  minSpec x A = (x elemOf A) && ((forall {a} -> (a elemOf A) -> (x <= a)))
+postulate
+  enumFromTo : Nat -> Nat -> List Nat
+\end{code}
 
 TODO: fill in more
 
-> module Inner (X : Set) (numDict : NumDict X) where
+\begin{code}
+module Inner (X : Set) (numDict : NumDict X) where
+ open NumDict numDict
 
->  Seq X = Nat -> X
+ Seq : Set -> Set
+ Seq X = Nat -> X
 
->  lim : (Nat -> X) -> X
->  lim = ?
+ lim : (Nat -> X) -> X
+ lim = {!!}
 
->  Sigma    :  (Nat -> X) -> X
->  Sigma a  =  lim s where s n = sum (map a [0 .. n])
+ Sigma    :  (Nat -> X) -> X
+ Sigma a  =  lim s
+   where  s : Nat -> X
+          s n = sum (map a (enumFromTo 0 n))
 
->  Powers      :  (Nat -> X) -> X -> X
->  Powers a x  =  Sigma f where f n = (a n) * (pow x n)
+ Powers      :  (Nat -> X) -> X -> X
+ Powers a x  =  Sigma f
+   where  f : Nat -> X
+          f n = (a n) * (pow x n)
+\end{code}
 
 \begin{quote}
   The differentiation operator |D| can be viewed as a transformation
@@ -27,30 +78,33 @@ TODO: fill in more
   F(s)| of a new independent variable |s|.
 \end{quote}
 
->  T : Set
->  T  =  T Real
->  S : Set
->  S  =  S CC
->  Lap  :  (T -> CC) -> (S -> CC)
+\begin{code}
+ data T : Set where mkT : Real  -> T
+ data S : Set where mkS : CC    -> S
 
->  sup : PS Real -> Real
+ Lap  :  (T -> CC) -> (S -> CC)
+ Lap  =  {!!}
 
->  minSpec x A = x elemOf A && ((forall {a} -> (a elemOf A) -> (x <= a)))
+-- sup : PS X -> X -- TODO: Real or X?
 
->  min    :  PS X -> X
->  min A  =  ?
 
->  minProof : forall {A} -> minSpec (min A) A
->  minProof = ?
+ min    :  PS X -> X
+ min A  =  {!!}
+
+ minProof : forall {A} -> minSpec (min A) A
+ minProof = {!!}
+\end{code}
 
 TODO:
 
 If |x elemOf X| and |x < min A|, then |x notElemOf A|.
 
->  ubs    :  PS X -> PS X
->  ubs A  = ? -- { x | x elemOf X, x upper bound of A }
+\begin{code}
+ ubs    :  PS X -> PS X
+ ubs A  = {!!} -- { x | x elemOf X, x upper bound of A }
 
->  --       = { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
+ --       = { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
+\end{code}
 
 \begin{quote}
   If |ubs A noteq empty| then |min (ubs A)| is defined.
@@ -59,7 +113,10 @@ If |x elemOf X| and |x < min A|, then |x notElemOf A|.
 \noindent
 and we have that
 
->  sup = min . ubs
+TODO:
+-- \begin{code}
+ sup = min ∘ ubs
+-- \end{code}
 
 if |s = sup A|:
 
@@ -94,14 +151,20 @@ TODO: check the equality proof
 
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
->  V x eps = { x' | x' elemOf X, (abs(x' - x)) < eps }
+\begin{code}
+ V : X -> RPos -> PS X
+ V x eps = {!!} -- TODO: mkSet (\x' -> (x' elemOf X) && ((abs(x' - x)) < eps) )
 
->  Drop : Nat -> (Nat -> X) -> PS X
->  Drop n a = ? -- { a i | i elemOf Nat, n <= i }
+ Drop : Nat -> (Nat -> X) -> PS X
+ Drop n a = {!!} -- { a i | i elemOf Nat, n <= i }
+\end{code}
 
 \item anti-monotonous in the first argument
 
->  -- m <= n => Drop n a included Drop m a
+\begin{code}
+
+  -- m <= n => Drop n a included Drop m a
+\end{code}
 
 in particular |Drop n a included Drop 0 a| for
   all |n|;
@@ -166,167 +229,46 @@ included {- |a (N eps) elemOf V s eps| -}
 
 %%%%%%
 \subsection{A case study: complex numbers}
-> module ComplexNumbers where
+\begin{code}
+module ComplexNumbers (Real : Set) (numDict : NumDict Real) where
+ open NumDict numDict
 
->  data I where i : I
+ data I : Set where i : I
 
->  data Complex1 where
->    Plus1 : Real -> Real -> I -> Complex1
->    Plus2 : Real -> I -> Real -> Complex1
+ data Complex1 : Set where
+   Plus1 : Real -> Real -> I -> Complex1
+   Plus2 : Real -> I -> Real -> Complex1
 
->  show                :  Complex1 -> String
->  show (Plus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
->  show (Plus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+ show                :  Complex1 -> String
+ show (Plus1 x y i)  = {!!} -- TODO showR x ++ " + " ++ showR y ++ "i"
+ show (Plus2 x i y)  = {!!} -- TODO showR x ++ " + " ++ "i" ++ showR y
 
->  toComplex : Real -> Complex1
->  toComplex x = Plus1 x 0 i
+ toComplex : Real -> Complex1
+ toComplex x = Plus1 x zer i
 
->  data Complex2 where Plus : Real -> Real -> I -> Complex2
+ data Complex2 : Set where Plus : Real -> Real -> I -> Complex2
 
->  data Complex3 where PlusI : Real -> Real -> Complex3
+ data Complex3 : Set where PlusI : Real -> Real -> Complex3
 
->  data Complex where C : (Real × Real) -> Complex
+ data Complex : Set where C : (Real × Real) -> Complex
 
->  Re : Complex -> Real
->  Re (C (x, y))  =  x
+ Re : Complex -> Real
+ Re (C (x , y))  =  x
 
->  Im : Complex -> Real
->  Im (C (x, y))  =  y
+ Im : Complex -> Real
+ Im (C (x , y))  =  y
 
->  _+_  :  Complex -> Complex -> Complex
->  (C (a, b)) + (C (x, y))  =  C ((a + x) , (b + y))
+ _+C_  :  Complex -> Complex -> Complex
+ (C (a , b)) +C (C (x , y))  =  C ((a + x) , (b + y))
 
-> data ComplexSyntax : Set where
->   C     : (Real × Real) -> ComplexSyntax
->   Plus  : ComplexSyntax -> ComplexSyntax -> ComplexSyntax
->   Times : ComplexSyntax -> ComplexSyntax -> ComplexSyntax
->   -- ...
+data ComplexSyntax : Set where
+  C     : (Real × Real) -> ComplexSyntax
+  Plus  : ComplexSyntax -> ComplexSyntax -> ComplexSyntax
+  Times : ComplexSyntax -> ComplexSyntax -> ComplexSyntax
+  -- ...
+\end{code}
 
 TODO
 
-> {-
-> newtype Complex' = C' (RPosz, (Opclosed(-(pi), pi)))
-
-|C'| constructs a ``geometric'' complex number from a non-negative
-modulus and a principal argument; the (non-implementable) constraints
-on the types ensure uniqueness of representation.
-
-The importance of this alternative representation is that the
-operations on its elements have a different natural interpretation,
-namely as geometrical operations.  For example, multiplication with
-|C' (m, Theta)| represents a re-scaling of the Euclidean plane with a
-factor |m|, coupled with a rotation with angle |Theta|.  Thus,
-multiplication with |i| (which is |C' (1, div pi 2)| in polar
-representation) results in a counterclockwise rotation of the plane by
-90°.  This interpretation of |i| seems independent of the originally
-proposed arithmetical one (``the square root of -1''), and the polar
-representation of complex numbers leads to a different, geometrical
-language.
-
-It can be an interesting exercise to develop this language (of
-scalings, rotations, etc.) ``from scratch'', without reference to
-complex numbers.  In a deep embedding, the result is a datatype
-representing a syntax that is quite different from the one suggested
-by the algebraic operations.  The fact that this language can also be
-given semantics in terms of complex numbers could then be seen as
-somewhat surprising, and certainly in need of proof.  This would
-introduce in a simple setting the fact that many fundamental theorems
-in mathematics establish that two languages with different syntaxes
-have, in fact, the same semantics.  A more elaborate example is that
-of the identity of the language of matrix manipulations as implemented
-in Matlab and that of linear transformations.  At the undergraduate
-level, the most striking example is perhaps that of the identity of
-holomorphic functions (the language of complex derivatives) and (regular)
-analytic functions (the language of complex power series).
-
-\section{Conclusions and future work}
-
-We have presented the basic ingredients of an approach that uses
-functional programming as a way of helping students deal with
-classical mathematics and its applications:
-
-\begin{itemize}
-\item make functions and the types explicit
-
-\item use types as carriers of semantic information, not variable
-  names
-
-\item introduce functions and types for implicit operations such as
-  the power series interpretation of a sequence
-
-\item use a calculational style for proofs
-
-\item organize the types and functions in DSLs
-\end{itemize}
-
-The lessons in this course will be organized around the active reading
-of mathematical texts (suitably prepared in advance).  In the opening
-lessons, we will deal with domains of mathematics which are relatively
-close to functional programming, such as elementary category theory,
-in order to have the chance to introduce newcomers to functional
-programming, and the students in general to our approach.
-
-After that, the selection of the subjects will mostly be dictated by
-the requirements of the third-year courses in signals and systems, and
-control engineering.  They will contain:
-
-\begin{itemize}
-\item basic properties of complex numbers
-
-\item the exponential function
-
-\item elementary functions
-
-\item holomorphic functions
-
-\item the Laplace transform
-
-\end{itemize}
-
-One of the important course elements we have left out of this paper is
-that of using the modeling effort performed in the course for the
-production of actual mathematical software.  One of the reasons for
-this omission is that we wanted to concentrate on the more conceptual
-part that corresponds to the specification of that software, and as
-such is a prerequisite for it.  The development of implementations on
-the basis of these specifications will be the topic of most of the
-exercises sessions we will organize.  That the computational
-representation of mathematical concepts can greatly help with their
-understanding was conclusively shown by Sussman and Wisdom in their
-recent book on differential geometry \cite{sussman2013functional}.
-
-We believe that this approach can offer an introduction to computer
-science for the mathematics students.  We plan to actively involve the
-mathematics faculty at Chalmers, via guest lectures and regular
-meetings, in order to find the suitable middle ground we alluded to in
-the introduction: between a presentation that is too explicit, turning
-the student into a spectator of endless details, and one that is too
-implicit and leaves so much for the students to do that they are
-overwhelmed.  Ideally, some of the features of our approach would be
-worked into the earlier mathematical courses.
-
-The computer science perspective has been quite successful in
-influencing the presentation of discrete mathematics.  For example,
-the classical textbook of Gries and Schneider, \emph{A Logical
-  Approach to Discrete Math} \cite{gries1993logical}, has been
-well-received by both computer scientists and mathematicians.  When it
-comes to continuous mathematics, however, there is no such influence
-to be felt.  The work presented here represents the starting point of
-an attempt to change this state of affairs.
-
-\bibliographystyle{../eptcsstyle/eptcs}
-\bibliography{dslm}
-
-\end{document}
-
-
-In part, we feel that this is because the logic-based
-approach that works in discrete mathematics is too low-level for the
-kind of abstractions needed in real and complex analysis.  In
-particular, the treatment of functions and datatypes is somewhat
-shallow: there are no higher-order functions, recursion is only
-treated in the context of recurrence relations for sequences, there is
-no discussion of fixed points, and no inductive (let alone
-co-inductive) datatypes.
-
-> -}
+data Complex' : Set where
+  C' : (RPosz, (Opclosed(-(pi), pi))) -> Complex'
