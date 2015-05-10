@@ -1,19 +1,22 @@
 \begin{code}
 module dslm where
 import Data.Nat
-open Data.Nat using (zero; suc) renaming (ℕ to Nat)
-open import Data.List hiding (sum; product)
+open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_)
+open import Data.List hiding (sum; product; _++_)
 open import Data.Product hiding (map)
 open import Function
-open import Data.String using (String)
+open import Data.String using (String; _++_)
 
 postulate
   Real : Set
-  RPos : Set -- perhaps define as synonym for Real
   CC   : Set
   PS   : Set -> Set
   _elemOf_ : {A : Set} -> A -> PS A -> Set
-  mkSet : {A : Set} -> (A -> Set) -> PS A
+  mkSet  :              {A : Set} ->             (A -> Set) -> PS A
+  mkSetI : {I : Set} -> {A : Set} -> (I -> A) -> (I -> Set) -> PS A
+
+RPos : Set  -- defined as a synonym for Real to avoid explicit subtype coercions
+RPos = Real
 
 _&&_ : Set -> Set -> Set
 _&&_ = _×_
@@ -28,6 +31,8 @@ record NumDict (X : Set) : Set1 where
     _<=_ : X -> X -> Set
     _<_  : X -> X -> Set
     abs  : X -> X
+
+  -- It is not clear what is the best way of handling "subtyping" between subsets of Real.
 
     showR : X -> String
 
@@ -85,11 +90,12 @@ module Inner (X : Set) (numDict : NumDict X) where
  Lap  :  (T -> CC) -> (S -> CC)
  Lap  =  {!!}
 
--- sup : PS X -> X -- TODO: Real or X?
-
+ -- sup : PS X -> X -- TODO: Real or X?
+ -- sup is defined for all non-empty sets bounded from above
 
  min    :  PS X -> X
  min A  =  {!!}
+ -- min is not always defined either
 
  minProof : forall {A} -> minSpec (min A) A
  minProof = {!!}
@@ -101,9 +107,9 @@ If |x elemOf X| and |x < min A|, then |x notElemOf A|.
 
 \begin{code}
  ubs    :  PS X -> PS X
- ubs A  = {!!} -- { x | x elemOf X, x upper bound of A }
-
+ ubs A  = mkSet (λ x → {!x elemOf X!} && {!x upper bound of A!})
  --       = { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
+ -- type error in (x elemOf X): mismatch between (X : Set) and _elemOf_ expecting something of type (PS X)
 \end{code}
 
 \begin{quote}
@@ -153,10 +159,14 @@ TODO: check the equality proof
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 \begin{code}
  V : X -> RPos -> PS X
- V x eps = {!!} -- TODO: mkSet (\x' -> (x' elemOf X) && ((abs(x' - x)) < eps) )
+ V x eps = mkSet (\x' -> {!x' elemOf X!} && ((abs(x' - x)) < {!eps!}))
+  -- TODO: mkSet (\x' -> (x' elemOf X) && ((abs(x' - x)) < eps) )
+  -- There is a type mismatch here: eps is an RPos (or Real) but we have only assumed numeric operations on the set X.
+
 
  Drop : Nat -> (Nat -> X) -> PS X
- Drop n a = {!!} -- { a i | i elemOf Nat, n <= i }
+ Drop n a = mkSetI a ( \(i : Nat)   -> n <=N i)
+              -- { a i | i elemOf Nat, n <= i }
 \end{code}
 
 \item anti-monotonous in the first argument
@@ -240,8 +250,8 @@ module ComplexNumbers (Real : Set) (numDict : NumDict Real) where
    Plus2 : Real -> I -> Real -> Complex1
 
  show                :  Complex1 -> String
- show (Plus1 x y i)  = {!!} -- TODO showR x ++ " + " ++ showR y ++ "i"
- show (Plus2 x i y)  = {!!} -- TODO showR x ++ " + " ++ "i" ++ showR y
+ show (Plus1 x y i)  = showR x ++ " + " ++ showR y ++ "i"
+ show (Plus2 x i y)  = showR x ++ " + " ++ "i" ++ showR y
 
  toComplex : Real -> Complex1
  toComplex x = Plus1 x zer i
