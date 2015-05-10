@@ -2,7 +2,7 @@
 module dslm where
 import Data.Nat
 open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_)
-open import Data.List hiding (sum; product; _++_)
+open import Data.List hiding (sum; product; _++_) renaming (_∷_ to _::_)
 open import Data.Product hiding (map)
 open import Function
 open import Data.String using (String; _++_)
@@ -128,13 +128,16 @@ if |s = sup A|:
 
 TODO: check the equality proof
 
-   eps > 0
-
-=> {- arithmetic -}
-
-   s - eps < s
-
-=> {- |s = min (ubs A)|, property of |min| -}
+\begin{code}
+ poorMansProof : X -> X -> List Set
+ poorMansProof eps s =
+   (zer < eps)
+  :: -- => {- arithmetic -}
+   ((s - eps) < s)
+--  , -- => {- |s = min (ubs A)|, property of |min| -}
+  ::
+   []
+\end{code}
 
    s - eps notElemOf ubs A
 
