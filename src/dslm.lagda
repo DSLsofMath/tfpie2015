@@ -3,7 +3,8 @@ module dslm where
 import Data.Nat
 open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_)
 open import Data.List hiding (sum; product; _++_) renaming (_∷_ to _::_)
-open import Data.Product hiding (map)
+open import Data.Product hiding (map) renaming (∃ to Exists)
+open import Relation.Nullary renaming (¬_ to not)
 open import Function
 open import Data.String using (String; _++_)
 
@@ -17,6 +18,9 @@ postulate
 
 RPos : Set  -- defined as a synonym for Real to avoid explicit subtype coercions
 RPos = Real
+
+_notElemOf_ : {A : Set} -> A -> PS A -> Set
+x notElemOf X = not (x elemOf X)
 
 _&&_ : Set -> Set -> Set
 _&&_ = _×_
@@ -128,35 +132,28 @@ if |s = sup A|:
 
 TODO: check the equality proof
 
+
 \begin{code}
- poorMansProof : X -> X -> List Set
- poorMansProof eps s =
+ _<_<=_ = \x y z -> (x < y) && (y <= z)
+
+ poorMansProof : X -> X -> PS X -> List Set
+ poorMansProof eps s A =
    (zer < eps)
   :: -- => {- arithmetic -}
    ((s - eps) < s)
---  , -- => {- |s = min (ubs A)|, property of |min| -}
+  :: -- => {- |s = min (ubs A)|, property of |min| -}
+   (s - eps) notElemOf (ubs A)
+  :: -- => {- set membership -}
+   not (forall {a} -> (a elemOf A) -> (a <= (s - eps)))
+  :: -- => {- quantifier negation -}
+   Exists (\a -> (a elemOf A) && ((s - eps) < a))
+  :: -- => {- definition of upper bound -}
+   Exists (\a -> (a elemOf A) && ((s - eps) < a <= s))
+  :: -- => {- absolute value -}
+   Exists (\a -> (a elemOf A) && ((abs(a - s)) < eps))
   ::
    []
 \end{code}
-
-   s - eps notElemOf ubs A
-
-=> {- set membership -}
-
-   not (Forall (a elemOf A) (a <= s - eps))
-
-=> {- quantifier negation -}
-
-   (Exists (a elemOf A) (s - eps < a))
-
-=> {- definition of upper bound -}
-
-   (Exists (a elemOf A) (s - eps < a <= s))
-
-=> {- absolute value -}
-
-   (Exists (a elemOf A) ((abs(a - s)) < eps))
-
 
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with

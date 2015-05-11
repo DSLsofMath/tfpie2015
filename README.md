@@ -1,5 +1,7 @@
 # Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 
+2015-05-09: Started type-checking the examples in the paper in [src/](src/).
+
 2015-05-04: Submission accepted for presentation at the [TFPIE workshop](http://wiki.science.ru.nl/tfpie/TFPIE2015) on June 2nd.
 
 2015-04-27: Paper submission: ["Domain-Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming"](http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf) to Trends in Functional Programming in Education ([TFPIE 2015](http://wiki.science.ru.nl/tfpie/TFPIE2015)). If accepted the paper will be submitted to [ENTCS](http://www.journals.elsevier.com/electronic-notes-in-theoretical-computer-science/) ([RoMEO green](http://www.sherpa.ac.uk/romeo/issn/1571-0661/))
