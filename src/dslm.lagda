@@ -12,6 +12,16 @@ postulate
   Real : Set
   CC   : Set
   PS   : Set -> Set
+\end{code}
+
+TODO: Think about the type of |PS|: does it take a type to a type or a
+set to a set? Currently it is a "type to type" operation, which means
+it cannot really do any work with actual sets of values. We would like
+to get help from the type-checker in checking mathematical arguments,
+but not at the cost of quite a bit of formal "noise".
+
+\begin{code}
+postulate
   _elemOf_ : {A : Set} -> A -> PS A -> Set
   mkSet  :              {A : Set} ->             (A -> Set) -> PS A
   mkSetI : {I : Set} -> {A : Set} -> (I -> A) -> (I -> Set) -> PS A
@@ -37,6 +47,8 @@ record NumDict (X : Set) : Set1 where
     abs  : X -> RPos -- return value is always a non-negative Real
 
     setX : PS X -- the set of all values of type X
+    -- This is included here to handle the difference between the type
+    -- |(X : Set)| and (the encoding of) the set |(setX : PS X)|.
 
     showR : X -> String
 
@@ -119,6 +131,16 @@ module Inner (X : Set) (numDict : NumDict X) where
  -- sup is defined for all non-empty sets bounded from above
  -- TODO: what is a convenient encoding of partial functions in Agda?
 
+-- end of module Inner
+\end{code}
+
+Now we move on to some examples where |X = Real| (but the choice of
+ordering etc. is still somewhat flexible):
+
+\begin{code}
+module OnlyWorksWhenXIsReal (numDict : NumDict Real) where
+ open NumDict numDict
+ X = Real
  postulate min    :  PS X -> X
  -- min A  =  {!!}
  -- min is not always defined either
@@ -127,18 +149,19 @@ module Inner (X : Set) (numDict : NumDict X) where
  -- minProof = {!!}
 \end{code}
 
-TODO: Handle the difference between a type |(X : Set)| and (an encoding of) a set |(xs : PS X)|.
-
-TODO: Also think about the type of |PS|: does it take a type to a type or a set to a set? Currently it is a "type to type" operation, which means it cannot really work with sets of values. We would like to get help from the type-checker in checking mathematical arguments, but not at the cost of quite a bit of formal "noise".
 
 If |x elemOf X| and |x < min A|, then |x notElemOf A|.
 
 \begin{code}
+ _upperBoundOf_ : X -> PS X -> Set
+ x upperBoundOf A = forall {a} -> (a elemOf A) -> (a <= x)
+
  ubs    :  PS X -> PS X
- ubs A  = mkSet (λ x → (x elemOf setX) && {!x upper bound of A!})
- --       = { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
- -- note the difference between (X : Set) and (setX : PS X) which can be used as the second argument to _elemOf_
+ ubs A  = mkSet (\ x -> (x elemOf setX) && (x upperBoundOf A))
 \end{code}
+
+Note the difference between |(X : Set)| and |(setX : PS X)| which can
+be used as the second argument to |_elemOf_|.
 
 \begin{quote}
   If |ubs A noteq empty| then |min (ubs A)| is defined.
@@ -183,14 +206,15 @@ TODO: check the equality proof
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 \begin{code}
  V : X -> RPos -> PS X
- V x eps = mkSet (\x' -> (x' elemOf setX) && ((abs(x' - x)) < {!eps!}))
-  -- TODO: mkSet (\x' -> (x' elemOf X) && ((abs(x' - x)) < eps) )
-  -- There is a type mismatch here: eps is an RPos (or Real) but we have only assumed numeric operations on the set X.
+ V x eps = mkSet (\x' -> (x' elemOf setX) && ((abs(x' - x)) < eps))
 
+ -- There was a type mismatch here: |eps| is an |RPos| (or |Real|) but
+ -- we had only assumed numeric operations on |X|. To resolve it we
+ -- made |X = Real| in this part of the development.
 
  Drop : Nat -> (Nat -> X) -> PS X
- Drop n a = mkSetI a ( \(i : Nat)   -> n <=N i)
-              -- { a i | i elemOf Nat, n <= i }
+ Drop n a = mkSetI a ( \(i : Nat) ->   n <=N i)
+              -- { a i | i elemOf Nat, n <=  i}
 \end{code}
 
 \item anti-monotonous in the first argument
