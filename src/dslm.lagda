@@ -34,11 +34,30 @@ record NumDict (X : Set) : Set1 where
     _*_  : X -> X -> X
     _<=_ : X -> X -> Set
     _<_  : X -> X -> Set
-    abs  : X -> X
+    abs  : X -> RPos -- return value is always a non-negative Real
 
-  -- It is not clear what is the best way of handling "subtyping" between subsets of Real.
+    setX : PS X -- the set of all values of type X
 
     showR : X -> String
+
+  -- It is not clear what is the best way of handling "subtyping"
+  -- between subsets of Real.  In many cases an X is used which is not
+  -- closed under several operations. Then the type signatures are
+  -- intended mostly to limit quantifications, not to actually make
+  -- _+_, say, partial. One way is to require a superset (Super) into
+  -- which all of X can be embedded.
+
+  --    Super : Set
+  --    embed : X -> Super
+
+  -- Super should be closed under the operations (and will often be
+  -- Real or Complex). In fact, the operations should all be on Super,
+  -- not on X. But then the purpose of X is not all that clear. If we
+  -- use this whole NumDict just to abstract from the superset (and
+  -- all operations are defined on the superset) we can ignore the
+  -- earlier meaning of NumDict X and just use it for Real and Complex
+  -- (and perhaps some more Ring or Field). But then we will need to
+  -- keep track of the "current subset" in some other way.
 
   sum : List X → X
   sum = foldr _+_ zer
@@ -52,6 +71,8 @@ record NumDict (X : Set) : Set1 where
 
   minSpec : X -> PS X -> Set
   minSpec x A = (x elemOf A) && ((forall {a} -> (a elemOf A) -> (x <= a)))
+-- end of record NumDict
+
 postulate
   enumFromTo : Nat -> Nat -> List Nat
 \end{code}
@@ -65,8 +86,8 @@ module Inner (X : Set) (numDict : NumDict X) where
  Seq : Set -> Set
  Seq X = Nat -> X
 
- lim : (Nat -> X) -> X
- lim = {!!}
+ postulate lim : (Nat -> X) -> X
+ -- lim = {!!}
 
  Sigma    :  (Nat -> X) -> X
  Sigma a  =  lim s
@@ -91,29 +112,32 @@ module Inner (X : Set) (numDict : NumDict X) where
  data T : Set where mkT : Real  -> T
  data S : Set where mkS : CC    -> S
 
- Lap  :  (T -> CC) -> (S -> CC)
- Lap  =  {!!}
+ postulate Lap  :  (T -> CC) -> (S -> CC)
+ -- Lap  =  {!!}
 
  -- sup : PS X -> X -- TODO: Real or X?
  -- sup is defined for all non-empty sets bounded from above
+ -- TODO: what is a convenient encoding of partial functions in Agda?
 
- min    :  PS X -> X
- min A  =  {!!}
+ postulate min    :  PS X -> X
+ -- min A  =  {!!}
  -- min is not always defined either
 
- minProof : forall {A} -> minSpec (min A) A
- minProof = {!!}
+ postulate minProof : forall {A} -> minSpec (min A) A
+ -- minProof = {!!}
 \end{code}
 
-TODO:
+TODO: Handle the difference between a type |(X : Set)| and (an encoding of) a set |(xs : PS X)|.
+
+TODO: Also think about the type of |PS|: does it take a type to a type or a set to a set? Currently it is a "type to type" operation, which means it cannot really work with sets of values. We would like to get help from the type-checker in checking mathematical arguments, but not at the cost of quite a bit of formal "noise".
 
 If |x elemOf X| and |x < min A|, then |x notElemOf A|.
 
 \begin{code}
  ubs    :  PS X -> PS X
- ubs A  = mkSet (λ x → {!x elemOf X!} && {!x upper bound of A!})
+ ubs A  = mkSet (λ x → (x elemOf setX) && {!x upper bound of A!})
  --       = { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
- -- type error in (x elemOf X): mismatch between (X : Set) and _elemOf_ expecting something of type (PS X)
+ -- note the difference between (X : Set) and (setX : PS X) which can be used as the second argument to _elemOf_
 \end{code}
 
 \begin{quote}
@@ -136,7 +160,7 @@ TODO: check the equality proof
 \begin{code}
  _<_<=_ = \x y z -> (x < y) && (y <= z)
 
- poorMansProof : X -> X -> PS X -> List Set
+ poorMansProof : RPos -> X -> PS X -> List Set
  poorMansProof eps s A =
    (zer < eps)
   :: -- => {- arithmetic -}
@@ -159,7 +183,7 @@ TODO: check the equality proof
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 \begin{code}
  V : X -> RPos -> PS X
- V x eps = mkSet (\x' -> {!x' elemOf X!} && ((abs(x' - x)) < {!eps!}))
+ V x eps = mkSet (\x' -> (x' elemOf setX) && ((abs(x' - x)) < {!eps!}))
   -- TODO: mkSet (\x' -> (x' elemOf X) && ((abs(x' - x)) < eps) )
   -- There is a type mismatch here: eps is an RPos (or Real) but we have only assumed numeric operations on the set X.
 
