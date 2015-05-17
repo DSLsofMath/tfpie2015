@@ -127,10 +127,6 @@ module Inner (X : Set) (numDict : NumDict X) where
  postulate Lap  :  (T -> CC) -> (S -> CC)
  -- Lap  =  {!!}
 
- -- sup : PS X -> X -- TODO: Real or X?
- -- sup is defined for all non-empty sets bounded from above
- -- TODO: what is a convenient encoding of partial functions in Agda?
-
 -- end of module Inner
 \end{code}
 
@@ -171,9 +167,12 @@ be used as the second argument to |_elemOf_|.
 and we have that
 
 TODO:
--- \begin{code}
+\begin{code}
+ sup : PS X -> X -- TODO: Real or X?
+ -- sup is defined for all non-empty sets bounded from above
+ -- TODO: what is a convenient encoding of partial functions in Agda?
  sup = min ∘ ubs
--- \end{code}
+\end{code}
 
 if |s = sup A|:
 
@@ -207,11 +206,13 @@ TODO: check the equality proof
 \begin{code}
  V : X -> RPos -> PS X
  V x eps = mkSet (\x' -> (x' elemOf setX) && ((abs(x' - x)) < eps))
+\end{code}
 
- -- There was a type mismatch here: |eps| is an |RPos| (or |Real|) but
- -- we had only assumed numeric operations on |X|. To resolve it we
- -- made |X = Real| in this part of the development.
+There was a type mismatch here: |eps| is an |RPos| (or |Real|) but we
+had only assumed numeric operations on |X|. To resolve it we made |X =
+Real| in this part of the development.
 
+\begin{code}
  Drop : Nat -> (Nat -> X) -> PS X
  Drop n a = mkSetI a ( \(i : Nat) ->   n <=N i)
               -- { a i | i elemOf Nat, n <=  i}
@@ -219,6 +220,7 @@ TODO: check the equality proof
 
 \item anti-monotonous in the first argument
 
+TODO: define "_included_"
 \begin{code}
 
   -- m <= n => Drop n a included Drop m a
