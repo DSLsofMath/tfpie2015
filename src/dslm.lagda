@@ -22,9 +22,10 @@ but not at the cost of quite a bit of formal "noise".
 
 \begin{code}
 postulate
+  _=S=_     : {A : Set} -> PS A -> PS A -> Set
   _elemOf_ : {A : Set} -> A -> PS A -> Set
-  mkSet  :              {A : Set} ->             (A -> Set) -> PS A
-  mkSetI : {I : Set} -> {A : Set} -> (I -> A) -> (I -> Set) -> PS A
+  mkSet    :              {A : Set} ->             (A -> Set) -> PS A
+  mkSetI   : {I : Set} -> {A : Set} -> (I -> A) -> (I -> Set) -> PS A
 
 RPos : Set  -- defined as a synonym for Real to avoid explicit subtype coercions
 RPos = Real
@@ -51,6 +52,7 @@ record NumDict (X : Set) : Set1 where
     -- |(X : Set)| and (the encoding of) the set |(setX : PS X)|.
 
     showR : X -> String
+    _=R=_ : X -> X -> Set
 
   -- It is not clear what is the best way of handling "subtyping"
   -- between subsets of Real.  In many cases an X is used which is not
@@ -223,34 +225,35 @@ Real| in this part of the development.
 
 \begin{code}
  postulate
-   _included_ : PS X -> PS X -> Set
-
+   _included_ : PS X -> PS X -> Set  -- TODO move to a record of assumptions (module parameter), or implement in terms of other assumptions
 
    antiMonFstDrop : {m n : Nat} -> (a : Nat -> X) ->
            (m <=N n)  ->  (Drop n a) included (Drop m a)
-\end{code}
-
-in particular |Drop n a included Drop 0 a| for
-  all |n|;
-
-\begin{code}
 
  corollary1 : (n : Nat) -> (a : Nat -> X) ->
               (Drop n a) included (Drop 0 a)
  corollary1 n a = antiMonFstDrop a Data.Nat.z≤n
+
+ increasing : (Nat -> X) -> Set
+ increasing a = forall {n : Nat} ->   a n <= a (suc n)
+
+ postulate
+   increasingUbsDrop : {a : Nat -> X} -> increasing a -> {m n : Nat} ->
+                       ubs (Drop m a) =S= ubs (Drop n a)
+
+--   Clopen : X ->
+
+ bounded : PS X -> Set
+ bounded A = Exists (\x -> x upperBoundOf A)
+
+ postulate
+   lemma : (a : Nat -> X) -> {m n : Nat} ->
+           bounded (Drop 0 a) -> sup (Drop m a) =R= sup (Drop n a)
+
+   lemma2 : {a : Nat -> X} -> increasing a -> {n : Nat} ->
+     (Drop n a) included {! (Clopen(a n , infinity)) !}
+
 \end{code}
-
-\item if |a| is increasing, then, for any |m| and |n|
-
->  -- ubs (Drop m a) = ubs (Drop n a)
-
-and therefore, if |Drop 0 a| is bounded
-
->  -- sup (Drop m a) = sup (Drop n a)
-
-\item if |a| is increasing, then
-
->  -- Drop n a included (Clopen(a n, infinity))
 
 TODO
 
