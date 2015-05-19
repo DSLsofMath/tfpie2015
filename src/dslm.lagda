@@ -220,14 +220,25 @@ Real| in this part of the development.
 
 \item anti-monotonous in the first argument
 
-TODO: define "_included_"
-\begin{code}
 
-  -- m <= n => Drop n a included Drop m a
+\begin{code}
+ postulate
+   _included_ : PS X -> PS X -> Set
+
+
+   antiMonFstDrop : {m n : Nat} -> (a : Nat -> X) ->
+           (m <=N n)  ->  (Drop n a) included (Drop m a)
 \end{code}
 
 in particular |Drop n a included Drop 0 a| for
   all |n|;
+
+\begin{code}
+
+ corollary1 : (n : Nat) -> (a : Nat -> X) ->
+              (Drop n a) included (Drop 0 a)
+ corollary1 n a = antiMonFstDrop a Data.Nat.z≤n
+\end{code}
 
 \item if |a| is increasing, then, for any |m| and |n|
 
