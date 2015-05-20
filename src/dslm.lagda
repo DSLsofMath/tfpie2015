@@ -7,6 +7,7 @@ open import Data.Product hiding (map) renaming (∃ to Exists)
 open import Relation.Nullary renaming (¬_ to not)
 open import Function
 open import Data.String using (String; _++_)
+open import Relation.Binary.PropositionalEquality
 
 postulate
   Real : Set
@@ -226,6 +227,7 @@ Real| in this part of the development.
 \begin{code}
  postulate
    _included_ : PS X -> PS X -> Set  -- TODO move to a record of assumptions (module parameter), or implement in terms of other assumptions
+   _intersect_ : PS X -> PS X -> PS X  -- TODO
 
    antiMonFstDrop : {m n : Nat} -> (a : Nat -> X) ->
            (m <=N n)  ->  (Drop n a) included (Drop m a)
@@ -255,51 +257,58 @@ Real| in this part of the development.
 
 \end{code}
 
-TODO
+\begin{code}
 
-  lim a = x
-ifandonlyif
-  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
+ limSpec : (Nat -> X) -> X -> Set
+ limSpec a x = Exists \(N : RPos -> Nat) -> (forall {eps : RPos} ->
+                 (zer <= eps) -> ((Drop (N eps) a) included (V x eps)))
+\end{code}
 
+Note that currently |RPos = Real| so |N| and |V x| have to be defined
+also for negative numbers. (They can be defined to be the empty set.)
+TODO: check that this works out properly.
 
-TODO
+\begin{code}
+ _Fincluded_ : {A : Set} (f g : A -> PS X) -> Set  -- TODO Perhaps generalise to any B?
+ f Fincluded g = forall {a} -> (f a  included  g a)
 
-|f, g : A -> PS B| define
-
-> f included g    ifandonlyif  (Forall (a elemOf A)  (f a  included  g a))
-
-and we could eliminate the quantification of |eps| above:
-
-\begin{spec}
-    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
-ifandonlyif
-    (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x))
-\end{spec}
-
-
-TODO
+ equalProp : (a : Nat -> X) -> (x : X) ->
+   (Exists \(N : RPos -> Nat) -> (forall {eps : RPos} ->
+              ((Drop (N eps) a) included (V x eps))))
+   ≡
+   (Exists \(N : RPos -> Nat) -> ((flip Drop a ∘ N) Fincluded (V x)))
+ equalProp a X = refl
+\end{code}
 
 We can show that increasing sequences which are bounded from above are
-convergent.  Let |a| be a sequence bounded from above (i.e., |ubs
-(Drop 0 a) noteq empty|) and let |s = sup (Drop 0 a)|.  Then, we know
-from our previous example that |Drop 0 a intersect V s eps noteq
-empty| for any |eps|.  Assuming a function |choice : PS X -> X| which
-selects an element from every non-empty set (and is undefined for the
-empty set), we define
+convergent.
 
->  -- N eps = choice (Drop 0 a intersect V s eps)
+\begin{code}
+ module Convergent (a : Nat -> X) {dummy : Real} (nonEmpty : dummy elemOf (ubs (Drop 0 a))) where
+  s : Real
+  s = sup (Drop 0 a)
 
-If |a| is increasing, we have
+  postulate choice : PS X -> X
+            closedInterval : X -> X -> PS X
 
-\begin{spec}
-  Drop (N eps) a
-included {- |a| increasing -}
-  [a (N eps), sup (Drop (N eps) a)]
-= {- |a| increasing |=> Drop n a = Drop 0 a| -}
-  [a (N eps), s]
-included {- |a (N eps) elemOf V s eps| -}
-  V s eps
-\end{spec}
+  N : RPos -> Nat  -- TODO: type error
+  N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}
+
+  module _ (eps : RPos) where
+   step1 = Drop (N eps) a
+   -- included {- |a| increasing -}
+   step2 = closedInterval (a (N eps)) (sup (Drop (N eps) a))
+   -- = {- |a| increasing |=> Drop n a = Drop 0 a| -}
+   step3 = closedInterval (a (N eps)) s
+   -- included {- |a (N eps) elemOf V s eps| -}
+   step4 =  V s eps
+   prop1 : step1 included step2
+   prop1 = {!!}
+   prop2 : step2 ≡ step3
+   prop2 = {!!}
+   prop3 : step3 included step4
+   prop3 = {!!}
+\end{code}
 
 %%%%%%
 \subsection{A case study: complex numbers}

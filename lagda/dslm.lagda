@@ -515,6 +515,8 @@ empty set), we define
 
 > N eps = choice (Drop 0 a intersect V s eps)
 
+TODO: type error: Drop returs a set of real numbers but N should return a natural.
+
 If |a| is increasing, we have
 
 \begin{spec}
