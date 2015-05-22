@@ -1,7 +1,7 @@
 \begin{code}
 module dslm where
 import Data.Nat
-open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_)
+open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_; _-_ to _-N_)
 open import Data.List hiding (sum; product; _++_) renaming (_∷_ to _::_)
 open import Data.Product hiding (map) renaming (∃ to Exists)
 open import Relation.Nullary renaming (¬_ to not)
@@ -291,9 +291,22 @@ convergent.
   postulate choice : PS X -> X
             closedInterval : X -> X -> PS X
 
-  N : RPos -> Nat  -- TODO: type error
-  N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}
+  N : RPos -> Nat
+  N eps = n  where  (Drop n a) included (V s eps)
+\end{code}
+% N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}   -- TODO: type error
 
+What we really need is to search through the sequence |a| for an |n|
+from which onwards all elements are in |V s eps|. If we have already
+converted the sequence into just a set (using |Drop|), this search
+does not work. Let'd define a variant of |Drop| called |drop|:
+
+\begin{code}
+  drop : Nat -> (Nat -> X) -> (Nat -> X)
+  drop n a = \(i : Nat) ->  a (n +N i)
+\end{code}
+
+\begin{code}
   module _ (eps : RPos) where
    step1 = Drop (N eps) a
    -- included {- |a| increasing -}
