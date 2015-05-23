@@ -1,8 +1,8 @@
 \begin{code}
 module dslm where
 import Data.Nat
-open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_; _-_ to _-N_)
-open import Data.List hiding (sum; product; _++_) renaming (_∷_ to _::_)
+open Data.Nat using (zero; suc) renaming (ℕ to Nat; _≤_ to _<=N_; _+_ to _+N_)
+open import Data.List hiding (sum; product; _++_; drop) renaming (_∷_ to _::_)
 open import Data.Product hiding (map) renaming (∃ to Exists)
 open import Relation.Nullary renaming (¬_ to not)
 open import Function
@@ -269,7 +269,7 @@ also for negative numbers. (They can be defined to be the empty set.)
 TODO: check that this works out properly.
 
 \begin{code}
- _Fincluded_ : {A : Set} (f g : A -> PS X) -> Set  -- TODO Perhaps generalise to any B?
+ _Fincluded_ : {A : Set} (f g : A -> PS X) -> Set  -- TODO Perhaps generalise from X to any B?
  f Fincluded g = forall {a} -> (f a  included  g a)
 
  equalProp : (a : Nat -> X) -> (x : X) ->
@@ -283,23 +283,15 @@ TODO: check that this works out properly.
 We can show that increasing sequences which are bounded from above are
 convergent.
 
-\begin{code}
- module Convergent (a : Nat -> X) {dummy : Real} (nonEmpty : dummy elemOf (ubs (Drop 0 a))) where
-  s : Real
-  s = sup (Drop 0 a)
-
-  postulate choice : PS X -> X
-            closedInterval : X -> X -> PS X
-
-  N : RPos -> Nat
-  N eps = n  where  (Drop n a) included (V s eps)
-\end{code}
-% N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}   -- TODO: type error
+N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}   -- TODO: type error
 
 What we really need is to search through the sequence |a| for an |n|
 from which onwards all elements are in |V s eps|. If we have already
-converted the sequence into just a set (using |Drop|), this search
-does not work. Let'd define a variant of |Drop| called |drop|:
+converted the sequence into just a set (using |Drop|), this search is
+not effectively implementable. We can get around it by postulating
+|smallest| which (non-constgructively) finds the smallest natural
+number satisfying a predicate. But it would probably be better to use
+a variant of |Drop| called |drop|:
 
 \begin{code}
   drop : Nat -> (Nat -> X) -> (Nat -> X)
@@ -307,6 +299,23 @@ does not work. Let'd define a variant of |Drop| called |drop|:
 \end{code}
 
 \begin{code}
+ module Convergent (a : Nat -> X) {dummy : Real} (nonEmpty : dummy elemOf (ubs (Drop 0 a))) where
+  s : Real
+  s = sup (Drop 0 a)
+
+  postulate smallest : (Nat -> Set) -> Nat
+
+  N : RPos -> Nat
+  N eps = smallest (\ n -> (Drop n a) included (V s eps))
+\end{code}
+
+As soon as |N| is defined, the proof steps below could be used.
+
+TODO: code up at least some of the steps.
+
+\begin{code}
+  postulate closedInterval : X -> X -> PS X
+
   module _ (eps : RPos) where
    step1 = Drop (N eps) a
    -- included {- |a| increasing -}
