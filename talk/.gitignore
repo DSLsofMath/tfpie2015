@@ -1,0 +1,15 @@
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pag
+*.ptb
+*.nav
+*.snm
+*.toc
+tfpie2015slides.tex
+tfpie2015slides.pdf

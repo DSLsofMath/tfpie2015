@@ -1,3 +1,9 @@
+2015-05-27: Planning meeting
+
++ Outline done
++ We'll use beamer (to enable easy reuse of material from the paper)
++ started filling in the contents
+
 2015-05-25: Preparing for the presentation next week
 
 Perhaps use reveal.js or S5 instead of the usual beamer
