@@ -282,13 +282,13 @@ Not working code, rather working understanding of concepts
 \onslide<3>
 \textbf{Deep embedding}:
 
-> (+)  :  ComplexSyntax -> ComplexSyntax -> ComplexSyntax
+> (+)  :  Complex -> Complex -> Complex
 > (+) = Plus
 >
-> data ComplexSyntax  =  C (Real, Real)
->                     |  Plus   ComplexSyntax  ComplexSyntax
->                     |  Times  ComplexSyntax  ComplexSyntax
->                     |  ...
+> data Complex  =  C (Real, Real)
+>               |  Plus   Complex  Complex
+>               |  Times  Complex  Complex
+>               |  ...
 
 \end{overprint}
 \end{frame}
@@ -315,7 +315,7 @@ Not working code, rather working understanding of concepts
 
 \end{myquote}
 
-\hfill (\cite{adams2010calculus}, page 4):
+\hfill (\cite{adams2010calculus}, page 4)
 
 \end{frame}
 
@@ -326,13 +326,13 @@ Not working code, rather working understanding of concepts
 
 Specification (not implementation)
 
-> min    :  PS X -> X
+> min    :  PS Real -> Real
 > min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
 Example consequence:
 
 \begin{quote}
-  If |x elemOf X| and |x < min A|, then |x notElemOf A|.
+  If |x < min A|, then |x notElemOf A|.
 \end{quote}
 \end{frame}
 
@@ -341,9 +341,9 @@ Example consequence:
 \begin{frame}
 \frametitle{Upper bounds}
 
-> ubs    :  PS X -> PS X
-> ubs A  =  { x | x elemOf X, x upper bound of A }
->        =  { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
+> ubs    :  PS Real -> PS Real
+> ubs A  =  { x | x elemOf Real, x upper bound of A }
+>        =  { x | x elemOf Real, (Forall (a elemOf A) (a <= x)) }
 
 The completeness axiom can be stated as
 
@@ -403,7 +403,7 @@ and we have that |sup = min . ubs|.
 
 \begin{itemize}
 \item make functions and types explicit: |Re : Complex -> Real|, |min
-  : PS X -> X|
+  : PS Real -> Real|
 
 \item use types as carriers of semantic information, not just variable
   names
@@ -433,13 +433,12 @@ Partial implementation in Agda:
   \item |ComplexSyntax|
   \item |choice| function
   \end{itemize}
-\item subsets and coertions
+\item subsets and coercions
   \begin{itemize}
-  \item |RPos|
-  \item |X| (``arbitrary subset of |Real| or |CC|''), but closure
+  \item |eps : RPos|, different type from |RPosz| and |Real| and |Complex|
+  \item Other subsets of |Real| or |CC| are common, but closure
     properties unclear
-  \item what is the type of |abs|?  Can the result be used with
-    elements of |X|?
+  \item what is the type of |abs|? (|CC -> RPosz|?)
   \end{itemize}
 \end{itemize}
 \end{frame}
