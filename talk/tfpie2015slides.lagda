@@ -60,7 +60,7 @@ learning and applying classical mathematics (mainly real and complex
 analysis)
 
 Main idea is to encourage the students to approach
-mathematical domains from a functional programming perspective
+mathematical domains from a functional programming perspective (similar to \cite{wells1995communicating}).
 \vfill
 \end{frame}
 
@@ -299,7 +299,7 @@ Not working code, rather working understanding of concepts
 \section{Proofs}
 
 \begin{frame}
-\frametitle{Completness property of |Real|}
+\frametitle{Completeness property of |Real|}
 \begin{myquote}
 
     The \emph{completeness} property of the real number system is more
@@ -359,41 +359,77 @@ and we have that |sup = min . ubs|.
 %% -------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{A proof}
-\vfill
-
+\frametitle{A proof: Completeness implications step-by-step}
+%\setlength{\parskip}{0cm}
 \def\commentbegin{\quad\{\ }
 \def\commentend{\}}
+\newcommand{\gap}{\pause\vspace{-0.8cm}}
 \begin{spec}
    eps > 0
 
 => {- arithmetic -}
 
    s - eps < s
-
+\end{spec}
+\gap
+\begin{spec}
 => {- |s = min (ubs A)|, property of |min| -}
 
    s - eps notElemOf ubs A
-
+\end{spec}
+\gap
+\begin{spec}
 => {- set membership -}
 
    not (Forall (a elemOf A) (a <= s - eps))
-
+\end{spec}
+\gap
+\begin{spec}
 => {- quantifier negation -}
 
    (Exists (a elemOf A) (s - eps < a))
-
+\end{spec}
+\gap
+\begin{spec}
 => {- definition of upper bound -}
 
    (Exists (a elemOf A) (s - eps < a <= s))
-
+\end{spec}
+\gap
+\begin{spec}
 => {- absolute value -}
 
    (Exists (a elemOf A) ((abs(a - s)) < eps))
 \end{spec}
-
-\vfill
 \end{frame}
+
+%% -------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{Completeness: proof interpretation (``no gaps'')}
+
+To sum up the proof says the the completeness axiom implies:
+\begin{spec}
+proof : (eps > 0)  =>  (Exists (a elemOf A) ((abs(a - s)) < eps))
+\end{spec}
+\pause
+\textbf{More detail:}
+
+Assume a non-empty |A : PS Real| with an upper bound |u elemOf ubs A|.
+
+Then |s = sup A = min (ubs A)| exists.
+
+But |s| need not be in |A| --- could there be a ``gap''?
+
+\pause
+
+No, |proof| will give us an |a elemOf A| arbitrarily close to the
+supremum.
+
+So, there is no ``gap''.
+
+\end{frame}
+
 
 
 %% -------------------------------------------------------------------
@@ -435,10 +471,10 @@ Partial implementation in Agda:
   \end{itemize}
 \item subsets and coercions
   \begin{itemize}
-  \item |eps : RPos|, different type from |RPosz| and |Real| and |Complex|
-  \item Other subsets of |Real| or |CC| are common, but closure
-    properties unclear
+  \item |eps : RPos|, different type from |RPosz| and |Real| and |CC|
   \item what is the type of |abs|? (|CC -> RPosz|?)
+  \item other subsets of |Real| or |CC| are common, but closure
+    properties unclear
   \end{itemize}
 \end{itemize}
 \end{frame}
