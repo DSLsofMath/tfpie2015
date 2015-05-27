@@ -2,7 +2,11 @@
 
 \documentclass[colorhighlight,coloremph]{beamer}
 \usetheme{boxes}
-\usetheme{Warsaw}
+\usetheme{Madrid} % Lots of space (good), but no section headings
+%\usetheme{Hannover}% Sections heading but too much wasted space
+%\usetheme{Dresden}
+%\usetheme{Warsaw}
+\usepackage{natbib}
 \usepackage{color,soul}
 \usepackage{graphicx}
 \usepackage{hyperref} %% for run: links
@@ -22,7 +26,7 @@
   {\end{exampleblock}}
 
 \addheadbox{section}{\quad \tiny TFPIE, 2015-06-02}
-\title{DSLM: Presenting Mathematical Analysis Using Functional Programming}
+\title[DSLsofMath]{DSLM: Presenting Mathematical Analysis Using Functional Programming}
 
 \author[C. Ionescu and P. Jansson]
        {Cezar Ionescu \hspace{2.5cm} Patrik Jansson\\
@@ -33,17 +37,24 @@
 \begin{document}
 \setbeamertemplate{navigation symbols}{}
 \date{}
-\frame{\maketitle}
+\begin{frame}
+
+\maketitle
+
+Paper + talk: \url{https://github.com/DSLsofMath/tfpie2015}
+
+\end{frame}
 
 
 
 %% -------------------------------------------------------------------
+\section{Intro}
 
 \begin{frame}
 \frametitle{Background}
 \vfill
 \emph{Domain-Specific Languages of Mathematics}
-\cite{dslmcourseplan}: course currently  developed at
+\citep{dslmcourseplan}: course currently  developed at
 Chalmers in response to difficulties faced by third-year students in
 learning and applying classical mathematics (mainly real and complex
 analysis)
@@ -79,6 +90,7 @@ Not working code, rather working understanding of concepts
 
 %% -------------------------------------------------------------------
 
+\section{Types}
 \begin{frame}
 \frametitle{Complex numbers}
 \begin{myquote}
@@ -284,6 +296,7 @@ Not working code, rather working understanding of concepts
 
 
 %% -------------------------------------------------------------------
+\section{Proofs}
 
 \begin{frame}
 \frametitle{Completness property of |Real|}
@@ -432,6 +445,16 @@ Partial implementation in Agda:
 \end{frame}
 
 %% -------------------------------------------------------------------
+
+\appendix
+\section{Bibliography}
+\begin{frame}
+\frametitle{Bibliography}
+
+\bibliographystyle{abbrvnat}
+\bibliography{../lagda/dslm}
+\end{frame}
+
 
 \end{document}
 
