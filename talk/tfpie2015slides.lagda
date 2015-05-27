@@ -286,14 +286,14 @@ Not working code, rather working understanding of concepts
 %% -------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Completness property}
+\frametitle{Completness property of |Real|}
 \begin{myquote}
 
     The \emph{completeness} property of the real number system is more
     subtle and difficult to understand. One way to state it is as
     follows: if |A| is any set of real numbers having at least one
     number in it, and if there exists a real number |y| with the
-    property that |x < y| for every |x elemOf A| (such a number |y| is
+    property that |x <= y| for every |x elemOf A| (such a number |y| is
     called an \textbf{upper bound} for |A|), then there exists a
     smallest such number, called the \textbf{least upper bound} or
     \textbf{supremum} of |A|, and denoted |sup(A)|. Roughly speaking,
