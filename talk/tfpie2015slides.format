@@ -2,6 +2,7 @@
 %format Nat                     =  "\mathbb{N}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"
+%format PS+                     =  PS "^+"
 %format PS                      =  "\mathcal{P}"
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
@@ -34,4 +35,3 @@
 %format Sigma                   =  "\Sigma"
 %format @                       =  "\!@\!"
 %format where                   =  "\ \Keyword{where}\ "
-

@@ -43,6 +43,13 @@
 
 Paper + talk: \url{https://github.com/DSLsofMath/tfpie2015}
 
+\begin{exampleblock}{Style example}
+\begin{spec}
+Forall (eps elemOf Real) ((eps > 0)  =>  (Exists (a elemOf A) ((abs(a - sup A)) < eps)))
+\end{spec}
+\end{exampleblock}
+
+
 \end{frame}
 
 
@@ -249,16 +256,19 @@ Not working code, rather working understanding of concepts
 
 \begin{frame}
 \frametitle{Shallow vs. deep embeddings}
+%{
+%format == = "{=}"
 \begin{myquote}
   \textbf{The sum and difference of complex numbers}
 
-  If |w = a + bi| and |z = x + yi|, where |a|, |b|, |x|, and |y| are real numbers,
+  If |w == a + bi| and |z == x + yi|, where |a|, |b|, |x|, and |y| are real numbers,
   then
 
 > w  +  z  =  (a + x)  +  (b + y)i
 >
 > w  -  z  =  (a - x)  +  (b - y)i
 \end{myquote}
+%}
 \begin{overprint}
 \onslide<1>
 \textbf{Shallow embedding}:
@@ -274,10 +284,11 @@ Not working code, rather working understanding of concepts
 > (+)  :  Complex -> Complex -> Complex
 > (+) = Plus
 >
-> data ComplexSyntax  =  C (Real, Real)
->                     |  Plus   Complex  Complex
->                     |  Times  Complex  Complex
->                     |  ...
+> data ComplexDeep  =  i
+>                   |  ToComplex Real
+>                   |  Plus   Complex  Complex
+>                   |  Times  Complex  Complex
+>                   |  ...
 
 \onslide<3>
 \textbf{Deep embedding}:
@@ -285,7 +296,8 @@ Not working code, rather working understanding of concepts
 > (+)  :  Complex -> Complex -> Complex
 > (+) = Plus
 >
-> data Complex  =  C (Real, Real)
+> data Complex  =  i
+>               |  ToComplex Real
 >               |  Plus   Complex  Complex
 >               |  Times  Complex  Complex
 >               |  ...
@@ -300,6 +312,9 @@ Not working code, rather working understanding of concepts
 
 \begin{frame}
 \frametitle{Completeness property of |Real|}
+
+Next: start from a more ``mathematical'' quote from the book:
+
 \begin{myquote}
 
     The \emph{completeness} property of the real number system is more
@@ -322,17 +337,17 @@ Not working code, rather working understanding of concepts
 %% -------------------------------------------------------------------
 
 \begin{frame}
-\frametitle{Min}
+\frametitle{Min (``smallest such number'')}
 
 Specification (not implementation)
 
-> min    :  PS Real -> Real
+> min    :  PS+ Real -> Real
 > min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
 Example consequence:
 
 \begin{quote}
-  If |x < min A|, then |x notElemOf A|.
+  If |y < min A|, then |y notElemOf A|.
 \end{quote}
 \end{frame}
 
@@ -348,13 +363,37 @@ Example consequence:
 The completeness axiom can be stated as
 
 \begin{quote}
-  If |ubs A noteq empty| then |min (ubs A)| is defined.
+  Assume an |A : PS+ Real| with an upper bound |u elemOf ubs A|.
+
+  Then |s = sup A = min (ubs A)| exists.
 \end{quote}
 
 \noindent
-and we have that |sup = min . ubs|.
+where
+
+> sup : PS Real -> Real
+> sup = min . ubs
 
 \end{frame}
+
+\begin{frame}
+\frametitle{Completeness and ``gaps''}
+
+\begin{quote}
+Assume an |A : PS+ Real| with an upper bound |u elemOf ubs A|.
+
+Then |s = sup A = min (ubs A)| exists.
+\end{quote}
+
+But |s| need not be in |A| --- could there be a ``gap''?
+
+\pause
+
+With ``gap'' = ``an |eps|-neighbourhood between |A| and |s|'' we can
+can show there is no ``gap''.
+
+\end{frame}
+
 
 %% -------------------------------------------------------------------
 
@@ -408,9 +447,9 @@ and we have that |sup = min . ubs|.
 \begin{frame}
 \frametitle{Completeness: proof interpretation (``no gaps'')}
 
-To sum up the proof says the the completeness axiom implies:
+To sum up the proof says that the completeness axiom implies:
 \begin{spec}
-proof : (eps > 0)  =>  (Exists (a elemOf A) ((abs(a - s)) < eps))
+proof : (Forall (eps elemOf Real) ((eps > 0)  =>  (Exists (a elemOf A) ((abs(a - sup A)) < eps))))
 \end{spec}
 \pause
 \textbf{More detail:}
@@ -419,7 +458,7 @@ Assume a non-empty |A : PS Real| with an upper bound |u elemOf ubs A|.
 
 Then |s = sup A = min (ubs A)| exists.
 
-But |s| need not be in |A| --- could there be a ``gap''?
+We know that |s| need not be in |A| --- could there be a ``gap''?
 
 \pause
 
@@ -466,7 +505,7 @@ Partial implementation in Agda:
 \begin{itemize}
 \item errors caught by formalization (but no ``royal road'')
   \begin{itemize}
-  \item |ComplexSyntax|
+  \item |ComplexDeep|
   \item |choice| function
   \end{itemize}
 \item subsets and coercions
