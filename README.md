@@ -1,5 +1,9 @@
 # Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 
+2015-06-02: [TFPIE workshop programme](https://wiki.science.ru.nl/tfpie/TFPIE2015#Program)
+
+2015-06-01: [Presentation slides](http://www.cse.chalmers.se/~patrikj/talks/DSLsofMath_TFPIE15_Jansson_Ionescu.pdf)
+
 2015-05-27: Started preparing the talk in [talk/](talk/).
 
 2015-05-09: Started type-checking the examples in the paper in [src/](src/).
