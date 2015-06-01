@@ -49,7 +49,6 @@ Forall (eps elemOf Real) ((eps > 0)  =>  (Exists (a elemOf A) ((abs(a - sup A)) 
 \end{spec}
 \end{exampleblock}
 
-
 \end{frame}
 
 
@@ -60,15 +59,23 @@ Forall (eps elemOf Real) ((eps > 0)  =>  (Exists (a elemOf A) ((abs(a - sup A)) 
 \begin{frame}
 \frametitle{Background}
 \vfill
-\emph{Domain-Specific Languages of Mathematics}
-\citep{dslmcourseplan}: course currently  developed at
-Chalmers in response to difficulties faced by third-year students in
-learning and applying classical mathematics (mainly real and complex
-analysis)
 
-Main idea is to encourage the students to approach
-mathematical domains from a functional programming perspective (similar to \cite{wells1995communicating}).
+\emph{Domain-Specific Languages of Mathematics}
+\citep{dslmcourseplan}: is a course currently developed at Chalmers in
+response to difficulties faced by third-year students in learning and
+applying classical mathematics (mainly real and complex analysis)
+
+Main idea: encourage students to approach mathematical domains from a
+functional programming perspective (similar to
+\cite{wells1995communicating}).
+
 \vfill
+
+\begin{exampleblock}{}
+``... ideally, the course would improve the mathematical education of computer scientists and the computer science education of mathematicians.''
+\end{exampleblock}
+
+
 \end{frame}
 
 
@@ -138,9 +145,9 @@ Not working code, rather working understanding of concepts
 > data Complex  =  Plus1 Real Real I
 >               |  Plus2 Real I Real
 
-> show                :  Complex -> String
-> show (Plus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
-> show (Plus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+> show :  Complex     ->  String
+> show (Plus1 x y i)  =   show x ++ " + " ++ show y ++ "i"
+> show (Plus2 x i y)  =   show x ++ " + " ++ "i" ++ show y
 
 \end{frame}
 
@@ -243,11 +250,11 @@ Not working code, rather working understanding of concepts
 
 \end{myquote}
 
-> Re : Complex -> Real
-> Re z @ (C (x, y))  =  x
+> Re : Complex       ->  Real
+> Re z @ (C (x, y))  =   x
 
-> Im : Complex -> Real
-> Im z @ (C (x, y))  =  y
+> Im : Complex       ->  Real
+> Im z @ (C (x, y))  =   y
 
 \end{frame}
 
@@ -344,7 +351,7 @@ Specification (not implementation)
 > min    :  PS+ Real -> Real
 > min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
-Example consequence:
+Example consequence (which will be used later):
 
 \begin{quote}
   If |y < min A|, then |y notElemOf A|.
@@ -371,7 +378,7 @@ The completeness axiom can be stated as
 \noindent
 where
 
-> sup : PS Real -> Real
+> sup : PS+ Real -> Real
 > sup = min . ubs
 
 \end{frame}
@@ -440,6 +447,11 @@ can show there is no ``gap''.
 
    (Exists (a elemOf A) ((abs(a - s)) < eps))
 \end{spec}
+% More details:
+%   (Exists (a elemOf A) (- eps < a - s <= 0))
+%   (Exists (a elemOf A) (- eps < a - s < eps))
+%   (Exists (a elemOf A) (abs (a - s) < eps))
+
 \end{frame}
 
 %% -------------------------------------------------------------------
@@ -478,7 +490,7 @@ So, there is no ``gap''.
 
 \begin{itemize}
 \item make functions and types explicit: |Re : Complex -> Real|, |min
-  : PS Real -> Real|
+  : PS+ Real -> Real|
 
 \item use types as carriers of semantic information, not just variable
   names
