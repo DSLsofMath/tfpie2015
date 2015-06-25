@@ -334,7 +334,7 @@ return the smallest and the largest element of a given (non-empty)
 list.  It is easy enough to specify set versions of these functions,
 for example:
 
-> min    :  PS X -> X
+> min    :  PS+ Real -> Real
 > min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
 |min| on sets enjoys similar properties to its list counterpart, and
@@ -343,7 +343,7 @@ simpler (no duplicates, no ordering of elements).  For
 example, we have
 
 \begin{quote}
-  If |x elemOf X| and |x < min A|, then |x notElemOf A|.
+  If |y < min A|, then |y notElemOf A|.
 \end{quote}
 
 Exploring the relationship between the ``new'' function |sup| and the
@@ -353,19 +353,26 @@ A|: if the latter is defined, then so is the former, and they are
 equal.  But |sup A| is also the smallest element of a set, which
 suggests a connection to |min|.  To see this, introduce the function
 
-> ubs    :  PS X -> PS X
-> ubs A  =  { x | x elemOf X, x upper bound of A }
->        =  { x | x elemOf X, (Forall (a elemOf A) (a <= x)) }
+> ubs    :  PS Real -> PS Real
+> ubs A  =  { x | x elemOf Real, x upper bound of A }
+>        =  { x | x elemOf Real, (Forall (a elemOf A) (a <= x)) }
 
 which returns the set of upper bounds of |A|.  The completeness axiom
 can be stated as
 
 \begin{quote}
-  If |ubs A noteq empty| then |min (ubs A)| is defined.
+  Assume an |A : PS+ Real| with an upper bound |u elemOf ubs A|.
+
+  Then |s = sup A = min (ubs A)| exists.
 \end{quote}
 
 \noindent
-and we have that |sup = min . ubs|.
+where
+
+> sup : PS+ Real -> Real
+> sup = min . ubs
+
+%TODO incorporate the expanded discussion about Completeness and "gaps" from ../talk/tfpie2015slides.lagda around line 380 or so.
 
 The explicit introduction of functions such as |ubs| allows us to give
 calculational proofs in the style introduced by Wim Feijen and used in
@@ -738,7 +745,7 @@ stand for complex numbers is to introduce a substitute for \emph{pattern
   |Re (z)|. We call |y| the \textbf{imaginary part} of |z| and denote it |Im
   (z)|:
 
-> Re(z)  =  Re (x+yi)    =  x
+> Re(z)  =  Re (x + yi)  =  x
 > Im(z)  =  Im (x + yi)  =  y
 
 \end{quote}
@@ -746,11 +753,11 @@ stand for complex numbers is to introduce a substitute for \emph{pattern
 % (z@C (x, y)) is not correct Haskell syntax: it should be z@(C (x, t)) to parse.
 This is rather similar to Haskell's \emph{as-patterns}:
 
-> Re : Complex -> Real
-> Re z @ (C (x, y))  =  x
+> Re : Complex       ->  Real
+> Re z @ (C (x, y))  =   x
 
-> Im : Complex -> Real
-> Im z @ (C (x, y))  =  y
+> Im : Complex       ->  Real
+> Im z @ (C (x, y))  =   y
 
 \noindent
 a potential source of confusion being that the symbol introduced by
@@ -781,11 +788,11 @@ example:
 > (C (a, b)) + (C (x, y))  =  C ((a + x), (b + y))
 
 \noindent
-or we can extend the datatype of Complex numbers with additional
-constructors associated to the algebraic operations to arrive at a
+or we can build a datatype of Complex numbers from the associated to the algebraic operations to arrive at a
 \emph{deep embedding}:
 
-> data ComplexSyntax  =  C (Real, Real)
+> data ComplexSyntax  =  i
+>                     |  ToComplex Real
 >                     |  Plus   ComplexSyntax  ComplexSyntax
 >                     |  Times  ComplexSyntax  ComplexSyntax
 >                     |  ...

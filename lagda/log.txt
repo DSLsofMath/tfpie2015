@@ -1,0 +1,11 @@
+2015-06-25: Working through the paper to incorporate lessons learnt
+  during talk preparartion.
+
+Done
+* check updates to formatting
+* check updates to the code in general
+
+TODO:
+* port the updates to the equational reasoning proof
+* incorporate the expanded discussion about Completeness and "gaps"
+* Check the partial Agda-formalization (and mention it)

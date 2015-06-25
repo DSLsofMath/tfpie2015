@@ -3,6 +3,7 @@
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"
 %format PS                      =  "\mathcal{P}"
+%format PS+                     =  PS "^+"
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
 %format an                      =  "a_n"
@@ -34,4 +35,3 @@
 %format Sigma                   =  "\Sigma"
 %format @                       =  "\!@\!"
 %format where                   =  "\ \Keyword{where}\ "
-
