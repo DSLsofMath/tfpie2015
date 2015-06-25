@@ -1,5 +1,6 @@
 %format Real                    =  "\mathbb{R}"
 %format Nat                     =  "\mathbb{N}"
+%format Nat+                    =  "\mathbb{N}^+"
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"
 %format PS                      =  "\mathcal{P}"

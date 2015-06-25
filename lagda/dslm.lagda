@@ -323,7 +323,7 @@ The functional programmer trying to make sense of this ``subtle and
 difficult to understand'' property will start by making explicit the
 functions involved:
 
-> sup : PS Real -> Real
+> sup : PS+ Real -> Real
 
 |sup| is defined only for those subsets of |Real| which are bounded
 from above; for these it returns the least upper bound.
@@ -371,6 +371,15 @@ where
 
 > sup : PS+ Real -> Real
 > sup = min . ubs
+
+So, now we know that for any bounded set |A| we have a supremum |s :
+Real|, but |s| need not be in |A| --- could there be a ``gap''?
+%
+(An example set could be |{7 - 1/n || n elemOf Nat+}|.)
+%
+If we by ``gap'' mean ``an |eps|-neighbourhood between |A| and |s|''
+we can prove there is no ``gap''.
+
 
 %TODO incorporate the expanded discussion about Completeness and "gaps" from ../talk/tfpie2015slides.lagda around line 380 or so.
 

@@ -4,8 +4,8 @@
 Done
 * check updates to formatting
 * check updates to the code in general
+* incorporate the expanded discussion about Completeness and "gaps"
 
 TODO:
-* port the updates to the equational reasoning proof
-* incorporate the expanded discussion about Completeness and "gaps"
+* port the updates (if any) to the equational reasoning proof
 * Check the partial Agda-formalization (and mention it)

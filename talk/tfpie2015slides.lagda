@@ -397,7 +397,7 @@ But |s| need not be in |A| --- could there be a ``gap''?
 \pause
 
 With ``gap'' = ``an |eps|-neighbourhood between |A| and |s|'' we can
-can show there is no ``gap''.
+show there is no ``gap''.
 
 \end{frame}
 
