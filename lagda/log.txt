@@ -1,3 +1,9 @@
+2015-07-04: Looking through the commits to the partial
+  Agda-formalization to see what may need to be "back-ported" to the
+  paper.
+
+  https://github.com/DSLsofMath/tfpie2015/commits/master/src/dslm.lagda
+
 2015-06-25: Working through the paper to incorporate lessons learnt
   during talk preparartion.
 

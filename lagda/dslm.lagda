@@ -1,5 +1,5 @@
 %-*-Latex-*-
-\documentclass[adraft]{../eptcsstyle/eptcs}
+\documentclass[submission]{../eptcsstyle/eptcs}
 
 % current annoyance: this will be fixed
 % by the next update of agda.fmt
@@ -22,6 +22,7 @@ Patrik Jansson
 
 \def\titlerunning{DSLs of Mathematics}
 \def\authorrunning{C. Ionescu, P. Jansson}
+\newcommand{\event}{4th International Workshop on Trends in Functional Programming in Education, TFPIE 2015}
 
 \DeclareMathOperator{\Drop}{Drop}
 
@@ -243,7 +244,7 @@ interpretations:
   exists) of the sequence of partial sums:
 
 >  Sigma    :  (Nat -> X) -> X
->  Sigma a  =  lim s where s n = sum (map a [0 .. n])
+>  Sigma a  =  lim s  where  s n = sum (map a [0 .. n])
 
 For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
 in undergraduate analysis, but in a classroom setting this could also
@@ -253,8 +254,8 @@ be an opportunity to explain type classes such as |Num|.
   this case, the semantics is that of a function, whose values are
   defined in terms of the evaluation of a series:
 
->  Powers      :  (Nat -> X) -> X -> X
->  Powers a x  =  Sigma f where f n = (a n) * (pow x n)
+>  Powers      :  (Nat -> X) -> (X -> X)
+>  Powers a x  =  Sigma f  where  f n = (a n) * (pow x n)
 
 Power series are perhaps \emph{the} fundamental concept of
 undergraduate analysis and its applications: they lead to elementary
@@ -285,9 +286,9 @@ the Laplace transformation could very well return a function of the
 ``old'' variable |t|.  We can understand that the name of the variable
 is used to carry semantic meaning about its type (this is also common
 in functional programming, for example with the conventional use of
-|as| to denote a list of |a|s), but we prefer to use type synonyms and
-give an explicit typing to |Lap| which makes the transformation clear,
-for example:
+|as| to denote a list of |a|s), but we prefer to use type declarations
+and give an explicit typing to |Lap| which makes the transformation
+clear, for example:
 
 > newtype T  =  T Real
 > newtype S  =  S CC
@@ -335,7 +336,7 @@ list.  It is easy enough to specify set versions of these functions,
 for example:
 
 > min    :  PS+ Real -> Real
-> min A  =  x ifandonlyif x elemOf A && ((Forall (a elemOf A) (x <= a)))
+> min A  =  x  ifandonlyif  x elemOf A && ((Forall (a elemOf A) (x <= a)))
 
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is

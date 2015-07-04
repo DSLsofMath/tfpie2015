@@ -36,7 +36,16 @@ x notElemOf X = not (x elemOf X)
 
 _&&_ : Set -> Set -> Set
 _&&_ = _×_
+\end{code}
 
+|X| with a |NumDict X| is a generalization from "Real or Complex".
+
+It is not clear what is the best way of handling "subtyping" between
+subsets of Real (or Complex). In many cases a subset of X (like |Real|
+numbers between 0 and 1, or |RPos|) is used which is not closed under
+almost any of the operations.
+
+\begin{code}
 record NumDict (X : Set) : Set1 where
   field
     zer  : X
@@ -54,25 +63,7 @@ record NumDict (X : Set) : Set1 where
 
     showR : X -> String
     _=R=_ : X -> X -> Set
-
-  -- It is not clear what is the best way of handling "subtyping"
-  -- between subsets of Real.  In many cases an X is used which is not
-  -- closed under several operations. Then the type signatures are
-  -- intended mostly to limit quantifications, not to actually make
-  -- _+_, say, partial. One way is to require a superset (Super) into
-  -- which all of X can be embedded.
-
-  --    Super : Set
-  --    embed : X -> Super
-
-  -- Super should be closed under the operations (and will often be
-  -- Real or Complex). In fact, the operations should all be on Super,
-  -- not on X. But then the purpose of X is not all that clear. If we
-  -- use this whole NumDict just to abstract from the superset (and
-  -- all operations are defined on the superset) we can ignore the
-  -- earlier meaning of NumDict X and just use it for Real and Complex
-  -- (and perhaps some more Ring or Field). But then we will need to
-  -- keep track of the "current subset" in some other way.
+  -- end of fields, start of derived operations
 
   sum : List X → X
   sum = foldr _+_ zer
@@ -81,8 +72,8 @@ record NumDict (X : Set) : Set1 where
   product = foldr _*_ one
 
   pow : X -> Nat -> X
-  pow x zero = one
-  pow x (suc n) = x * pow x n
+  pow x zero     = one
+  pow x (suc n)  = x * pow x n
 
   minSpec : X -> PS X -> Set
   minSpec x A = (x elemOf A) && ((forall {a} -> (a elemOf A) -> (x <= a)))
@@ -102,7 +93,8 @@ module Inner (X : Set) (numDict : NumDict X) where
  Seq X = Nat -> X
 
  postulate lim : (Nat -> X) -> X
- -- lim = {!!}
+  -- The paper does not try to _define_ lim, it only provides a type
+  -- and some use cases.
 
  Sigma    :  (Nat -> X) -> X
  Sigma a  =  lim s
@@ -294,8 +286,8 @@ number satisfying a predicate. But it would probably be better to use
 a variant of |Drop| called |drop|:
 
 \begin{code}
-  drop : Nat -> (Nat -> X) -> (Nat -> X)
-  drop n a = \(i : Nat) ->  a (n +N i)
+ drop : Nat -> (Nat -> X) -> (Nat -> X)
+ drop n a = \(i : Nat) ->  a (n +N i)
 \end{code}
 
 \begin{code}
