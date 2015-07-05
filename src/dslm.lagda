@@ -151,11 +151,11 @@ If |x elemOf X| and |x < min A|, then |x notElemOf A|.
  ubs A  = mkSet (\ x -> (x elemOf setX) && (x upperBoundOf A))
 \end{code}
 
-Note the difference between |(X : Set)| and |(setX : PS X)| which can
-be used as the second argument to |_elemOf_|.
+Note the difference between the type |(X : Set)| and the set |(setX :
+PS X)| which can be used as the second argument to |_elemOf_|.
 
 \begin{quote}
-  If |ubs A noteq empty| then |min (ubs A)| is defined.
+  If |u elemOf ubs A| then |min (ubs A)| is defined.
 \end{quote}
 
 \noindent
@@ -163,7 +163,7 @@ and we have that
 
 TODO:
 \begin{code}
- sup : PS X -> X -- TODO: Real or X?
+ sup : PS+ X -> X
  -- sup is defined for all non-empty sets bounded from above
  -- TODO: what is a convenient encoding of partial functions in Agda?
  sup = min ∘ ubs
@@ -203,9 +203,10 @@ TODO: check the equality proof
  V x eps = mkSet (\x' -> (x' elemOf setX) && ((abs(x' - x)) < eps))
 \end{code}
 
-There was a type mismatch here: |eps| is an |RPos| (or |Real|) but we
-had only assumed numeric operations on |X|. To resolve it we made |X =
-Real| in this part of the development.
+(In the original draft from the Spring of 2014 there was a type
+mismatch here: |eps| is an |RPos| (or |Real|) but we had only assumed
+numeric operations on |X|. To resolve it we made |X = Real| in this
+part of the development.)
 
 \begin{code}
  Drop : Nat -> (Nat -> X) -> PS X

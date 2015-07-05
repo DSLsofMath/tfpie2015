@@ -336,7 +336,7 @@ list.  It is easy enough to specify set versions of these functions,
 for example:
 
 > min    :  PS+ Real -> Real
-> min A  =  x  ifandonlyif  x elemOf A && ((Forall (a elemOf A) (x <= a)))
+> min A  =  x  ifandonlyif  (x elemOf A) && ((Forall (a elemOf A) (x <= a)))
 
 |min| on sets enjoys similar properties to its list counterpart, and
 some are easier to prove in this context, since the structure is
@@ -376,7 +376,7 @@ where
 So, now we know that for any bounded set |A| we have a supremum |s :
 Real|, but |s| need not be in |A| --- could there be a ``gap''?
 %
-(An example set could be |{7 - 1/n || n elemOf Nat+}|.)
+(An example set could be |A = {7 - 1/n || n elemOf Nat+}| with |s = sup A = 7 notElemOf A|.)
 %
 If we by ``gap'' mean ``an |eps|-neighbourhood between |A| and |s|''
 we can prove there is no ``gap''.
@@ -395,13 +395,13 @@ example the algebra of programming library implemented in Agda
 \def\commentend{\}}
 
 \begin{spec}
-   eps > 0
+   0 < eps
 
 => {- arithmetic -}
 
    s - eps < s
 
-=> {- |s = min (ubs A)|, property of |min| -}
+=> {- |s = min (ubs A)|, property of |min| from above -}
 
    s - eps notElemOf ubs A
 
@@ -452,7 +452,9 @@ craft here, such as
   some particular value |an|;
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
+
 >  V x eps = { x' | x' elemOf X, (abs(x' - x)) < eps }
+
 \end{itemize}
 
 These are all just changes in the notation of elements already present
@@ -523,16 +525,20 @@ correct order.  As this example shows, sometimes the price of
 eliminating quantifiers can be too high.
 
 We can show that increasing sequences which are bounded from above are
-convergent.  Let |a| be a sequence bounded from above (i.e., |ubs
-(Drop 0 a) noteq empty|) and let |s = sup (Drop 0 a)|.  Then, we know
-from our previous example that |Drop 0 a intersect V s eps noteq
+convergent.  Let |a| be a sequence bounded from above (i.e., with |A =
+Drop 0 a| there is some |u elemOf ubs A|), and let |s = sup A|.  Then,
+we know from our previous example that |A intersect V s eps noteq
 empty| for any |eps|.  Assuming a function |choice : PS X -> X| which
 selects an element from every non-empty set (and is undefined for the
 empty set), we define
 
-> N eps = choice (Drop 0 a intersect V s eps)
+> N eps = choice (A intersect V s eps)
 
-TODO: type error: Drop returs a set of real numbers but N should return a natural.
+TODO: type error: Drop returs a set of real numbers but N should
+return a natural.  (We need a similar function that finds some |n| for
+which |(Drop n a) included (V s eps)|. For this is is a bit backwards
+to work with the sets and it would probably be more practical to work
+with a "symmetric" drop: |Drop : Nat -> (Nat -> X) -> (Nat -> X)|.)
 
 If |a| is increasing, we have
 
