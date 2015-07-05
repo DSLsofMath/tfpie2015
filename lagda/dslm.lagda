@@ -534,11 +534,12 @@ empty set), we define
 
 > N eps = choice (A intersect V s eps)
 
-TODO: type error: Drop returs a set of real numbers but N should
-return a natural.  (We need a similar function that finds some |n| for
-which |(Drop n a) included (V s eps)|. For this is is a bit backwards
-to work with the sets and it would probably be more practical to work
-with a "symmetric" drop: |Drop : Nat -> (Nat -> X) -> (Nat -> X)|.)
+TODO: type error: choice returns a real number but N should return a
+natural (the index of that real number).  (We need a similar function
+that finds some |n| for which |(Drop n a) included (V s eps)|. For
+this is is a bit backwards to work with the sets and it would probably
+be more practical to work with a "symmetric" drop: |Drop : Nat -> (Nat
+-> X) -> (Nat -> X)|.)
 
 If |a| is increasing, we have
 
@@ -546,7 +547,7 @@ If |a| is increasing, we have
   Drop (N eps) a
 included {- |a| increasing -}
   [a (N eps), sup (Drop (N eps) a)]
-= {- |a| increasing |=> Drop n a = Drop 0 a| -}
+= {- |a| increasing |=> sup (Drop n a) = sup (Drop 0 a)| -}
   [a (N eps), s]
 included {- |a (N eps) elemOf V s eps| -}
   V s eps

@@ -22,8 +22,10 @@ to get help from the type-checker in checking mathematical arguments,
 but not at the cost of quite a bit of formal "noise".
 
 \begin{code}
+PS+ = PS  -- To avoid too many subset conversions
+
 postulate
-  _=S=_     : {A : Set} -> PS A -> PS A -> Set
+  _=S=_    : {A : Set} -> PS A -> PS A -> Set
   _elemOf_ : {A : Set} -> A -> PS A -> Set
   mkSet    :              {A : Set} ->             (A -> Set) -> PS A
   mkSetI   : {I : Set} -> {A : Set} -> (I -> A) -> (I -> Set) -> PS A
@@ -157,11 +159,8 @@ PS X)| which can be used as the second argument to |_elemOf_|.
 \begin{quote}
   If |u elemOf ubs A| then |min (ubs A)| is defined.
 \end{quote}
-
 \noindent
 and we have that
-
-TODO:
 \begin{code}
  sup : PS+ X -> X
  -- sup is defined for all non-empty sets bounded from above
@@ -172,7 +171,6 @@ TODO:
 if |s = sup A|:
 
 TODO: check the equality proof
-
 
 \begin{code}
  _<_<=_ = \x y z -> (x < y) && (y <= z)
@@ -287,8 +285,25 @@ number satisfying a predicate. But it would probably be better to use
 a variant of |Drop| called |drop|:
 
 \begin{code}
- drop : Nat -> (Nat -> X) -> (Nat -> X)
- drop n a = \(i : Nat) ->  a (n +N i)
+ module SymmetricDrop where
+  drop : Nat -> (Nat -> X) -> (Nat -> X)
+  drop n a = \(i : Nat) ->  a (n +N i)
+\end{code}
+or equivalently
+\begin{code}
+  drop' : Nat -> (Nat -> X) -> (Nat -> X)
+  drop' n a = a ∘ (_+N_ n)
+
+\end{code}
+
+To connect to the definition of |Drop| we just need the
+``sequence-to-set'' conversion |range|:
+
+\begin{code}
+  postulate   range : (Nat -> X) -> PS X
+
+  Drop : Nat -> (Nat -> X) -> PS X
+  Drop n a = range (drop n a)
 \end{code}
 
 \begin{code}
@@ -313,7 +328,7 @@ TODO: code up at least some of the steps.
    step1 = Drop (N eps) a
    -- included {- |a| increasing -}
    step2 = closedInterval (a (N eps)) (sup (Drop (N eps) a))
-   -- = {- |a| increasing |=> Drop n a = Drop 0 a| -}
+   -- = {- |a| increasing |=> sup (Drop n a) = sup (Drop 0 a)| -}
    step3 = closedInterval (a (N eps)) s
    -- included {- |a (N eps) elemOf V s eps| -}
    step4 =  V s eps
