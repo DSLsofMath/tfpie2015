@@ -99,9 +99,9 @@ module Inner (X : Set) (numDict : NumDict X) where
   -- and some use cases.
 
  Sigma    :  (Nat -> X) -> X
- Sigma a  =  lim s
+ Sigma f  =  lim s
    where  s : Nat -> X
-          s n = sum (map a (enumFromTo 0 n))
+          s n = sum (map f (enumFromTo 0 n))
 
  Powers      :  (Nat -> X) -> X -> X
  Powers a x  =  Sigma f
@@ -208,8 +208,8 @@ part of the development.)
 
 \begin{code}
  Drop : Nat -> (Nat -> X) -> PS X
- Drop n a = mkSetI a ( \(i : Nat) ->   n <=N i)
-              -- { a i | i elemOf Nat, n <=  i}
+ Drop n f = mkSetI f ( \(i : Nat) ->   n <=N i)
+              -- { f i | i elemOf Nat, n <=  i}
 \end{code}
 
 \item anti-monotonous in the first argument
@@ -220,19 +220,19 @@ part of the development.)
    _included_ : PS X -> PS X -> Set  -- TODO move to a record of assumptions (module parameter), or implement in terms of other assumptions
    _intersect_ : PS X -> PS X -> PS X  -- TODO
 
-   antiMonFstDrop : {m n : Nat} -> (a : Nat -> X) ->
-           (m <=N n)  ->  (Drop n a) included (Drop m a)
+   antiMonFstDrop : {m n : Nat} -> (f : Nat -> X) ->
+           (m <=N n)  ->  (Drop n f) included (Drop m f)
 
- corollary1 : (n : Nat) -> (a : Nat -> X) ->
-              (Drop n a) included (Drop 0 a)
- corollary1 n a = antiMonFstDrop a Data.Nat.z≤n
+ corollary1 : (n : Nat) -> (f : Nat -> X) ->
+              (Drop n f) included (Drop 0 f)
+ corollary1 n f = antiMonFstDrop f Data.Nat.z≤n
 
  increasing : (Nat -> X) -> Set
- increasing a = forall {n : Nat} ->   a n <= a (suc n)
+ increasing f = forall {n : Nat} ->   f n <= f (suc n)
 
  postulate
-   increasingUbsDrop : {a : Nat -> X} -> increasing a -> {m n : Nat} ->
-                       ubs (Drop m a) =S= ubs (Drop n a)
+   increasingUbsDrop : {f : Nat -> X} -> increasing f -> {m n : Nat} ->
+                       ubs (Drop m f) =S= ubs (Drop n f)
 
 --   Clopen : X ->
 
@@ -240,19 +240,19 @@ part of the development.)
  bounded A = Exists (\x -> x upperBoundOf A)
 
  postulate
-   lemma : (a : Nat -> X) -> {m n : Nat} ->
-           bounded (Drop 0 a) -> sup (Drop m a) =R= sup (Drop n a)
+   lemma : (f : Nat -> X) -> {m n : Nat} ->
+           bounded (Drop 0 f) -> sup (Drop m f) =R= sup (Drop n f)
 
-   lemma2 : {a : Nat -> X} -> increasing a -> {n : Nat} ->
-     (Drop n a) included {! (Clopen(a n , infinity)) !}
+   lemma2 : {f : Nat -> X} -> increasing f -> {n : Nat} ->
+     (Drop n f) included {! (Clopen(f n , infinity)) !}
 
 \end{code}
 
 \begin{code}
 
  limSpec : (Nat -> X) -> X -> Set
- limSpec a x = Exists \(N : RPos -> Nat) -> (forall {eps : RPos} ->
-                 (zer <= eps) -> ((Drop (N eps) a) included (V x eps)))
+ limSpec f x = Exists \(N : RPos -> Nat) -> (forall {eps : RPos} ->
+                 (zer <= eps) -> ((Drop (N eps) f) included (V x eps)))
 \end{code}
 
 Note that currently |RPos = Real| so |N| and |V x| have to be defined
@@ -263,20 +263,22 @@ TODO: check that this works out properly.
  _Fincluded_ : {A : Set} (f g : A -> PS X) -> Set  -- TODO Perhaps generalise from X to any B?
  f Fincluded g = forall {a} -> (f a  included  g a)
 
- equalProp : (a : Nat -> X) -> (x : X) ->
+ equalProp : (f : Nat -> X) -> (x : X) ->
    (Exists \(N : RPos -> Nat) -> (forall {eps : RPos} ->
-              ((Drop (N eps) a) included (V x eps))))
+              ((Drop (N eps) f) included (V x eps))))
    ≡
-   (Exists \(N : RPos -> Nat) -> ((flip Drop a ∘ N) Fincluded (V x)))
- equalProp a X = refl
+   (Exists \(N : RPos -> Nat) -> ((flip Drop f ∘ N) Fincluded (V x)))
+ equalProp f X = refl
 \end{code}
 
 We can show that increasing sequences which are bounded from above are
 convergent.
 
-N eps = {! choice ((Drop 0 a) intersect (V s eps)) !}   -- TODO: type error
+N eps = elemIndex (choice ((Drop 0 f) intersect (V s eps))) f
 
-What we really need is to search through the sequence |a| for an |n|
+TODO: Update this discussion to match the updated text in the paper.
+
+What we really need is to search through the sequence |f| for an |n|
 from which onwards all elements are in |V s eps|. If we have already
 converted the sequence into just a set (using |Drop|), this search is
 not effectively implementable. We can get around it by postulating
@@ -287,12 +289,12 @@ a variant of |Drop| called |drop|:
 \begin{code}
  module SymmetricDrop where
   drop : Nat -> (Nat -> X) -> (Nat -> X)
-  drop n a = \(i : Nat) ->  a (n +N i)
+  drop n f = \(i : Nat) ->  f (n +N i)
 \end{code}
 or equivalently
 \begin{code}
   drop' : Nat -> (Nat -> X) -> (Nat -> X)
-  drop' n a = a ∘ (_+N_ n)
+  drop' n f = f ∘ (_+N_ n)
 \end{code}
 
 To connect to the definition of |Drop| we just need the
@@ -301,19 +303,19 @@ To connect to the definition of |Drop| we just need the
 \begin{code}
   postulate   range : (Nat -> X) -> PS X
 
-  Drop : Nat -> (Nat -> X) -> PS X
-  Drop n a = range (drop n a)
+  Drop' : Nat -> (Nat -> X) -> PS X
+  Drop' n f = range (drop n f)
 \end{code}
 
 \begin{code}
- module Convergent (a : Nat -> X) {dummy : Real} (nonEmpty : dummy elemOf (ubs (Drop 0 a))) where
+ module Convergent (f : Nat -> X) {dummy : Real} (nonEmpty : dummy elemOf (ubs (Drop 0 f))) where
   s : Real
-  s = sup (Drop 0 a)
+  s = sup (Drop 0 f)
 
   postulate smallest : (Nat -> Set) -> Nat
 
   N : RPos -> Nat
-  N eps = smallest (\ n -> (Drop n a) included (V s eps))
+  N eps = smallest (\ n -> (Drop n f) included (V s eps))
 \end{code}
 
 As soon as |N| is defined, the proof steps below could be used.
@@ -324,12 +326,12 @@ TODO: code up at least some of the steps.
   postulate closedInterval : X -> X -> PS X
 
   module _ (eps : RPos) where
-   step1 = Drop (N eps) a
-   -- included {- |a| increasing -}
-   step2 = closedInterval (a (N eps)) (sup (Drop (N eps) a))
-   -- = {- |a| increasing |=> sup (Drop n a) = sup (Drop 0 a)| -}
-   step3 = closedInterval (a (N eps)) s
-   -- included {- |a (N eps) elemOf V s eps| -}
+   step1 = Drop (N eps) f
+   -- included {- |f| increasing -}
+   step2 = closedInterval (f (N eps)) (sup (Drop (N eps) f))
+   -- = {- |f| increasing |=> sup (Drop n f) = sup (Drop 0 f)| -}
+   step3 = closedInterval (f (N eps)) s
+   -- included {- |f (N eps) elemOf V s eps| -}
    step4 =  V s eps
    prop1 : step1 included step2
    prop1 = {!!}
