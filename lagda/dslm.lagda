@@ -382,8 +382,6 @@ If we by ``gap'' mean ``an |eps|-neighbourhood between |A| and |s|''
 we can prove there is no ``gap''.
 
 
-%TODO incorporate the expanded discussion about Completeness and "gaps" from ../talk/tfpie2015slides.lagda around line 380 or so.
-
 The explicit introduction of functions such as |ubs| allows us to give
 calculational proofs in the style introduced by Wim Feijen and used in
 many computer science textbooks, especially in functional programming
@@ -425,8 +423,6 @@ example the algebra of programming library implemented in Agda
 
    (Exists (a elemOf A) (a elemOf V s eps))
 \end{spec}
-
-**TODO change naming to avoid using both |a : A| and |a : Nat -> X|.
 
 This simple proof shows that we can always find an element of |A| as
 near to |sup A| as we want, which explains perhaps the above statement
@@ -475,33 +471,33 @@ dropped.  This recalls the familiar Haskell function |drop : Int ->
 [a] -> [a]|, which can be recast to suit the new context:
 
 > drop : Nat -> (Nat -> X) -> (Nat -> X)
-> drop n a = \(i : Nat) ->  a (n +N i)
+> drop n f = \(i : Nat) ->  f (n +N i)
 >
 > Drop : Nat -> (Nat -> X) -> PS X
-> Drop n a  =  range (drop n a)
->           =  { a i | i elemOf Nat, n <= i }
+> Drop n f  =  range (drop n f)
+>           =  { f i | i elemOf Nat, n <= i }
 
 The function |Drop| has many properties, for example:
 
 \begin{itemize}
 \item anti-monotonous in the first argument
 
-> m <= n => Drop n a included Drop m a
+> m <= n => Drop n f included Drop m f
 
-in particular |Drop n a included Drop 0 a| for
+in particular |Drop n f included Drop 0 f| for
   all |n|;
 
-\item if |a| is increasing, then, for any |m| and |n|
+\item if |f| is increasing, then, for any |m| and |n|
 
-> ubs (Drop m a) = ubs (Drop n a)
+> ubs (Drop m f) = ubs (Drop n f)
 
-and therefore, if |Drop 0 a| is bounded
+and therefore, if |Drop 0 f| is bounded
 
-> sup (Drop m a) = sup (Drop n a)
+> sup (Drop m f) = sup (Drop n f)
 
-\item if |a| is increasing, then
+\item if |f| is increasing, then
 
-> Drop n a included (Clopen(a n, infinity))
+> Drop n f included (Clopen(f n, infinity))
 
 \end{itemize}
 
@@ -509,9 +505,9 @@ and therefore, if |Drop 0 a| is bounded
 Using |Drop|, we have that
 
 \begin{spec}
-  lim a = x
+  lim f = x
 ifandonlyif
-  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
+  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V x eps)))
 \end{spec}
 
 This formulation has the advantage of eliminating one of the three
@@ -525,9 +521,9 @@ example, we could lift inclusion of sets to the function level: for
 and we could eliminate the quantification of |eps| above:
 
 \begin{spec}
-    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) a included V x eps)))
+    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V x eps)))
 ifandonlyif
-    (Exists (N : RPos -> Nat)  ((flip Drop a . N) included V x))
+    (Exists (N : RPos -> Nat)  ((flip Drop f . N) included V x))
 \end{spec}
 
 The application of |flip| is necessary to bring the arguments in the
@@ -537,29 +533,29 @@ eliminating quantifiers can be too high.
 We can show that increasing sequences which are bounded from above are
 convergent.
 %
-Let |a| be a sequence bounded from above (i.e., with |A = Drop 0 a|
+Let |f| be a sequence bounded from above (i.e., with |A = Drop 0 f|
 there is some |u elemOf ubs A|), and let |s = sup A|.
 %
 Then, we know from our previous example that |(Exists (a elemOf A) (a
 elemOf V s eps)| for any |eps|.
 %
-Or equivalently, |Forall (eps elemOf RPos) (Exists (i elemOf Nat) (a i
+Or equivalently, |Forall (eps elemOf RPos) (Exists (i elemOf Nat) (f i
 elemOf V s eps)|.
 %
 Finally by swapping quantifier order and introducing the name |N| for
 the function that determines |i| from |eps| we obtain |(Exists (N :
-RPos -> Nat) (a (N eps) elemOf V s eps)|.
+RPos -> Nat) (f (N eps) elemOf V s eps)|.
 %
 
-If |a| is increasing, we have
+If |f| is increasing, we have
 
 \begin{spec}
-  Drop (N eps) a
-included {- |a| increasing -}
-  [a (N eps), sup (Drop (N eps) a)]
-= {- |a| increasing |=> sup (Drop n a) = sup (Drop 0 a)| -}
-  [a (N eps), s]
-included {- |a (N eps) elemOf V s eps| -}
+  Drop (N eps) f
+included {- |f| increasing -}
+  [f (N eps), sup (Drop (N eps) f)]
+= {- |f| increasing |=> sup (Drop n f) = sup (Drop 0 f)| -}
+  [f (N eps), s]
+included {- |f (N eps) elemOf V s eps| -}
   V s eps
 \end{spec}
 
