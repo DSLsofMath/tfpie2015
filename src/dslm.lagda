@@ -280,7 +280,7 @@ What we really need is to search through the sequence |a| for an |n|
 from which onwards all elements are in |V s eps|. If we have already
 converted the sequence into just a set (using |Drop|), this search is
 not effectively implementable. We can get around it by postulating
-|smallest| which (non-constgructively) finds the smallest natural
+|smallest| which (non-constructively) finds the smallest natural
 number satisfying a predicate. But it would probably be better to use
 a variant of |Drop| called |drop|:
 
@@ -293,7 +293,6 @@ or equivalently
 \begin{code}
   drop' : Nat -> (Nat -> X) -> (Nat -> X)
   drop' n a = a ∘ (_+N_ n)
-
 \end{code}
 
 To connect to the definition of |Drop| we just need the

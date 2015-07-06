@@ -36,3 +36,4 @@
 %format Sigma                   =  "\Sigma"
 %format @                       =  "\!@\!"
 %format where                   =  "\ \Keyword{where}\ "
+%format +N                      =  "+"

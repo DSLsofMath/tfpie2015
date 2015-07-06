@@ -420,7 +420,13 @@ example the algebra of programming library implemented in Agda
 => {- absolute value -}
 
    (Exists (a elemOf A) ((abs(a - s)) < eps))
+
+=> {- introduce the neighborhood function |V : X  -> RPos -> PS X| -}
+
+   (Exists (a elemOf A) (a elemOf V s eps))
 \end{spec}
+
+**TODO change naming to avoid using both |a : A| and |a : Nat -> X|.
 
 This simple proof shows that we can always find an element of |A| as
 near to |sup A| as we want, which explains perhaps the above statement
@@ -468,8 +474,12 @@ i.e., to the elements remaining after the first |N| elements have been
 dropped.  This recalls the familiar Haskell function |drop : Int ->
 [a] -> [a]|, which can be recast to suit the new context:
 
+> drop : Nat -> (Nat -> X) -> (Nat -> X)
+> drop n a = \(i : Nat) ->  a (n +N i)
+>
 > Drop : Nat -> (Nat -> X) -> PS X
-> Drop n a = { a i | i elemOf Nat, n <= i }
+> Drop n a  =  range (drop n a)
+>           =  { a i | i elemOf Nat, n <= i }
 
 The function |Drop| has many properties, for example:
 
@@ -525,21 +535,21 @@ correct order.  As this example shows, sometimes the price of
 eliminating quantifiers can be too high.
 
 We can show that increasing sequences which are bounded from above are
-convergent.  Let |a| be a sequence bounded from above (i.e., with |A =
-Drop 0 a| there is some |u elemOf ubs A|), and let |s = sup A|.  Then,
-we know from our previous example that |A intersect V s eps noteq
-empty| for any |eps|.  Assuming a function |choice : PS X -> X| which
-selects an element from every non-empty set (and is undefined for the
-empty set), we define
-
-> N eps = choice (A intersect V s eps)
-
-TODO: type error: choice returns a real number but N should return a
-natural (the index of that real number).  (We need a similar function
-that finds some |n| for which |(Drop n a) included (V s eps)|. For
-this is is a bit backwards to work with the sets and it would probably
-be more practical to work with a "symmetric" drop: |Drop : Nat -> (Nat
--> X) -> (Nat -> X)|.)
+convergent.
+%
+Let |a| be a sequence bounded from above (i.e., with |A = Drop 0 a|
+there is some |u elemOf ubs A|), and let |s = sup A|.
+%
+Then, we know from our previous example that |(Exists (a elemOf A) (a
+elemOf V s eps)| for any |eps|.
+%
+Or equivalently, |Forall (eps elemOf RPos) (Exists (i elemOf Nat) (a i
+elemOf V s eps)|.
+%
+Finally by swapping quantifier order and introducing the name |N| for
+the function that determines |i| from |eps| we obtain |(Exists (N :
+RPos -> Nat) (a (N eps) elemOf V s eps)|.
+%
 
 If |a| is increasing, we have
 
