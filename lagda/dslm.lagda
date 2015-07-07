@@ -236,7 +236,7 @@ In fact, although we will not use it in this paper, it is often
 necessary to account for \emph{dependent types}.  Intervals can, for
 instance, be represented as dependent types, and all interval
 operations are naturally dependently-typed.  In such cases, we would
-prefer to use the notation of Agda \cite{norell2007towards} or Idris
+prefer to use the notation of Agda \cite{norell2007towards,ionescu2013dependently} or Idris
 \cite{brady2013idris}.
 
 Convergent sequences can be used to represent real numbers, but the
