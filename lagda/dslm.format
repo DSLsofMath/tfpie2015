@@ -8,6 +8,7 @@
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
 %format an                      =  "a_n"
+%format xn                      =  "x_n"
 %format notElemOf               =  "\notin"
 %format noteq                   =  "\neq"
 %format empty                   =  "\emptyset"

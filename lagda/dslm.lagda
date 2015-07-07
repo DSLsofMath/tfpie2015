@@ -200,6 +200,12 @@ standard notation for intervals, which can lead to an overloading of
 the Haskell list notation (|[a, b]| may denote a closed interval or a
 two-element list, depending on the context).
 
+This paper, some associated source code and the DSLsofMath course
+material is being collected on github:
+\url{https://github.com/DSLsofMath}. Contributions are welcome!
+%
+
+
 \section {Functions and types}
 \label{sec:fandt}
 
@@ -244,7 +250,7 @@ interpretations:
   exists) of the sequence of partial sums:
 
 >  Sigma    :  (Nat -> X) -> X
->  Sigma a  =  lim s  where  s n = sum (map a [0 .. n])
+>  Sigma f  =  lim s  where  s n = sum (map f [0 .. n])
 
 For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
 in undergraduate analysis, but in a classroom setting this could also
@@ -255,7 +261,7 @@ be an opportunity to explain type classes such as |Num|.
   defined in terms of the evaluation of a series:
 
 >  Powers      :  (Nat -> X) -> (X -> X)
->  Powers a x  =  Sigma f  where  f n = (a n) * (pow x n)
+>  Powers a x  =  Sigma f  where  f n = a n * (pow x n)
 
 Power series are perhaps \emph{the} fundamental concept of
 undergraduate analysis and its applications: they lead to elementary
@@ -439,9 +445,9 @@ definition (\cite{adams2010calculus}, page A-23):
 \begin{quote}
   \textbf{Limit of a sequence}
 
-  We say that |lim an = x| if for every positive number |eps|
-  there exists a positive number |N = N (eps)| such that
-  |(abs(an - x)) < eps| holds whenever |n <= N|.
+  We say that |lim xn = L| if for every positive number |eps|
+  there exists a positive number |N = N(eps)| such that
+  |(abs(xn - L)) < eps| holds whenever |n >= N|.
 \end{quote}
 
 \noindent
@@ -450,8 +456,8 @@ craft here, such as
 
 \begin{itemize}
 \item giving an explicit typing |lim : (Nat -> X) -> X| and writing
-  |lim a| in order to avoid the impression that the result depends on
-  some particular value |an|;
+  |lim x| in order to avoid the impression that the result depends on
+  some particular value |xn|;
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 
@@ -464,7 +470,7 @@ in the text (the \emph{neighborhood} function |V| is introduced in
 Adams, but first on page 567, long after the chapter on sequences and
 convergence, page 495).  Many real analysis textbooks adopt, in fact,
 the one or the other of these changes.  However, functional
-programmers will probably observe that the expression |an|\ldots\
+programmers will probably observe that the expression |an| \ldots\
 \emph{whenever} |n >= N| refers to the |N|th tail of the sequence,
 i.e., to the elements remaining after the first |N| elements have been
 dropped.  This recalls the familiar Haskell function |drop : Int ->
@@ -505,9 +511,9 @@ and therefore, if |Drop 0 f| is bounded
 Using |Drop|, we have that
 
 \begin{spec}
-  lim f = x
+  lim f = L
 ifandonlyif
-  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V x eps)))
+  (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V L eps)))
 \end{spec}
 
 This formulation has the advantage of eliminating one of the three
@@ -521,9 +527,9 @@ example, we could lift inclusion of sets to the function level: for
 and we could eliminate the quantification of |eps| above:
 
 \begin{spec}
-    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V x eps)))
+    (Exists (N : RPos -> Nat)  (Forall (eps elemOf RPos) (Drop (N eps) f included V L eps)))
 ifandonlyif
-    (Exists (N : RPos -> Nat)  ((flip Drop f . N) included V x))
+    (Exists (N : RPos -> Nat)  ((flip Drop f . N) included V L))
 \end{spec}
 
 The application of |flip| is necessary to bring the arguments in the
@@ -553,7 +559,7 @@ If |f| is increasing, we have
   Drop (N eps) f
 included {- |f| increasing -}
   [f (N eps), sup (Drop (N eps) f)]
-= {- |f| increasing |=> sup (Drop n f) = sup (Drop 0 f)| -}
+= {- |f| increasing |=> sup (Drop n f) = sup (Drop 0 f) = s| -}
   [f (N eps), s]
 included {- |f (N eps) elemOf V s eps| -}
   V s eps
@@ -685,7 +691,7 @@ The text continues with examples:
 \end{quote}
 
 The second example is somewhat problematic: it does not seem to be of
-the form |a + bi|.  Given that last two examples seem to introduce
+the form |a + bi|.  Given that the last two examples seem to introduce
 shorthand for various complex numbers, let us assume that this one
 does as well, and that |a - bi| can be understood as an abbreviation
 of |a + (-b)i|.
@@ -716,7 +722,7 @@ dispel these doubts:
   form is acceptable.)
 \end{quote}
 
-This remark suggest strongly that the two syntactic forms are meant to
+This remark suggests strongly that the two syntactic forms are meant to
 denote the same elements, since otherwise it would be strange to say
 ``either form is acceptable''.  After all, they are acceptable by
 definition.
@@ -783,8 +789,8 @@ This is rather similar to Haskell's \emph{as-patterns}:
 > Im z @ (C (x, y))  =   y
 
 \noindent
-a potential source of confusion being that the symbol introduced by
-the as-pattern is not actually used on the right-hand side of the
+a potential source of confusion being that the symbol |z| introduced
+by the as-pattern is not actually used on the right-hand side of the
 equations.
 
 The use of as-patterns such as ``|z = x + yi|'' is repeated throughout
@@ -811,14 +817,17 @@ example:
 > (C (a, b)) + (C (x, y))  =  C ((a + x), (b + y))
 
 \noindent
-or we can build a datatype of Complex numbers from the associated to the algebraic operations to arrive at a
-\emph{deep embedding}:
+or we can build a datatype of ``syntactic'' Complex numbers from the
+algebraic operations to arrive at a \emph{deep embedding}:
 
 > data ComplexSyntax  =  i
 >                     |  ToComplex Real
 >                     |  Plus   ComplexSyntax  ComplexSyntax
 >                     |  Times  ComplexSyntax  ComplexSyntax
 >                     |  ...
+>
+> (+) = Plus
+> ...
 
 The type |ComplexSyntax| can then be turned into an abstract datatype, by
 hiding the representation and providing corresponding operations.
