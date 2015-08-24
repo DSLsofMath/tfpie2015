@@ -87,6 +87,8 @@ functional programming perspective (similar to
 \begin{itemize}
 \item make functions and types explicit
 
+\item make the distinction between syntax and semantics explicit
+
 \item use types as carriers of semantic information, not just variable
   names
 
@@ -286,18 +288,6 @@ Not working code, rather working understanding of concepts
 > newtype Complex = C (Real, Real)
 
 \onslide<2>
-\textbf{Deep embedding (buggy)}:
-
-> (+)  :  Complex -> Complex -> Complex
-> (+) = Plus
->
-> data ComplexDeep  =  i
->                   |  ToComplex Real
->                   |  Plus   Complex  Complex
->                   |  Times  Complex  Complex
->                   |  ...
-
-\onslide<3>
 \textbf{Deep embedding}:
 
 > (+)  :  Complex -> Complex -> Complex
@@ -517,7 +507,7 @@ Partial implementation in Agda:
 \begin{itemize}
 \item errors caught by formalization (but no ``royal road'')
   \begin{itemize}
-  \item |ComplexDeep|
+  \item Mixing up names of the same type
   \item |choice| function
   \end{itemize}
 \item subsets and coercions
