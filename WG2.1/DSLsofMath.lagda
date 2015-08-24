@@ -390,7 +390,7 @@ X|
 \def\commentend{\}}
 \newcommand{\gap}{\pause\vspace{-0.7cm}}
 \begin{spec}
-   (f x) * (g x)
+   {-"\quad"-} (f x) * (g x)
 \end{spec}
 \gap
 \begin{spec}
