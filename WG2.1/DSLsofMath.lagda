@@ -92,8 +92,8 @@ functional programming perspective (similar to
 
 \item make the distinction between syntax and semantics explicit
 
-\item use types as carriers of semantic information, not just variable
-  names
+\item use types (|Real|, |CC|) as carriers of semantic information,
+  not just variable names (|x|, |z|)
 
 \item introduce functions and types for implicit operations such as
   the power series interpretation of a sequence
@@ -447,8 +447,8 @@ Therefore, by continuity of composition and differentiability:
 
 \item make the distinction between syntax and semantics explicit
 
-\item use types as carriers of semantic information, not just variable
-  names
+\item use types (|Real|, |CC|) as carriers of semantic information,
+  not just variable names (|x|, |z|)
 
 \item pay attention to abstraction barriers (such as limits,
   continuity, differentiability)
