@@ -28,7 +28,7 @@
 %\renewcommand*{\inserttotalframenumber}{}
 % \renewcommand{\insertframenumber}{}
 \newtheorem*{def*}{Definition}
-\addheadbox{section}{\quad \tiny TFPIE, 2015-06-02}
+\addheadbox{section}{\quad \tiny ACCFun, 2015-08-25}
 \title[DSLsofMath]{DSLM: Presenting Mathematical Analysis Using Functional Programming}
 
 \author[C. Ionescu and P. Jansson]
@@ -428,7 +428,7 @@ X|
 Therefore, by continuity of composition and differentiability:
 
 \begin{spec}
-   h' a = phih a a = g a * f' a + g' a * f a
+   h' a = phih a a = f a * g' a + f' a * g a
 
 \end{spec}
 
