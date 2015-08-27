@@ -1,5 +1,7 @@
 # Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 
+2015-08-25: Presentation at the joint [ACCFun](http://wiki.portal.chalmers.se/cse/pmwiki.php/ST/ACCFun) + [IFIP WG 2.1](http://foswiki.cs.uu.nl/foswiki/IFIP21/Goteborg) presentation. ([Source code](WG2.1/), [talk list](https://github.com/patrikja/GRACeFUL/blob/master/ACCFun.md).)
+
 2015-07-07: Submitted [the paper](http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf) to the Post-Proceedings of TFPIE.
 
 2015-06-02: [TFPIE workshop programme](https://wiki.science.ru.nl/tfpie/TFPIE2015#Program)
