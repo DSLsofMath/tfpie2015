@@ -1,0 +1,29 @@
+2015-09-03: Below are some papers which are "text-wise" related
+  according to the nice tool at http://tmpl.weaselhat.com/index.php
+
+"Upload a PDF and we'll give you the 10 most closely related papers according to the topic model we've built on the abstracts of POPL and PLDI."
+
+Processing dslm.pdf...
+
+Related papers:
+
+  Quasi-linear types - Naoki Kobayashi (POPL 1999) (1.816500)
+  What are principal typings and what are they good for? - Trevor Jim (POPL 1996) (1.851083)
+  Soft typing - Robert Cartwright, Mike Fagan (PLDI 1991) (1.851083)
+  Type checking higher-order polymorphic multi-methods - FranÃ§ois Bourdoncle, Stephan Merz (POPL 1997) (1.892253)
+  Objective ML: a simple object-oriented extension of ML - Didier RÃ©my, JÃ©rÃ´me Vouillon (POPL 1997) (1.976614)
+  Algebraic reconstruction of types and effects - Pierre Jouvelot, David Gifford (POPL 1991) (2.005275)
+  Polymorphic type inference and assignment - Xavier Leroy, Pierre Weis (POPL 1991) (2.050276)
+  Parameterized types for Java - Joseph A. Bank, Andrew C. Myers, Barbara Liskov (POPL 1997) (2.161975)
+  Types as abstract interpretations - Patrick Cousot (POPL 1997) (2.161975)
+  Typed closure conversion - Yasuhiko Minamide, Greg Morrisett, Robert Harper (POPL 1996) (2.161975)
+  Putting type annotations to work - Martin Odersky, Konstantin LÃ¤ufer (POPL 1996) (2.161975)
+  Subtyping recursive types - Roberto M. Amadio, Luca Cardelli (POPL 1991) (2.161975)
+  Once upon a polymorphic type - Keith Wansbrough, Simon Peyton Jones (POPL 1999) (2.161975)
+  Local type inference - Benjamin C. Pierce, David N. Turner (POPL 1998) (2.161975)
+  Refinement types for ML - Tim Freeman, Frank Pfenning (PLDI 1991) (2.161975)
+  Efficient applicative data types - Eugene W. Myers (POPL 1984) (2.393510)
+  Structural subtyping and the notion of power type - L. Cardelli (POPL 1988) (2.393510)
+  Abstract types have existential types - John C. Mitchell, Gordon D. Plotkin (POPL 1985) (2.393510)
+  Recursively defined data types: part 1 - C. H. Lewis, B. K. Rosen (POPL 1973) (2.393510)
+  Principal type-schemes for functional programs - Luis Damas, Robin Milner (POPL 1982) (2.393510)
