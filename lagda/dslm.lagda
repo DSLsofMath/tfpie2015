@@ -987,6 +987,50 @@ an attempt to change this state of affairs.
 \bibliographystyle{../eptcsstyle/eptcs}
 \bibliography{dslm}
 
+\appendix
+\section{Educational context and evaluation}
+
+In a first instance, the new course will be an elective course for the
+second or third year within the BSc programs in CS, CSE, SE, and Math.
+%
+The prerequisites are informally one full time year (60 hec) of
+university level study consisting of a mix of mathematics and computer
+science.
+%
+More formally:
+
+\begin{quote}
+  The student should have successfully completed:
+  \begin{itemize}
+  \item a course in discrete mathematics as for example Introductory
+    Discrete Mathematics.
+  \item 15 hec in mathematics, for example Linear Algebra and Calculus
+  \item 15 hec in computer science, for example (Introduction to
+    Programming or Programming with Matlab) and Object-oriented
+    Software Development
+  \item an additional 22.5 hec of any mathematics or computer science
+    courses.
+  \end{itemize}
+\end{quote}
+
+To assess the curriculum impact in terms of increased quality of
+education, we intend to measure how well the students do in ulterior
+courses that require mathematical competence (in the case of
+engineering students) or software compentence (in the case of math
+students).  For example, for CS and CSE students we will measure the
+percentage of students who, having taken DSLM, pass the third-year
+courses
+\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21865}{Transforms,
+    signals and systems}} and
+\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
+    Theory (Reglerteknik)}}, which are current major stumbling blocks.
+For math students, we will measure their performance in ulterior
+scientific computing courses.
+
+Since the course will, at least initially, be an elective one, we will
+also have the possibility of comparing the results with those of a
+control group (students who have not taken the course).
+
 \end{document}
 
 
