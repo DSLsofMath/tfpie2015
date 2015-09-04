@@ -1035,6 +1035,28 @@ Since the course will, at least initially, be an elective one, we will
 also have the possibility of comparing the results with those of a
 control group (students who have not taken the course).
 
+\section{Non-implementable mathematics}
+
+Some classical mathematical concepts cannot be implemented and in the
+course we will deal with that on a case-by-case basis.
+%
+In scientific programming, one is often interested in correctness ``up
+to implication'': the program would work as expected, say, if one
+would use real numbers instead of floating-point values.
+%
+Such counterfactuals are impossible to test but they can be encoded as
+types and proven~\cite{ionescu2013testing}.
+%
+We also mention approximating real numbers rationals or interval
+arithmetic as alternatives.
+%
+Non-implementable functions can often be implemented as relations and
+we show how property based testing and equational reasoning can be
+used to gain confidence in the correctness of the implementation.
+%
+But we will only be able to scratch the surface --- there are many
+advanced concepts for interested students to persue after the course.
+
 \end{document}
 
 
