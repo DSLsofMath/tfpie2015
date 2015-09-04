@@ -840,6 +840,10 @@ classes, folds, by relating them to the familiar notions of
 mathematical structures and homomorphisms (see
 \cite{gibbons2014folding} for a discussion of the relationships
 between deep and shallow embeddings and folds).
+%
+We want to show the students both the shallow and the deep approach
+and help them understand when more or less focus on syntax is helpful.
+
 
 Adams and Essex then proceed to introduce the geometric
 interpretation of complex numbers, i.e., the isomorphism between
