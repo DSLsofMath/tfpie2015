@@ -296,8 +296,8 @@ in functional programming, for example with the conventional use of
 and give an explicit typing to |Lap| which makes the transformation
 clear, for example:
 
-> newtype T  =  T Real
-> newtype S  =  S CC
+> type T  =  Real
+> type S  =  CC
 > Lap  :  (T -> CC) -> (S -> CC)
 
 In the following subsection, we present two simple examples of
@@ -458,6 +458,7 @@ craft here, such as
 \item giving an explicit typing |lim : (Nat -> X) -> X| and writing
   |lim x| in order to avoid the impression that the result depends on
   some particular value |xn|;
+\item giving an explicit typing for the absolute value function |abs _ : X -> RPosz|;
 \item introducing explicitly the function |N : RPos -> Nat|;
 \item introducing a neighborhood function |V : X  -> RPos -> PS X| with
 
