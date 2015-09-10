@@ -47,7 +47,7 @@ mathematical domains from a functional programming perspective: to
 identify the main functions and types involved and, when necessary, to
 introduce new abstractions; to give calculational proofs; to pay
 attention to the syntax of the mathematical expressions; and, finally,
-to organize the resulting functions and types in domain-specific
+to organise the resulting functions and types in domain-specific
 languages.
 
 \end{abstract}
@@ -101,7 +101,7 @@ that cannot be strongly enough recommended, phrases it as follows
 (\cite{halmos1985want}, page 69):
 
 \begin{quote}
-  It's been said before and often, but it cannot be overemphasized:
+  It's been said before and often, but it cannot be overemphasised:
   study actively. Don't just read it; fight it!
 \end{quote}
 
@@ -121,10 +121,18 @@ same way they would any other domain they are supposed to model as a
 software system.
 
 In particular, we are referring to the approach that a functional
-programmer would take.  Functional programming deals with modeling in
+programmer would take.  Functional programming deals with Modelling in
 terms of types and pure functions, and this seems to be ideal for a
 domain where functions are natural objects of study, and which is
 possibly the only one where we can be certain that data is immutable.
+
+Additionally, functional programming has, from the very beginning,
+been connected to the notion of mathematical proof.  For example, the
+influential language ML was originally developed in the 70s to be ``a
+medium in which proofs \ldots can be expressed, as well as heuristic
+algorithms for finding those proofs''
+(\cite{biancuzzi2009masterminds}, page 205).
+
 Explicitly introducing functions and their types, often left implicit
 in mathematical texts, is an easy way to begin an active approach to
 study.  Moreover, it serves as a way of relating new concepts to
@@ -136,13 +144,13 @@ about and lead to proofs in a more calculational style.  Section
 \ref{sec:fandt} presents these elements in detail.
 
 Section \ref{sec:dsls} deals with the higher-level question of the
-organization of our types and functions.  We emphasize
+organisation of our types and functions.  We emphasise
 \emph{domain-specific languages} (DSLs, \cite{gibbons2013functional}),
 since they are a good fit for the mathematical domain, which can
-itself be seen as a collection of specialized languages.  Moreover,
+itself be seen as a collection of specialised languages.  Moreover,
 building DSLs is increasingly becoming a standard industry practice
 \cite{fowler2010domain}.  Empirical studies show that DSLs can lead to
-fundamental increases in productivity, above alternative modeling
+fundamental increases in productivity, above alternative modelling
 approaches such as UML \cite{tolvanen2011industrial}.  The course we
 are developing will exercise and develop new skills in designing and
 implementing DSLs.  The students will not simply use previously
@@ -286,15 +294,24 @@ remark:
   F(s)| of a new independent variable |s|.
 \end{quote}
 
-To the logician or the computer scientist, this sounds quite strange:
-surely the \emph{name} of the independent variable does not matter:
-the Laplace transformation could very well return a function of the
-``old'' variable |t|.  We can understand that the name of the variable
-is used to carry semantic meaning about its type (this is also common
-in functional programming, for example with the conventional use of
-|as| to denote a list of |a|s), but we prefer to use type declarations
-and give an explicit typing to |Lap| which makes the transformation
-clear, for example:
+This is meant to introduce a distinction between ``operators'', such
+as differentiation, which take functions to functions of the same
+type, and ``transforms'', such as the Laplace transform, which take
+functions to functions of a new type.  To the logician or the computer
+scientist, the way of phrasing this difference in the quoted text
+sounds strange: surely the \emph{name} of the independent variable
+does not matter: the Laplace transformation could very well return a
+function of the ``old'' variable |t|.  We can understand that the name
+of the variable is used to carry semantic meaning about its type (this
+is also common in functional programming, for example with the
+conventional use of |as| to denote a list of |a|s).  Moreover, by
+using this (implicit!) convention, it is easier to deal with cases
+such as that of the Hartley transform, which does not change the type
+of the input function, but rather the \emph{interpretation} of that
+type.  We prefer to always give explicit typings rather than relying
+on syntactical conventions, and to use type synonyms for the case in
+which we have different interpretations of the same type.  In the
+example of the Laplace transformation, this leads to
 
 > type T  =  Real
 > type S  =  CC
@@ -425,7 +442,7 @@ example the algebra of programming library implemented in Agda
 
    (Exists (a elemOf A) ((abs(a - s)) < eps))
 
-=> {- introduce the neighborhood function |V : X  -> RPos -> PS X| -}
+=> {- introduce the neighbourhood function |V : X  -> RPos -> PS X| -}
 
    (Exists (a elemOf A) (a elemOf V s eps))
 \end{spec}
@@ -460,14 +477,14 @@ craft here, such as
   some particular value |xn|;
 \item giving an explicit typing for the absolute value function |abs _ : X -> RPosz|;
 \item introducing explicitly the function |N : RPos -> Nat|;
-\item introducing a neighborhood function |V : X  -> RPos -> PS X| with
+\item introducing a neighbourhood function |V : X  -> RPos -> PS X| with
 
 >  V x eps = { x' | x' elemOf X, (abs(x' - x)) < eps }
 
 \end{itemize}
 
 These are all just changes in the notation of elements already present
-in the text (the \emph{neighborhood} function |V| is introduced in
+in the text (the \emph{neighbourhood} function |V| is introduced in
 Adams, but first on page 567, long after the chapter on sequences and
 convergence, page 495).  Many real analysis textbooks adopt, in fact,
 the one or the other of these changes.  However, functional
@@ -487,7 +504,7 @@ dropped.  This recalls the familiar Haskell function |drop : Int ->
 The function |Drop| has many properties, for example:
 
 \begin{itemize}
-\item anti-monotonous in the first argument
+\item anti-monotone in the first argument
 
 > m <= n => Drop n f included Drop m f
 
@@ -576,10 +593,10 @@ style.
 
 There is no clear-cut line between libraries and DSLs, and intuitions
 differ.  For example, in Chapter 8 of \emph{Thinking Functionally with
-  Haskell}, Richard Bird presents a language for pretty-printing
-documents based on Wadler's chapter in \emph{The Fun of Programming}
-\cite{wadler2003prettier}, but refers to it as a library, only
-mentioning DSLs in the chapter notes.
+  Haskell} (\cite{bird2014thinking}), Richard Bird presents a language
+for pretty-printing documents based on Wadler's chapter in \emph{The
+  Fun of Programming} \cite{wadler2003prettier}, but refers to it as a
+library, only mentioning DSLs in the chapter notes.
 
 Both libraries and DSLs are collections of types and functions meant
 to represent concepts from a domain at a high level of abstraction.
@@ -600,7 +617,7 @@ theory of power series restricted to their syntactic aspects,
 independent of their semantic interpretations in terms of convergence
 (in the various domains of real numbers, complex numbers, intervals of
 reals, etc.).  The ``formalist'' texts of Bourbaki present various
-domains of mathematics by emphasizing their formal properties
+domains of mathematics by emphasising their formal properties
 (\emph{axiomatic structure}), then relating those in terms of ``lower
 levels'', with the lowest levels expressed in terms of set theory (so,
 for example, groups are initially introduced axiomatically, then
@@ -931,10 +948,26 @@ classical mathematics and its applications:
 
 \item use a calculational style for proofs
 
-\item organize the types and functions in DSLs
+\item organise the types and functions in DSLs
 \end{itemize}
 
-The lessons in this course will be organized around the active reading
+Given the main course objective, enabling the students to better
+tackle mathematical domains by applying the computing science
+perspective, we intend to measure how well the students do in ulterior
+courses that require mathematical competence.  For example, we will
+measure the percentage of students who, having taken DSLM, pass the
+third-year courses
+\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21865}{Transforms,
+    signals and systems}} and
+\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
+    Theory (Reglerteknik)}}, which are current major stumbling blocks.
+%% For math students, we will measure their performance in ulterior
+%% scientific computing courses.
+Since the course will, at least initially, be an elective one, we will
+also have the possibility of comparing the results with those of a
+control group (students who have not taken the course).
+
+The lessons in this course will be organised around the active reading
 of mathematical texts (suitably prepared in advance).  In the opening
 lessons, we will deal with domains of mathematics which are relatively
 close to functional programming, such as elementary category theory,
@@ -942,8 +975,7 @@ in order to have the chance to introduce newcomers to functional
 programming, and the students in general to our approach.
 
 After that, the selection of the subjects will mostly be dictated by
-the requirements of the third-year courses in signals and systems, and
-control engineering.  They will contain:
+the requirements of the engineering curriculum.  They will contain:
 
 \begin{itemize}
 \item basic properties of complex numbers
@@ -958,17 +990,47 @@ control engineering.  They will contain:
 
 \end{itemize}
 
+We shall take advantage of the fact that some parts of these topics
+have been treated before from a functional programming perspective
+(\cite{mcilroy1999functional, mcilroy2001music,
+  pavlovic1999coalgebra}).
+
 One of the important course elements we have left out of this paper is
-that of using the modeling effort performed in the course for the
+that of using the modelling effort performed in the course for the
 production of actual mathematical software.  One of the reasons for
 this omission is that we wanted to concentrate on the more conceptual
 part that corresponds to the specification of that software, and as
 such is a prerequisite for it.  The development of implementations on
 the basis of these specifications will be the topic of most of the
-exercises sessions we will organize.  That the computational
+exercises sessions we will organise.  That the computational
 representation of mathematical concepts can greatly help with their
 understanding was conclusively shown by Sussman and Wisdom in their
 recent book on differential geometry \cite{sussman2013functional}.
+
+On the other hand, classical mathematical theorems often lead to
+non-implementable specifications (for example, there is no algorithm
+for finding the minima and maxima of arbitrary continuous functions on
+a closed interval, although we have an easy classical proof of their
+existence).  There are many possibilities of dealing with such cases,
+and we shall explore some of them in the exercises sessions.  For
+instance,
+%
+in scientific programming, one is often interested in correctness ``up
+to implication'': the program would work as expected, say, if one
+would use real numbers instead of floating-point values.
+%
+Such counterfactuals are impossible to test but they can be encoded as
+types and proven~\cite{ionescu2013testing}.
+%
+%% We shall also mention approximating real numbers rationals or interval
+%% arithmetic as alternatives.
+%% %
+%% Non-implementable functions can often be implemented as relations and
+%% we show how property based testing and equational reasoning can be
+%% used to gain confidence in the correctness of the implementation.
+%
+%% But we will only be able to scratch the surface --- there are many
+%% advanced concepts for interested students to pursue after the course.
 
 We believe that this approach can offer an introduction to computer
 science for the mathematics students.  We plan to actively involve the
@@ -992,71 +1054,32 @@ an attempt to change this state of affairs.
 \bibliographystyle{../eptcsstyle/eptcs}
 \bibliography{dslm}
 
-\appendix
-\section{Educational context and evaluation}
+%% \appendix
+%% \section{Educational context and evaluation}
 
-In a first instance, the new course will be an elective course for the
-second or third year within the BSc programs in CS, CSE, SE, and Math.
-%
-The prerequisites are informally one full time year (60 hec) of
-university level study consisting of a mix of mathematics and computer
-science.
-%
-More formally:
+%% In a first instance, the new course will be an elective course for the
+%% second or third year within the BSc programs in CS, CSE, SE, and Math.
+%% %
+%% The prerequisites are informally one full time year (60 hec) of
+%% university level study consisting of a mix of mathematics and computer
+%% science.
+%% %
+%% More formally:
 
-\begin{quote}
-  The student should have successfully completed:
-  \begin{itemize}
-  \item a course in discrete mathematics as for example Introductory
-    Discrete Mathematics.
-  \item 15 hec in mathematics, for example Linear Algebra and Calculus
-  \item 15 hec in computer science, for example (Introduction to
-    Programming or Programming with Matlab) and Object-oriented
-    Software Development
-  \item an additional 22.5 hec of any mathematics or computer science
-    courses.
-  \end{itemize}
-\end{quote}
+%% \begin{quote}
+%%   The student should have successfully completed:
+%%   \begin{itemize}
+%%   \item a course in discrete mathematics as for example Introductory
+%%     Discrete Mathematics.
+%%   \item 15 hec in mathematics, for example Linear Algebra and Calculus
+%%   \item 15 hec in computer science, for example (Introduction to
+%%     Programming or Programming with Matlab) and Object-oriented
+%%     Software Development
+%%   \item an additional 22.5 hec of any mathematics or computer science
+%%     courses.
+%%   \end{itemize}
+%% \end{quote}
 
-To assess the curriculum impact in terms of increased quality of
-education, we intend to measure how well the students do in ulterior
-courses that require mathematical competence (in the case of
-engineering students) or software compentence (in the case of math
-students).  For example, for CS and CSE students we will measure the
-percentage of students who, having taken DSLM, pass the third-year
-courses
-\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21865}{Transforms,
-    signals and systems}} and
-\emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
-    Theory (Reglerteknik)}}, which are current major stumbling blocks.
-For math students, we will measure their performance in ulterior
-scientific computing courses.
-
-Since the course will, at least initially, be an elective one, we will
-also have the possibility of comparing the results with those of a
-control group (students who have not taken the course).
-
-\section{Non-implementable mathematics}
-
-Some classical mathematical concepts cannot be implemented and in the
-course we will deal with that on a case-by-case basis.
-%
-In scientific programming, one is often interested in correctness ``up
-to implication'': the program would work as expected, say, if one
-would use real numbers instead of floating-point values.
-%
-Such counterfactuals are impossible to test but they can be encoded as
-types and proven~\cite{ionescu2013testing}.
-%
-We also mention approximating real numbers rationals or interval
-arithmetic as alternatives.
-%
-Non-implementable functions can often be implemented as relations and
-we show how property based testing and equational reasoning can be
-used to gain confidence in the correctness of the implementation.
-%
-But we will only be able to scratch the surface --- there are many
-advanced concepts for interested students to persue after the course.
 
 \end{document}
 
@@ -1069,3 +1092,12 @@ shallow: there are no higher-order functions, recursion is only
 treated in the context of recurrence relations for sequences, there is
 no discussion of fixed points, and no inductive (let alone
 co-inductive) datatypes.
+
+
+From the review file:
+
+Concepts which cannot be implemented will be dealt with on a
+case-by-case basis: we approximate real numbers by floats (and mention
+rationals and interval arithmetic as alternatives), we implement some
+functions as relations (and mention property based testing and
+interactive theorem proving), etc.
