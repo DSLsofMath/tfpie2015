@@ -209,7 +209,7 @@ the Haskell list notation (|[a, b]| may denote a closed interval or a
 two-element list, depending on the context).
 
 This paper, some associated source code and the DSLsofMath course
-material is being collected on github:
+material is being collected on GitHub:
 \url{https://github.com/DSLsofMath}. Contributions are welcome!
 %
 
@@ -955,7 +955,7 @@ Given the main course objective, enabling the students to better
 tackle mathematical domains by applying the computing science
 perspective, we intend to measure how well the students do in ulterior
 courses that require mathematical competence.  For example, we will
-measure the percentage of students who, having taken DSLM, pass the
+measure the percentage of students who, having taken DSLsofMath, pass the
 third-year courses
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21865}{Transforms,
     signals and systems}} and
