@@ -218,8 +218,8 @@ material is being collected on GitHub:
 \label{sec:fandt}
 
 One of the most useful actions of the student of a mathematical text
-is to identify and type the functions involved.  If the notation he
-uses is inadequate for this purpose, then his ability will be severely
+is to identify and type the functions involved.  If the notation she
+uses is inadequate for this purpose, then her ability will be severely
 impaired.  This is one of the main reasons for using functional
 programming as the basis of our ``requirements engineering'' in a
 mathematical domain.
@@ -231,6 +231,10 @@ positive integers (for example in Rudin \cite{rudin1976principles});
 for the functional programmer it is perhaps more natural to model them
 as functions of natural numbers, using |a : Nat -> X| where a
 mathematician would write |{an}| or similar.
+%
+For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
+in undergraduate analysis, but in a classroom setting this could also
+be an opportunity to explain type classes such as |Num|.
 
 The notion of \emph{limit} is first defined for sequences.  The
 operation of taking the limit is an example of a higher-order
@@ -259,10 +263,6 @@ interpretations:
 
 >  Sigma    :  (Nat -> X) -> X
 >  Sigma f  =  lim s  where  s n = sum (map f [0 .. n])
-
-For brevity, we shall use |X| to denote a |Real| or |CC|, as is common
-in undergraduate analysis, but in a classroom setting this could also
-be an opportunity to explain type classes such as |Num|.
 
 \item the sequence represents the coefficients of a power series.  In
   this case, the semantics is that of a function, whose values are
@@ -399,10 +399,11 @@ where
 So, now we know that for any bounded set |A| we have a supremum |s :
 Real|, but |s| need not be in |A| --- could there be a ``gap''?
 %
-(An example set could be |A = {7 - 1/n || n elemOf Nat+}| with |s = sup A = 7 notElemOf A|.)
+%format oneDivN = "1/n"
+(An example set could be |A = {7 - oneDivN || n elemOf Nat+}| with |s = sup A = 7 notElemOf A|.)
 %
 If we by ``gap'' mean ``an |eps|-neighbourhood between |A| and |s|''
-we can prove there is no ``gap''.
+we can prove there is in fact no ``gap''.
 
 
 The explicit introduction of functions such as |ubs| allows us to give
@@ -437,6 +438,10 @@ example the algebra of programming library implemented in Agda
 => {- definition of upper bound -}
 
    (Exists (a elemOf A) (s - eps < a <= s))
+
+=> {- subtract |s|, use |0 < eps| -}
+
+   (Exists (a elemOf A) (- eps < a - s < eps))
 
 => {- absolute value -}
 
@@ -524,6 +529,7 @@ and therefore, if |Drop 0 f| is bounded
 > Drop n f included (Clopen(f n, infinity))
 
 \end{itemize}
+%TODO: a small space before f would be good to avoid the overlap of [ and the lower part of f
 
 \noindent
 Using |Drop|, we have that
@@ -843,12 +849,11 @@ algebraic operations to arrive at a \emph{deep embedding}:
 >                     |  Plus   ComplexSyntax  ComplexSyntax
 >                     |  Times  ComplexSyntax  ComplexSyntax
 >                     |  ...
->
-> (+) = Plus
-> ...
 
-The type |ComplexSyntax| can then be turned into an abstract datatype, by
-hiding the representation and providing corresponding operations.
+The type |ComplexSyntax| can then be turned into an abstract datatype,
+by hiding the representation and providing corresponding operations
+like |(+) = Plus|, etc.
+%
 Deep embedding offers a cleaner separation between syntax and
 semantics, making it possible to compare and factor out the common
 parts of various languages.  For the computer science students, this
@@ -940,7 +945,7 @@ classical mathematics and its applications:
 \begin{itemize}
 \item make functions and the types explicit
 
-\item use types as carriers of semantic information, not variable
+\item use types as carriers of semantic information, not just variable
   names
 
 \item introduce functions and types for implicit operations such as
@@ -992,8 +997,8 @@ the requirements of the engineering curriculum.  They will contain:
 
 We shall take advantage of the fact that some parts of these topics
 have been treated before from a functional programming perspective
-(\cite{mcilroy1999functional, mcilroy2001music,
-  pavlovic1999coalgebra}).
+\cite{mcilroy1999functional, mcilroy2001music,
+  pavlovic1999coalgebra}.
 
 One of the important course elements we have left out of this paper is
 that of using the modelling effort performed in the course for the
@@ -1002,7 +1007,7 @@ this omission is that we wanted to concentrate on the more conceptual
 part that corresponds to the specification of that software, and as
 such is a prerequisite for it.  The development of implementations on
 the basis of these specifications will be the topic of most of the
-exercises sessions we will organise.  That the computational
+exercise sessions we will organise.  That the computational
 representation of mathematical concepts can greatly help with their
 understanding was conclusively shown by Sussman and Wisdom in their
 recent book on differential geometry \cite{sussman2013functional}.
