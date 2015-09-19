@@ -1,5 +1,5 @@
 %-*-Latex-*-
-\documentclass[submission]{../eptcsstyle/eptcs}
+\documentclass{../eptcsstyle/eptcs}
 
 % current annoyance: this will be fixed
 % by the next update of agda.fmt
