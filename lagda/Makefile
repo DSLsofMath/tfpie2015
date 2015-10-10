@@ -22,4 +22,13 @@ www: ${PREPRINT}
 ${PREPRINT}: ${NAME}.pdf
 	ln -s ${NAME}.pdf ${PREPRINT}
 
-% URL: http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf
+# URL: http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf
+
+upload: DSLsofMath.zip
+
+DSLsofMath.zip: dslm.tex
+	-mkdir DSLsofMath
+	cp dslm.bib ../eptcsstyle/eptcs.cls ../eptcsstyle/eptcs.bst DSLsofMath/
+	sed s+../eptcsstyle/eptcs+eptcs+g dslm.tex > DSLsofMath/dslm.tex
+	(cd DSLsofMath; latexmk -pdf)
+	zip -r DSLsofMath DSLsofMath
