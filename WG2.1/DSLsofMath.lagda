@@ -388,12 +388,19 @@ X|
 < f x = f a + (x - a) * phif a x
 
 \underline{such that |phif a : X -> Real| continuous at |a|}, then |f| is
-{\bfseries differentiable} at |x|.  The value |phif a a| is called the
+{\bfseries differentiable} at |a|.  The value |phif a a| is called the
 {\bfseries derivative} of |f| at |a| and is denoted |f' a|.
 \end{def*}
 
 
 \vfill
+Note that for |Real| we can defined |phi| for |x /= a| as follows:
+
+< phi f a x = (f x - f a)/(x-a)
+
+but the definition above also works for vectors and matrices (when
+division is not available).
+
 \end{frame}
 
 %% -------------------------------------------------------------------
