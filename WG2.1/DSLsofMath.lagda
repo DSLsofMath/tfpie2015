@@ -72,6 +72,8 @@ Main idea: encourage students to approach mathematical domains from a
 functional programming perspective (similar to
 \cite{wells1995communicating}).
 
+[Link: \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/Education/CommunicatingMathematics}{Summary of Wells 1995}]
+%**TODO: perhaps include (some of) the ten points in the presentation
 \vfill
 
 \begin{exampleblock}{}
@@ -110,6 +112,18 @@ Not working code, rather working understanding of concepts
 %% -------------------------------------------------------------------
 
 \section{Types}
+
+\begin{frame}
+\frametitle{Active reading example\only<2>{: complex numbers}}
+\begin{tabular}{ll}
+Calculus course book (D)  & \only<2>{\ldots Appendix I, Page 993!}\\
+\includegraphics[height=0.9\textheight]{adams-complete-course-front-page.pdf}%
+&\only<2>{\vspace{0cm}\includegraphics[height=0.9\textheight]{p993_crop.pdf}}
+\end{tabular}
+
+\end{frame}
+
+
 \begin{frame}
 \frametitle{Complex numbers}
 \begin{myquote}
@@ -124,6 +138,8 @@ Not working code, rather working understanding of concepts
 \end{myquote}
 
 \hfill (\cite{adams2010calculus}, Appendix I)
+
+% D1 2014/15 Analys: kurslitteratur: http://www.math.chalmers.se/Math/Grundutb/CTH/tmv170/1415/
 
 \pause
 
