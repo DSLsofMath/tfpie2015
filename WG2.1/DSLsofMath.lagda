@@ -252,7 +252,7 @@ Calculus course book (D)  & \only<2>{\ldots Appendix I, Page 993!}\\
   |w = z| if and only if |a = x| and |b = y|.
 \end{myquote}
 
-> newtype Complex = C (Real, Real)
+> newtype Complex = C (Real , Real)
 
 \end{frame}
 
@@ -304,7 +304,7 @@ Calculus course book (D)  & \only<2>{\ldots Appendix I, Page 993!}\\
 > (+)  :  Complex -> Complex -> Complex
 > (C (a, b)) + (C (x, y))  =  C ((a + x), (b + y))
 >
-> newtype Complex = C (Real, Real)
+> newtype Complex = C (Real , Real)
 
 \onslide<2>
 \textbf{Deep embedding}:
@@ -381,7 +381,7 @@ Alternative: differentiability in terms of continuity.
 
 \begin{def*}[Adapted from \cite{pickert1969einfuehrung}]
 
-Let |X included Real, a elemOf X| and |f : X -> Real|.  If there
+Let |X included Real , a elemOf X| and |f : X -> Real|.  If there
 exists a function |phif : X -> X -> Real| such that, for all |x elemOf
 X|
 
@@ -394,9 +394,9 @@ X|
 
 
 \vfill
-Note that for |Real| we can defined |phi| for |x /= a| as follows:
+Note that for |Real| we can defined |phif| for |x /= a| as follows:
 
-< phi f a x = (f x - f a)/(x-a)
+< phif a x = (f x - f a)/(x-a)
 
 but the definition above also works for vectors and matrices (when
 division is not available).
