@@ -1,5 +1,7 @@
 # Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 
+2015-11-28: The DSLsofMath paper is now in the [TFPIE Proceedings TechReport](http://www.cs.uu.nl/research/techreps/UU-CS-2015-015.html)
+
 2015-09-12: [DSLsofMath paper](http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf) sent to the Post-Proceedings of TFPIE after minor revisions prompted by the referees.
 
 
