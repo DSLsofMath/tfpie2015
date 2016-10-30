@@ -8,7 +8,7 @@
 \usepackage{amsmath}
 
 \title{Domain-Specific Languages of Mathematics:
-   Presenting Mathematical Analysis using Functional Programming}
+   Presenting Mathematical Analysis Using Functional Programming}
 
 
 \author{Cezar Ionescu
@@ -21,7 +21,7 @@ Patrik Jansson
 }
 
 \def\titlerunning{DSLs of Mathematics}
-\def\authorrunning{C. Ionescu, P. Jansson}
+\def\authorrunning{C. Ionescu \& P. Jansson}
 \newcommand{\event}{4th International Workshop on Trends in Functional Programming in Education, TFPIE 2015}
 
 \DeclareMathOperator{\Drop}{Drop}
@@ -37,9 +37,9 @@ Patrik Jansson
 
 \begin{abstract}
 
-In this paper, we present the approach underlying a course on
+We present the approach underlying a course on
 \emph{Domain-Specific Languages of Mathematics}
-\cite{dslmcourseplan}, which is currently being developed at
+\cite{dslmcourseplan}, currently being developed at
 Chalmers in response to difficulties faced by third-year students in
 learning and applying classical mathematics (mainly real and complex
 analysis).  The main idea is to encourage the students to approach
