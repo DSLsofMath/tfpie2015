@@ -1,5 +1,26 @@
 # Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 
+2016-11-29: Finally published in EPTCS: https://arxiv.org/abs/1611.09475
+
+Abstract: "We present the approach underlying a course on Domain-Specific Languages of Mathematics, currently being developed at Chalmers in response to difficulties faced by third-year students in learning and applying classical mathematics (mainly real and complex analysis). The main idea is to encourage the students to approach mathematical domains from a functional programming perspective: to identify the main functions and types involved and, when necessary, to introduce new abstractions; to give calculational proofs; to pay attention to the syntax of the mathematical expressions; and, finally, to organise the resulting functions and types in domain-specific languages."
+
+```bibtex
+@Inproceedings{EPTCS230.1,
+  author    = {Ionescu, Cezar and Jansson, Patrik},
+  year      = {2016},
+  title     = {Domain-Specific Languages of Mathematics: Presenting Mathematical Analysis Using Functional Programming},
+  editor    = {Jeuring, Johan and McCarthy, Jay},
+  booktitle = {Proceedings of the 4th and 5th International Workshop on
+               Trends in Functional Programming in Education,
+               Sophia-Antipolis, France and University of Maryland College Park, USA, 2nd June 2015 and 7th June 2016},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {230},
+  publisher = {Open Publishing Association},
+  pages     = {1-15},
+  doi       = {10.4204/EPTCS.230.1},
+}
+```
+
 2015-11-28: The DSLsofMath paper is now in the [TFPIE Proceedings TechReport](http://www.cs.uu.nl/research/techreps/UU-CS-2015-015.html)
 
 2015-09-12: [DSLsofMath paper](http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf) sent to the Post-Proceedings of TFPIE after minor revisions prompted by the referees.
