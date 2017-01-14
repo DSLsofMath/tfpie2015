@@ -16,7 +16,7 @@ Abstract: "We present the approach underlying a course on Domain-Specific Langua
   series    = {Electronic Proceedings in Theoretical Computer Science},
   volume    = {230},
   publisher = {Open Publishing Association},
-  pages     = {1-15},
+  pages     = {1--15},
   doi       = {10.4204/EPTCS.230.1},
 }
 ```
