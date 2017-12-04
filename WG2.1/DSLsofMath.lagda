@@ -394,7 +394,7 @@ X|
 
 
 \vfill
-Note that for |Real| we can defined |phif| for |x /= a| as follows:
+Note that for |X included Real| we can define |phif| for |x /= a| as follows:
 
 < phif a x = (f x - f a)/(x-a)
 
